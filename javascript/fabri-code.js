@@ -27,9 +27,8 @@ $(function () {
 
 		function observeNumeric(property) {
 		    document.getElementById(property).onchange = function() {
-			console.log("on change");
 			console.log(this.value);
-		      canvas.item(1)['width'] = this.value * 10;
+		      canvas.item(1)['angle'] = this.value * 10;
 		      canvas.renderAll();
 		    };
 		}
