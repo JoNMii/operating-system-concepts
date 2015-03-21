@@ -28,10 +28,19 @@ $(function () {
 		function observeNumeric(property) {
 		    document.getElementById(property).onchange = function() {
 			console.log(this.value);
-		      canvas.item(1)['angle'] = this.value * 10;
-		      canvas.renderAll();
+		      //canvas.renderAll();
 		    };
 		}
+		function observeNumeric2(property) {
+		    document.getElementById(property).onchange = function() {
+			console.log(document.getElementById('ramsize').value)
+		      //canvas.item(1)['angle'] = this.value * 10;
+		      //canvas.renderAll();
+		    };
+		}
+		// Get value from speed slider
 		observeNumeric('ex1');
+		// Get value from ram slider
+		observeNumeric2('ex6');
 				
 	}); 
