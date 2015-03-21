@@ -3,13 +3,18 @@ $( window ).resize(function() {
 });
 
 $(".algo-link").click(function(){	
+	$("#algoinput").val($(this).attr("data-algo"));
 	$(".algo-text").text($(this).html());
 });
 $(".reset-all").click(function(){
 //Reset All UI;
 
-
 });
+
+$("#start").click(function(){
+	startAlgo($("#algoinput").val(), $("#ramsize").val(), $("#framesize").val(), $("#framecount").val(), $("#speedinput").val());
+});
+
 // Speed Slider
 $("#ex1").slider();
 $("#ex1").on("slide", function(slideEvt) {
@@ -18,6 +23,7 @@ $("#ex1").on("slide", function(slideEvt) {
 		speed = 1/Math.pow(2,Math.abs(speed-1));
 	}
 	$("#ex1SliderVal").text(speed+"X");
+	$("#speedinput").val(speed);
 	$("#speed").val(speed);
 });
 

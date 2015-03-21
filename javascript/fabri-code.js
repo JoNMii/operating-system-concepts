@@ -3,7 +3,7 @@ $(function () {
 		// Obtain a canvas drawing surface from fabric.js
 		canvas = new fabric.Canvas('c');
   		canvas.setHeight(400);
-		canvas.setWidth($("#canvasrow").width());
+		canvas.setWidth($("#canvasrow").width()); //was 800 ;d
 		// Create a text object. 
 		// Does not display it-the canvas doesn't 
 		// know about it yet.

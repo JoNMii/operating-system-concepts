@@ -1,7 +1,28 @@
 /*
 CPU+RAM+Swap file
 */
+function startAlgo(algo, ramSize, frameSize, frameCount, speed){
+	
+console.log("Simulation started:",{"algo":algo, "ramSize":ramSize, "frameSize":frameSize, "frameCount":frameCount, "speed":speed});
 
+if (algo == 0){ //FIFO/FCSF
+
+} else if (algo == 1){ //Second-chance
+
+} else if (algo == 2){ //LRU
+
+} else if (algo == 3){ //LFU
+
+} else if (algo == 4){ //Random
+
+}	
+
+};
+
+function stopAlgo(){
+//Somebody stop mee
+
+}
 //example requests
 var exampleMEMrequestRead={
 	"type":"read",

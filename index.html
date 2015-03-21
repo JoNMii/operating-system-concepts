@@ -74,6 +74,7 @@
 	  <button type="button" class="btn col-xs-12 btn-default dropdown-toggle algo-text" data-toggle="dropdown" aria-expanded="false">
 		Choose algorithm <span class="caret"></span>
 	  </button>
+	  <input hidden id="algoinput" value=1>
 	  <ul class="dropdown-menu " role="menu">
 		<li><a class="algo-link" data-algo="1" href="#">Algo1</a></li>
 		<li><a class="algo-link" data-algo="2" href="#">Algo2</a></li>
@@ -81,10 +82,10 @@
 		<li><a class="algo-link" data-algo="5" href="#">Algo5</a></li>
 	  </ul>
 	</div>	
-		<button type="button" class="btn btn-success">
+		<button type="button" class="btn btn-success" id="start">
 		<span class="glyphicon glyphicon-play glyphicon-align-left" aria-hidden="true">Start</span>
 		</button>
-		<button type="button" class="btn btn-danger">
+		<button type="button" class="btn btn-danger" id="stop">
 		<span class="glyphicon glyphicon-stop glyphicon-align-left" aria-hidden="true">
 			Stop
 		</span>
@@ -97,7 +98,8 @@
 		</div>
 		<div class="pull-right">
 
-<span id="ex1CurrentSliderValLabel">Speed: <span id="ex1SliderVal">1X</span></span>		
+		<span id="ex1CurrentSliderValLabel">Speed: <span id="ex1SliderVal">1X</span></span>		
+		<input id="speedinput" hidden value=1>
 		<input id="ex1" type="text" data-slider-min="-1" data-slider-max="10" data-slider-step="1" data-slider-value="1" data-slider-tooltip="hide">
 </div>
 
@@ -112,7 +114,22 @@
 	  </div>
       
 <div class="row text-left">
-		<div class="well">
+		<div class="col-xs-5 pull-right">
+		<h4>Statistics:</h4>
+		<div class="row"><span>ASDASD</span>
+		<div class="col-xs-8">Free memory:</div>
+		<div class="col-xs-4">.. GB</div>
+		</div>
+		<div class="row">		<span>Stats</span></div>
+		<div class="row">ASDASD</div>
+		<div class="row">ASDASD</div>
+
+		<span>Stats</span>
+		<span>Stats</span>
+		<span>Stats</span>
+		
+		
+		
 		</div>
 		
 		<div>
@@ -136,13 +153,13 @@
 		<!-- Frame Count -->
 		<div class="col-xs-2">
 		<span>Frame count:</span>
-		<input hidden id="framecount"/>
+		<input hidden id="framecount" value=128 />
 		</div>
 		<strong class="framecount-label">128</strong>
 		
 		
 	  </div>
-    </div>
+</div>
 	
 	
     
