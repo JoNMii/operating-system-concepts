@@ -61,12 +61,12 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-<div class="container">
+	<div class="container">
 
       <!-- Main component for a primary marketing message or call to action -->
-
+<div class="row">
 	  <div class="well">
-		      <div class="row">
+	  
 	    <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
 		<button type="button" class="btn btn-primary">Start</button>
 		<button type="button" class="btn btn-danger">Stop</button>
@@ -74,13 +74,23 @@
 		<button type="button" class="btn btn-warning" aria-label="Left Align">
 			<span class="glyphicon glyphicon-align-left" aria-hidden="true">Hammer time!</span>
 		</button>
-		
-	  </div>
-	  </div>
+	</div>
+  </div>
+	  
 <!-- 	  <div class="jumbotron">
   
       </div> -->
-      <canvas id="c" style="border:1px solid black;" ></canvas>
+	  <div class="row">	  	 
+		<canvas id="c" style="border:1px solid black;" ></canvas>
+	  </div>
+      
+<div class="row">
+		<div class="well">
+		<input id="ex6" type="text" data-slider-min="7" data-slider-max="26" data-slider-step="1" data-slider-tooltip="hide" data-slider-value="7"/>
+		<input id="ramsize" hidden>
+		<span id="ex6CurrentSliderValLabel">&nbsp;&nbsp;&nbsp;&nbsp;Ram size: <span id="ex6SliderVal">128 KB</span></span>
+		</div>
+	  </div>
     </div>
 	
 	
