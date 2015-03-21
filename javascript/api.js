@@ -2,27 +2,42 @@
 CPU+RAM+Swap file
 */
 function startAlgo(algo, ramSize, frameSize, frameCount, speed){
-	
 console.log("Simulation started:",{"algo":algo, "ramSize":ramSize, "frameSize":frameSize, "frameCount":frameCount, "speed":speed});
+
+config.ramSize = ramSize
+config.frameSize = frameSize
+config.frameCount = frameCount
+config.speed = speed
+config.algo = exampleAlgorythm
 
 if (algo == 0){ //FIFO/FCSF
 
 } else if (algo == 1){ //Second-chance
 
 } else if (algo == 2){ //LRU
-
+	config.algo = LRU_Algorithm
 } else if (algo == 3){ //LFU
 
 } else if (algo == 4){ //Random
 
 }	
 
+var init = config.algo.init
+if(init){
+ init();
+}
+
+//TODO add timer
+simulationTick();
 };
 
 function stopAlgo(){
 //Somebody stop mee
 
 }
+
+var config = {}
+
 //example requests
 var exampleMEMrequestRead={
 	"type":"read",
@@ -56,7 +71,8 @@ var examplePage3 ={
 
 var exampleAlgorythm = {
 	"name":"do nothing",
-	"onEvent": function(event){}
+	"onEvent": function(event){},
+	"init" : function(){}
 }
 
 //example/mock implementation.
@@ -64,7 +80,14 @@ var exampleAlgorythm = {
 
 //increases time by one timeunit
 function simulationTick(){
+	onEvent = algorythm().onEvent;
+	onEvent(generateEvent());
 	updateGraphics();
+	
+}
+
+function generateEvent(){
+	return exampleMEMrequestRead;
 }
 
 function updateGraphics(){
@@ -75,11 +98,11 @@ function resetSimulation(){
 }
 
 function algorythm(){
-	return exampleAlgorythm;
+	return config.algo;
 }
 
 function pageSlotsInRAM(){
-	return 2;
+	return config.frameCount;
 }
 
 function getPagesInRAM(){
