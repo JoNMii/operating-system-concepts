@@ -125,13 +125,15 @@ function assignPage(page,ramSlot){
 }
 
 //create a page but do not assign it any memory
-function createBacklessPage(){
+function createBacklessPage(min_address,max_address){
 	return {
-		"page_id":nextPageId()
+		"page_id":nextPageId(),
+		"min_address":min_address,
+		"max_address":max_address
 	};
 }
 
-function createPage(ramSlot){
+function createPage(ramSlot,min_address,max_address){
 	var page = createBacklessPage();
 	assignPage(page,ramSlot);
 	return page;
