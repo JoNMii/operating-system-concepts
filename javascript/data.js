@@ -46,9 +46,10 @@ function pageId(page){
 	return page.page_id;
 }
 
-Object.prototype.findKeyFor(callback){
+Object.prototype.findKeyFor = function(filter_func){
 	for (var key in this) {
-		if(callback(key)){
+		var der = filter_func(key);
+		if(der){
 			return key;
 		}
 	}

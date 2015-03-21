@@ -100,14 +100,14 @@ function getFlags(page){
 //swapout
 function writePageToSwap(page,swapSlot){
 	if(0<=swapSlot && swapSlot<pageSlotsInSWAP()){
-		var data.in_swap[swapSlot]=page
+		data.in_swap[swapSlot]=page;
 	}
 }
 
 //swapin
 function writePageToRAM(page,ramSlot){
 	if(0<=ramSlot && ramSlot<pageSlotsInRAM()){
-		var data.in_swap[ramSlot]=page
+		data.in_ram[ramSlot]=page;
 	}
 }
 
@@ -120,7 +120,7 @@ function assignPage(page,ramSlot){
 	// assign the page to a slot on RAM
 	//TODO check if not already in ram
 	if(0<=ramSlot && ramSlot<pageSlotsInRAM()){
-		var data.in_swap[ramSlot]=page
+		data.in_swap[ramSlot]=page;
 	}
 }
 
