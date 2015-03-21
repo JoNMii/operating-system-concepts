@@ -70,6 +70,10 @@ function pageSlotsInSWAP(){
 	return 30;
 }
 
+function pageSize(){
+	return 1024;
+}
+
 function getPagesInSWAP(){
 	return data.in_swap;
 }
@@ -125,16 +129,16 @@ function assignPage(page,ramSlot){
 }
 
 //create a page but do not assign it any memory
-function createBacklessPage(min_address,max_address){
+function createBacklessPage(pageId){
 	return {
-		"page_id":nextPageId(),
-		"min_address":min_address,
-		"max_address":max_address
+		"page_id":pageId,
+		"min_address":pageId * pageSize(),
+		"max_address":(pageId+1) * pageSize()
 	};
 }
 
-function createPage(ramSlot,min_address,max_address){
-	var page = createBacklessPage();
+function createPage(ramSlot,pageId){
+	var page = createBacklessPage(pageId);
 	assignPage(page,ramSlot);
 	return page;
 }
