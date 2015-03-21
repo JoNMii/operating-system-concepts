@@ -1,9 +1,9 @@
 $(function () {
 	
 		// Obtain a canvas drawing surface from fabric.js
-		canvas = new fabric.Canvas('c');
+		var canvas = new fabric.Canvas('c');
   		canvas.setHeight(400);
-		canvas.setWidth($("#canvasrow").width());
+		canvas.setWidth(800);
 		// Create a text object. 
 		// Does not display it-the canvas doesn't 
 		// know about it yet.
@@ -24,5 +24,15 @@ $(function () {
 		// Attach it to the canvas object, then (re)display
 		// the canvas.	
 		canvas.add(hi, rect);
+
+		function observeNumeric(property) {
+		    document.getElementById(property).onchange = function() {
+			console.log("on change");
+			console.log(this.value);
+		      canvas.item(1)['width'] = this.value * 10;
+		      canvas.renderAll();
+		    };
+		}
+		observeNumeric('ex1');
 				
 	}); 
