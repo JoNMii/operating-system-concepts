@@ -1,3 +1,8 @@
+$( window ).resize(function() {
+  canvas.setWidth($("#canvasrow").width());
+});
+
+
 // Without JQuery
 var slider = new Slider('#ex1', {
 	formatter: function(value) {
