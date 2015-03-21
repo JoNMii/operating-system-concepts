@@ -80,7 +80,7 @@ function pageSlotsInRAM(){
 
 function getPagesInRAM(){
 	// slot_nr:page
-	return {"0":examplePage,"1":examplePage2};
+	return data.in_ram;
 }
 
 function pageSlotsInSWAP(){
@@ -88,11 +88,18 @@ function pageSlotsInSWAP(){
 }
 
 function getPagesInSWAP(){
-	return {"0":examplePage2,"1":examplePage3};
+	return data.in_swap;
 }
 
 function getAllPages(){
-	return [examplePage,examplePage2,examplePage3];
+	var aggregate = data.backless;
+	for (var slot in data.in_swap) {
+		aggregate.push(data.in_swap[slot])
+	}
+	for (var slot in data.in_ram) {
+		aggregate.push(data.in_ram[slot])
+	}
+	return aggregate.getUniqueBy(pageId);
 }
 
 // possible flags (use others if needed)
@@ -100,31 +107,45 @@ function getAllPages(){
 // these flags should be included in page table if used
 
 function setFlags(page,flags){
+	data.flags[pageId(page)]=flags;
 }
 
 function getFlags(page){
-	return {"dirty":false};
+	return data.flags[pageId(page)];
 }
 
 //swapout
 function writePageToSwap(page,swapSlot){
+	if(0<=swapSlot && swapSlot<pageSlotsInSWAP()){
+		var data.in_swap[swapSlot]=page
+	}
 }
 
 //swapin
 function writePageToRAM(page,ramSlot){
+	if(0<=ramSlot && ramSlot<pageSlotsInRAM()){
+		var data.in_swap[ramSlot]=page
+	}
 }
 
 //delete page from both RAM and SWAP
 function deletePage(page){
+	data.deletePage(page);
 }
 
 function assignPage(page,ramSlot){
 	// assign the page to a slot on RAM
+	//TODO check if not already in ram
+	if(0<=ramSlot && ramSlot<pageSlotsInRAM()){
+		var data.in_swap[ramSlot]=page
+	}
 }
 
 //create a page but do not assign it any memory
 function createBacklessPage(){
-	return examplePage3;
+	return {
+		"page_id":nextPageId()
+	};
 }
 
 function createPage(ramSlot){
