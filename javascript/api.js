@@ -16,19 +16,19 @@ var exampleMEMrequestWrite={
 //------------
 
 var examplePage ={
-	"page_id":1
+	"page_id":1,
 	"min_address":24,
 	"max_address":64
 }
 
 var examplePage2 ={
-	"page_id":2
+	"page_id":2,
 	"min_address":16,
 	"max_address":24
 }
 
 var examplePage3 ={
-	"page_id":3
+	"page_id":3,
 	"min_address":64,
 	"max_address":72
 }

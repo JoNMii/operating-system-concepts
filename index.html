@@ -1,57 +1,104 @@
 <!DOCTYPE html>    
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- <meta name="description" content="">
+    <meta name="author" content=""> -->
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <!-- <link href="assets/offcanvas.css" rel="stylesheet"> -->
+	<link href="assets/main.css" rel="stylesheet">
+	<link href="assets/bootstrap-slider.css" rel="stylesheet">
+</head>
+  
+
+
+<head>
+    <meta charset="utf-8">
     <title>fabric.js-simple text display</title>
 	
-	<!-- Get version 1.1.0 of Fabric.js from CDN -->
-	<script src="fabric.min.js" ></script>
- 
+</head>	
+ <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="../navbar/">Default</a></li>
+            <li class="active"><a href="./">Static top <span class="sr-only">(current)</span></a></li>
+            <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+<div class="container">
+
+      <!-- Main component for a primary marketing message or call to action -->
+
+	  <div class="well">
+		      <div class="row">
+	    <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
+		<button type="button" class="btn btn-primary">Start</button>
+		<button type="button" class="btn btn-danger">Stop</button>
+		
+		<button type="button" class="btn btn-warning" aria-label="Left Align">
+			<span class="glyphicon glyphicon-align-left" aria-hidden="true">Hammer time!</span>
+		</button>
+		
+	  </div>
+	  </div>
+<!-- 	  <div class="jumbotron">
+  
+      </div> -->
+      <canvas id="c" style="border:1px solid black;" ></canvas>
+    </div>
+	
+	
+    
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="bootstrap3/js/bootstrap.min.js"></script>
+    <!-- <script src="assets/offcanvas.js"></script> -->
+  <!-- Get version 1.1.0 of Fabric.js from CDN -->
+	<script src="assets/fabric.min.js" ></script>
+	<script src="assets/bootstrap-slider.js" ></script>
+	<script src="assets/user-interface.js"></script>
+	<script src="javascript/api.js"></script>
+	<script src="javascript/fabri-code.js"></script>
 	<!-- Get the highest 1.X version of jQuery from CDN. Required for ready() function. -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> 
- 
-<body>
-		<!-- A canvas tag is required or 
-			 Fabric.js doesn't know where to draw. -->
-		<canvas id="c" style="border:1px solid black;" ></canvas>
-</body>
- 
-<script>
-	// Place script tags at the bottom of the page.
-	// That way progressive page rendering and 
-	// downloads are not blocked.
- 
-	// Run only when HTML is loaded and 
-	// DOM properly initialized (courtesy jquery)
-	$(function () {
-		
-		// Obtain a canvas drawing surface from fabric.js
-		var canvas = new fabric.Canvas('c');
- 
-		// Create a text object. 
-		// Does not display it-the canvas doesn't 
-		// know about it yet.
-		var hi = new fabric.Text('Derp, world.', {
-			left: canvas.getWidth() / 2,
-			top: canvas.getHeight() / 2		
-		});
 
-		var rect = new fabric.Rect({
-			left: 100,
-			top: 100,
-			fill: 'red',
-			width: 20,
-			height: 20,
-			angle: 45,
-		});
-	
-		// Attach it to the canvas object, then (re)display
-		// the canvas.	
-		canvas.add(hi, rect);
-				
-	});
-</script>
-		
-</head>
- 
- 
+</body> 
 </html>
