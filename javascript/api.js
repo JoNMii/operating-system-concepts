@@ -35,7 +35,7 @@ var examplePage3 ={
 
 var exampleAlgorythm = {
 	"name":"do nothing",
-	"onTick": function(){}
+	"onEvent": function(event){}
 }
 
 //example/mock implementation.
@@ -44,10 +44,6 @@ var exampleAlgorythm = {
 //increases time by one timeunit
 function simulationTick(){
 	updateGraphics();
-}
-
-//waits ticks timeunits and then runs callback
-function runAfter(ticks,callback){
 }
 
 function updateGraphics(){
@@ -59,19 +55,6 @@ function resetSimulation(){
 
 function algorythm(){
 	return exampleAlgorythm;
-}
-
-function generateNewMemRequest(){
-	//add new request to pendingMEMRequests
-}
-
-function getPendingMEMRequests(){
-	return [exampleMEMrequestRead,exampleMEMrequestWrite];
-}
-
-function completeMEMRequest(request,pageInRAM){
-	//"read" of "write" from the page in RAM
-	// delete the request
 }
 
 function pageSlotsInRAM(){

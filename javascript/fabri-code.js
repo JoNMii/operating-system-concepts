@@ -2,7 +2,8 @@ $(function () {
 	
 		// Obtain a canvas drawing surface from fabric.js
 		var canvas = new fabric.Canvas('c');
- 
+  		canvas.setHeight(400);
+		canvas.setWidth(800);
 		// Create a text object. 
 		// Does not display it-the canvas doesn't 
 		// know about it yet.
@@ -23,5 +24,23 @@ $(function () {
 		// Attach it to the canvas object, then (re)display
 		// the canvas.	
 		canvas.add(hi, rect);
+
+		function observeNumeric(property) {
+		    document.getElementById(property).onchange = function() {
+			console.log(this.value);
+		      //canvas.renderAll();
+		    };
+		}
+		function observeNumeric2(property) {
+		    document.getElementById(property).onchange = function() {
+			console.log(document.getElementById('ramsize').value)
+		      //canvas.item(1)['angle'] = this.value * 10;
+		      //canvas.renderAll();
+		    };
+		}
+		// Get value from speed slider
+		observeNumeric('ex1');
+		// Get value from ram slider
+		observeNumeric2('ex6');
 				
 	}); 
