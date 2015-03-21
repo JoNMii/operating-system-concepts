@@ -33,11 +33,32 @@ var examplePage3 ={
 	"max_address":72
 }
 
+var exampleAlgorythm = {
+	"name":"do nothing",
+	"onTick": function(){}
+}
+
 //example/mock implementation.
 //replace with actual logic
 
-//Everything that would happen in a single timeunit
+//increases time by one timeunit
 function simulationTick(){
+	updateGraphics();
+}
+
+//waits ticks timeunits and then runs callback
+function runAfter(ticks,callback){
+}
+
+function updateGraphics(){
+	//redraw/revalidate the visuals
+}
+
+function resetSimulation(){
+}
+
+function algorythm(){
+	return exampleAlgorythm;
 }
 
 function generateNewMemRequest(){
@@ -67,7 +88,7 @@ function pageSlotsInSWAP(){
 }
 
 function getPagesInSWAP(){
-	return {"1":examplePage3};
+	return {"0":examplePage2,"1":examplePage3};
 }
 
 function getAllPages(){
@@ -86,17 +107,28 @@ function getFlags(page){
 }
 
 //swapout
-function writePageToSwap(page){
+function writePageToSwap(page,swapSlot){
 }
 
 //swapin
-function writePageToRAM(page){
+function writePageToRAM(page,ramSlot){
 }
 
-//delete from both RAM and SWAP
+//delete page from both RAM and SWAP
 function deletePage(page){
 }
 
-function createPage(){
+function assignPage(page,ramSlot){
+	// assign the page to a slot on RAM
+}
+
+//create a page but do not assign it any memory
+function createBacklessPage(){
 	return examplePage3;
+}
+
+function createPage(ramSlot){
+	var page = createBacklessPage();
+	assignPage(page,ramSlot);
+	return page;
 }
