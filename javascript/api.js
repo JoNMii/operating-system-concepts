@@ -101,6 +101,8 @@ function updateGraphics(){
 }
 
 function resetSimulation(){
+	stopAlgo();	
+	data.clear();
 }
 
 function algorythm(){

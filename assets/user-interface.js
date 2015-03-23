@@ -15,6 +15,14 @@ $("#start").click(function(){
 	startAlgo($("#algoinput").val(), $("#ramsize").val(), $("#framesize").val(), $("#framecount").val(), $("#speedinput").val());
 });
 
+$("#stop").click(function(){
+	stopAlgo();
+});
+
+$("#reset").click(function(){
+	resetSimulation();
+});
+
 // Speed Slider
 $("#ex1").slider();
 $("#ex1").on("slide", function(slideEvt) {

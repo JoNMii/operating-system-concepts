@@ -26,6 +26,12 @@ var data={
 	data.backless=data.backless.filter(function(item){
 		return item.page_id != page.page_id;
 	});
+},
+"clear" : function(){
+	data.backless=[];
+	data.in_ram={};
+	data.in_swap={};
+	data.flags={};
 }
 }
 
