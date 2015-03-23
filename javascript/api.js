@@ -27,13 +27,18 @@ if(init){
  init();
 }
 
-//TODO add timer
-simulationTick();
+
+if(config.timer){
+	stopAlgo();
+}
+var step = 1000/speed;
+config.timer = setInterval(function(){simulationTick()},step);
 };
 
 function stopAlgo(){
-//Somebody stop mee
-
+	var timer = config.timer;
+	clearInterval(timer);
+	delete config.timer;
 }
 
 var config = {}
@@ -80,6 +85,7 @@ var exampleAlgorythm = {
 
 //increases time by one timeunit
 function simulationTick(){
+	console.log("tick");
 	onEvent = algorythm().onEvent;
 	onEvent(generateEvent());
 	updateGraphics();
