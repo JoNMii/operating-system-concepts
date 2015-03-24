@@ -6,8 +6,8 @@ var randomAlgorithm = {
 		var pageInSWAP = findSWAPPageById(pageId);
 		
 		var evictPage = function(){
-			//0 is random tossed a coin, it was heads :D
-			var evicted = 0; //TODO get random slot
+			var totalPages = pageSlotsInRAM();
+			var evicted = Math.random*pageSlotsInRAM();
 			var swapSlot = getFreeRAMSlot()
 			if(swapSlot<=-1){
 				console.error("OH SHIT IM out of RAM");
@@ -21,6 +21,8 @@ var randomAlgorithm = {
 		if(pageInRAM){
 			//page in RAM
 			//nothing to do here
+			console.log("Page hit!");
+			console.log({"address":event.address,"pageId":pageId});
 		} else 
 			if(pageInSWAP){
 				//page is in swap file move it to RAM

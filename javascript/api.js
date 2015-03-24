@@ -34,6 +34,7 @@ if(init && !config.initialised){
 }
 
 setStep(speed);
+unpauseAlgo();
 };
 
 function setStep(speed){
@@ -341,6 +342,7 @@ function getFlags(page){
 //swapout
 function writePageToSwap(page,swapSlot){
 	if(0<=swapSlot && swapSlot<pageSlotsInSWAP()){
+	console.log("page "+pageId(page)+" TO SWAP slot "+swapSlot);
 		data.in_swap[swapSlot]=page;
 	}
 }
@@ -348,6 +350,7 @@ function writePageToSwap(page,swapSlot){
 //swapin
 function writePageToRAM(page,ramSlot){
 	if(0<=ramSlot && ramSlot<pageSlotsInRAM()){
+	console.log("page "+pageId(page)+" TO RAM slot "+ramSlot);
 		data.in_ram[ramSlot]=page;
 	}
 }
