@@ -93,7 +93,18 @@ function simulationTick(){
 }
 
 function generateEvent(){
-	return exampleMEMrequestRead;
+    // Random: 50/50
+    var requestType = Math.floor(2 * Math.random()) ? "read" : "write";
+    // Random address from 0 to RAM_size - 1
+    var address = Math.floor(config.ramSize * Math.random());
+    
+    var request = {
+        "type" : requestType,
+        "address" : address,
+        /* "data" : TODO: if necessary */
+    };
+    
+	return request;
 }
 
 function updateGraphics(){
