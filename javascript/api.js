@@ -24,7 +24,7 @@ if (algo == 0){ //FIFO/FCSF
 } else if (algo == 3){ //LFU
 
 } else if (algo == 4){ //Random
-
+	config.algo = randomAlgorithm
 }	
 
 var init = config.algo.init
@@ -33,19 +33,36 @@ if(init && !config.initialised){
  config.initialised = true;
 }
 
-//timer started
-if(config.timer){
-	stopAlgo();
-}
-var step = 1000/speed;
-config.timer = setInterval(function(){simulationTick()},step);
+setStep(step);
 };
 
-function stopAlgo(){
+function setStep(speed){
+	config.speed = speed;
+	unpause();
+}
+
+function pauseAlgo(){
 	var timer = config.timer;
 	clearInterval(timer);
 	delete config.timer;
 }
+
+function unpauseAlgo(){
+	//timer already started
+	if(config.timer){
+		pause();
+	}
+	var step = 1000/config.speed;
+	config.timer = setInterval(function(){simulationTick()},step);
+}
+
+function stopAlgo(){
+	pause();
+	config.initialised = false;
+	data.clear();
+}
+
+var config = {}
 
 //example requests
 var exampleMEMrequestRead={
@@ -222,8 +239,6 @@ function updateGraphics(){
 
 function resetSimulation(){
 	stopAlgo();
-	config.initialised = false;
-	data.clear();
 }
 
 function algorythm(){
@@ -232,6 +247,22 @@ function algorythm(){
 
 function pageSlotsInRAM(){
 	return config.frameCount;
+}
+
+function getFreeRamSlot(){
+	var usedSlots = getPagesInRAM().keys();
+	for(var i=0;i<pageSlotsInRAM();i++){
+		var found = false;
+		for(var j=0;j<usedSlots.length;j++){
+			if(i==j){
+				found = true;
+			}
+		}
+		if(!found){
+			return i;
+		}
+	}
+	return -1;
 }
 
 function getPagesInRAM(){
@@ -245,6 +276,22 @@ function pageSlotsInSWAP(){
 
 function pageSize(){
 	return 1024;
+}
+
+function getFreeSWAPSlot(){
+	var usedSlots = getPagesInSWAP().keys();
+	for(var i=0;i<pageSlotsInSWAP();i++){
+		var found = false;
+		for(var j=0;j<usedSlots.length;j++){
+			if(i==j){
+				found = true;
+			}
+		}
+		if(!found){
+			return i;
+		}
+	}
+	return -1;
 }
 
 function getPagesInSWAP(){
