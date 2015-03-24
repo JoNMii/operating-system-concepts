@@ -19,7 +19,7 @@ if (algo == 0){ //FIFO/FCSF
 } else if (algo == 3){ //LFU
 
 } else if (algo == 4){ //Random
-
+	config.algo = randomAlgorithm
 }	
 
 var init = config.algo.init
