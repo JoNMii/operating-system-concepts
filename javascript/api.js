@@ -28,18 +28,33 @@ if(init && !config.initialised){
  config.initialised = true;
 }
 
-//timer started
-if(config.timer){
-	stopAlgo();
-}
-var step = 1000/speed;
-config.timer = setInterval(function(){simulationTick()},step);
+setStep(step);
 };
 
-function stopAlgo(){
+function setStep(speed){
+	config.speed = speed;
+	unpause();
+}
+
+function pauseAlgo(){
 	var timer = config.timer;
 	clearInterval(timer);
 	delete config.timer;
+}
+
+function unpauseAlgo(){
+	//timer already started
+	if(config.timer){
+		pause();
+	}
+	var step = 1000/config.speed;
+	config.timer = setInterval(function(){simulationTick()},step);
+}
+
+function stopAlgo(){
+	pause();
+	config.initialised = false;
+	data.clear();
 }
 
 var config = {}
@@ -102,8 +117,6 @@ function updateGraphics(){
 
 function resetSimulation(){
 	stopAlgo();
-	config.initialised = false;
-	data.clear();
 }
 
 function algorythm(){
