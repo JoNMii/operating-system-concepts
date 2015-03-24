@@ -23,7 +23,7 @@ if (algo == 0){ //FIFO/FCSF
 	config.algo = LRU_Algorithm
 } else if (algo == 3){ //LFU
 
-} else if (algo == 4){ //Random
+} else if (algo == 5){ //Random
 	config.algo = randomAlgorithm
 }	
 
@@ -38,7 +38,9 @@ setStep(speed);
 
 function setStep(speed){
 	config.speed = speed;
-	unpauseAlgo();
+	if(config.timer){
+		unpauseAlgo();
+	}
 }
 
 function pauseAlgo(){
@@ -265,7 +267,7 @@ function pageSlotsInRAM(){
 }
 
 function getFreeRAMSlot(){
-	var usedSlots = getPagesInRAM().keys();
+	var usedSlots = Object.keys(getPagesInRAM());
 	for(var i=0;i<pageSlotsInRAM();i++){
 		var found = false;
 		for(var j=0;j<usedSlots.length;j++){
@@ -294,7 +296,7 @@ function pageSize(){
 }
 
 function getFreeSWAPSlot(){
-	var usedSlots = getPagesInSWAP().keys();
+	var usedSlots = Object.keys(getPagesInSWAP());
 	for(var i=0;i<pageSlotsInSWAP();i++){
 		var found = false;
 		for(var j=0;j<usedSlots.length;j++){
