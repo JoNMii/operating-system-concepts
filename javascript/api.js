@@ -62,6 +62,21 @@ function stopAlgo(){
 	data.clear();
 }
 
+function unpauseAlgo(){
+	//timer already started
+	if(config.timer){
+		pause();
+	}
+	var step = 1000/config.speed;
+	config.timer = setInterval(function(){simulationTick()},step);
+}
+
+function stopAlgo(){
+	pause();
+	config.initialised = false;
+	data.clear();
+}
+
 var config = {}
 
 //example requests
@@ -335,9 +350,38 @@ function writePageToRAM(page,ramSlot){
 	}
 }
 
+function findRAMPageById(id){
+	var pages = getPagesInRAM();
+	for(i in pages){
+		if(pageId(pages[i])==id){
+			return i;
+		}
+	}
+	return -1;
+}
+
+function findSWAPPageById(id){
+	var pages = getPagesInSWAP();
+	for(i in pages){
+		if(pageId(pages[i])==id){
+			return i;
+		}
+	}
+	return -1;
+}
+
 //delete page from both RAM and SWAP
 function deletePage(page){
-	data.deletePage(page);
+	data.deleteRAMPage(page);
+	data.deleteSWAPPage(page);
+}
+
+function deletePageFromRAM(page){
+	data.deleteRAMPage(page);
+}
+
+function deletePageFromSWAP(page){
+	data.deleteRAMPage(page);
 }
 
 function assignPage(page,ramSlot){
@@ -355,6 +399,10 @@ function createBacklessPage(pageId){
 		"min_address":pageId * pageSize(),
 		"max_address":(pageId+1) * pageSize()
 	};
+}
+
+function addressToPageId(address){
+	return Math.floor(address/pageSize());
 }
 
 function createPage(ramSlot,pageId){
