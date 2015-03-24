@@ -19,7 +19,7 @@ if (algo == 0){ //FIFO/FCSF
 } else if (algo == 3){ //LFU
 
 } else if (algo == 4){ //Random
-
+	config.algo = randomAlgorithm
 }	
 
 var init = config.algo.init
@@ -138,6 +138,22 @@ function pageSlotsInRAM(){
 	return config.frameCount;
 }
 
+function getFreeRamSlot(){
+	var usedSlots = getPagesInRAM().keys();
+	for(var i=0;i<pageSlotsInRAM();i++){
+		var found = false;
+		for(var j=0;j<usedSlots.length;j++){
+			if(i==j){
+				found = true;
+			}
+		}
+		if(!found){
+			return i;
+		}
+	}
+	return -1;
+}
+
 function getPagesInRAM(){
 	// slot_nr:page
 	return data.in_ram;
@@ -149,6 +165,22 @@ function pageSlotsInSWAP(){
 
 function pageSize(){
 	return 1024;
+}
+
+function getFreeSWAPSlot(){
+	var usedSlots = getPagesInSWAP().keys();
+	for(var i=0;i<pageSlotsInSWAP();i++){
+		var found = false;
+		for(var j=0;j<usedSlots.length;j++){
+			if(i==j){
+				found = true;
+			}
+		}
+		if(!found){
+			return i;
+		}
+	}
+	return -1;
 }
 
 function getPagesInSWAP(){
