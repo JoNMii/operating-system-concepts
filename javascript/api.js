@@ -264,7 +264,7 @@ function pageSlotsInRAM(){
 	return config.frameCount;
 }
 
-function getFreeRamSlot(){
+function getFreeRAMSlot(){
 	var usedSlots = getPagesInRAM().keys();
 	for(var i=0;i<pageSlotsInRAM();i++){
 		var found = false;
