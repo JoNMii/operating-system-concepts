@@ -21,7 +21,7 @@ var randomAlgorithm = {
 		if(pageInRAM){
 			//page in RAM
 			//nothing to do here
-			console.log("Page hit!",{"address":event.address,"pageId":pageId});
+			pageHit(pageId);
 		} else 
 			if(pageInSWAP){
 				//page is in swap file move it to RAM

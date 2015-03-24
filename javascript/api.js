@@ -339,6 +339,10 @@ function getFlags(page){
 	return data.flags[pageId(page)];
 }
 
+function pageHit(pageId){
+	console.log("Page hit!",{"pageId":pageId});
+}
+
 //swapout
 function writePageToSwap(page,swapSlot){
 	if(0<=swapSlot && swapSlot<pageSlotsInSWAP()){
