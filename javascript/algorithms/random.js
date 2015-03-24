@@ -1,7 +1,6 @@
 var randomAlgorithm = {
 	"name":"Pick stuff at random",
 	"onEvent": function(event) {
-		var = function(){}
         var read = function(address) {
             
         };
@@ -10,7 +9,7 @@ var randomAlgorithm = {
             
         };
         
-        switch(event) {
+        switch(event.type) {
             case "read":
                 read(event.address);
                 break;
