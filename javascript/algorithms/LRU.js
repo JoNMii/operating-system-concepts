@@ -10,7 +10,7 @@ var LRU_Algorithm = {
             
         };
         
-        switch(event) {
+        switch(event.type) {
             case "read":
                 read(event.address);
                 break;
