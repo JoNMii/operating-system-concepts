@@ -226,7 +226,16 @@ function writePageToRAM(page,ramSlot){
 
 //delete page from both RAM and SWAP
 function deletePage(page){
-	data.deletePage(page);
+	data.deleteRAMPage(page);
+	data.deleteSWAPPage(page);
+}
+
+function deletePageFromRAM(page){
+	data.deleteRAMPage(page);
+}
+
+function deletePageFromSWAP(page){
+	data.deleteRAMPage(page);
 }
 
 function assignPage(page,ramSlot){
@@ -244,6 +253,10 @@ function createBacklessPage(pageId){
 		"min_address":pageId * pageSize(),
 		"max_address":(pageId+1) * pageSize()
 	};
+}
+
+function addressToPageId(address){
+	return Math.floor(address/pageSize());
 }
 
 function createPage(ramSlot,pageId){

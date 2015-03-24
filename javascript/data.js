@@ -5,14 +5,9 @@ var data={
 	"in_ram":{},
 	"in_swap":{},
 	"flags":{},
-"deletePage" : function(page){
+"deleteRAMPage" : function(page){
 	var thisPage = function(item){
 		return equalPages(page,item);	
-	}
-
-	var keyInSwap = data.in_swap.findKeyFor(thisPage);
-	if(keyInSwap != null){
-		delete data.in_swap[keyInSwap];
 	}
 
 	var keyInRAM = data.in_ram.findKeyFor(thisPage);
@@ -23,6 +18,20 @@ var data={
 	delete data.flags[pageId(page)];
 
 
+	data.backless=data.backless.filter(function(item){
+		return item.page_id != page.page_id;
+	});
+},
+"deleteSWAPPage" : function(page){
+	var thisPage = function(item){
+		return equalPages(page,item);	
+	}
+	
+	var keyInSwap = data.in_swap.findKeyFor(thisPage);
+	if(keyInSwap != null){
+		delete data.in_swap[keyInSwap];
+	}
+	
 	data.backless=data.backless.filter(function(item){
 		return item.page_id != page.page_id;
 	});
