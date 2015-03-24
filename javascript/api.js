@@ -293,7 +293,7 @@ function pageSlotsInSWAP(){
 }
 
 function pageSize(){
-	return 1024;
+	return config.frameSize;
 }
 
 function getFreeSWAPSlot(){
