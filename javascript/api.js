@@ -23,11 +23,12 @@ if (algo == 0){ //FIFO/FCSF
 }	
 
 var init = config.algo.init
-if(init){
+if(init && !config.initialised){
  init();
+ config.initialised = true;
 }
 
-
+//timer started
 if(config.timer){
 	stopAlgo();
 }
@@ -76,8 +77,8 @@ var examplePage3 ={
 
 var exampleAlgorythm = {
 	"name":"do nothing",
-	"onEvent": function(event){},
-	"init" : function(){}
+	"onEvent": function(event){console.log(event);},
+	"init" : function(){console.log("init called");}
 }
 
 //example/mock implementation.
@@ -85,7 +86,6 @@ var exampleAlgorythm = {
 
 //increases time by one timeunit
 function simulationTick(){
-	console.log("tick");
 	onEvent = algorythm().onEvent;
 	onEvent(generateEvent());
 	updateGraphics();
@@ -101,7 +101,8 @@ function updateGraphics(){
 }
 
 function resetSimulation(){
-	stopAlgo();	
+	stopAlgo();
+	config.initialised = false;
 	data.clear();
 }
 
