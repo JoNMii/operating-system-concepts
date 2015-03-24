@@ -224,6 +224,26 @@ function writePageToRAM(page,ramSlot){
 	}
 }
 
+function findRAMPageById(id){
+	var pages = getPagesInRAM();
+	for(i in pages){
+		if(pageId(pages[i])==id){
+			return i;
+		}
+	}
+	return -1;
+}
+
+function findSWAPPageById(id){
+	var pages = getPagesInSWAP();
+	for(i in pages){
+		if(pageId(pages[i])==id){
+			return i;
+		}
+	}
+	return -1;
+}
+
 //delete page from both RAM and SWAP
 function deletePage(page){
 	data.deleteRAMPage(page);
