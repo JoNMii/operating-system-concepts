@@ -1,6 +1,11 @@
 /*
 CPU+RAM+Swap file
 */
+
+/*** Global variables ***/
+var config = {} // Animation configuration
+var visualObjects = {} // Handlers for main graphical objects (CPU / Memory / Pagefile)
+
 function startAlgo(algo, ramSize, frameSize, frameCount, speed){
 console.log("Simulation started:",{"algo":algo, "ramSize":ramSize, "frameSize":frameSize, "frameCount":frameCount, "speed":speed});
 
@@ -41,8 +46,6 @@ function stopAlgo(){
 	clearInterval(timer);
 	delete config.timer;
 }
-
-var config = {}
 
 //example requests
 var exampleMEMrequestRead={
@@ -107,8 +110,50 @@ function generateEvent(){
 	return request;
 }
 
+function drawCPU(){
+    if (visualObjects.CPU == undefined) {
+        var cpuWidth = 200;
+        var cpuHeight = 200;
+        var cpuOffsetX = 50;
+        var cpuOffsetY = 150;
+        
+        var CPU = new fabric.Rect({
+            left: cpuOffsetX,
+            top: cpuOffsetY,
+            width: cpuWidth,
+            height: cpuHeight,
+            fill: '#444444',
+        });
+        
+        var cpuText = new fabric.Text('CPU', {
+            left: cpuOffsetX,
+            top: cpuOffsetY,
+            width: cpuWidth,
+            height: cpuHeight,
+            textAlign: 'center',
+        });
+        
+        visualObjects.CPU = CPU;
+        visualObjects.cpuText = cpuText;
+        
+        CPU.selectable = false;
+        CPU.cpuText = false;
+        
+        canvas.add(CPU);
+        canvas.add(cpuText);
+    }
+}
+
+function drawMemory(){
+}
+
+function drawPagefile(){
+}
+
 function updateGraphics(){
 	//redraw/revalidate the visuals
+    
+    drawCPU();
 }
 
 function resetSimulation(){

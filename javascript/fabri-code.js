@@ -42,5 +42,8 @@ $(function () {
 		observeNumeric('ex1');
 		// Get value from ram slider
 		observeNumeric2('ex6');
-				
+		
+        
+        // Initial canvas graphics
+        updateGraphics();
 	}); 
