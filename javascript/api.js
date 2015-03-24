@@ -354,20 +354,20 @@ function findRAMPageById(id){
 	var pages = getPagesInRAM();
 	for(i in pages){
 		if(pageId(pages[i])==id){
-			return i;
+			return pages[i];
 		}
 	}
-	return -1;
+	return null;
 }
 
 function findSWAPPageById(id){
 	var pages = getPagesInSWAP();
 	for(i in pages){
 		if(pageId(pages[i])==id){
-			return i;
+			return pages[i];
 		}
 	}
-	return -1;
+	return null;
 }
 
 //delete page from both RAM and SWAP
