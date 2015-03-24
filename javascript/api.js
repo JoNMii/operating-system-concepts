@@ -38,7 +38,7 @@ setStep(speed);
 
 function setStep(speed){
 	config.speed = speed;
-	unpause();
+	unpauseAlgo();
 }
 
 function pauseAlgo(){
@@ -50,14 +50,14 @@ function pauseAlgo(){
 function unpauseAlgo(){
 	//timer already started
 	if(config.timer){
-		pause();
+		pauseAlgo();
 	}
 	var step = 1000/config.speed;
 	config.timer = setInterval(function(){simulationTick()},step);
 }
 
 function stopAlgo(){
-	pause();
+	pauseAlgo();
 	config.initialised = false;
 	data.clear();
 }
@@ -65,14 +65,14 @@ function stopAlgo(){
 function unpauseAlgo(){
 	//timer already started
 	if(config.timer){
-		pause();
+		pauseAlgo();
 	}
 	var step = 1000/config.speed;
 	config.timer = setInterval(function(){simulationTick()},step);
 }
 
 function stopAlgo(){
-	pause();
+	pauseAlgo();
 	config.initialised = false;
 	data.clear();
 }
