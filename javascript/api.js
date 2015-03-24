@@ -28,7 +28,7 @@ if(init && !config.initialised){
  config.initialised = true;
 }
 
-setStep(step);
+setStep(speed);
 };
 
 function setStep(speed){
@@ -258,14 +258,6 @@ function deletePageFromSWAP(page){
 	data.deleteRAMPage(page);
 }
 
-function assignPage(page,ramSlot){
-	// assign the page to a slot on RAM
-	//TODO check if not already in ram
-	if(0<=ramSlot && ramSlot<pageSlotsInRAM()){
-		data.in_swap[ramSlot]=page;
-	}
-}
-
 //create a page but do not assign it any memory
 function createBacklessPage(pageId){
 	return {
@@ -281,6 +273,6 @@ function addressToPageId(address){
 
 function createPage(ramSlot,pageId){
 	var page = createBacklessPage(pageId);
-	assignPage(page,ramSlot);
+	writePageToRAM(page,ramSlot);
 	return page;
 }
