@@ -28,9 +28,9 @@ if (algo == 0){ //FIFO/FCSF
 	config.algo = randomAlgorithm
 }
 
-visualObjects = {}; // TODO: clear previously created objects
+//visualObjects = {}; // TODO: clear previously created objects
 
-updateGraphics();
+//updateGraphics();
 
 var init = config.algo.init
 if(init && !config.initialised){
@@ -260,7 +260,7 @@ function writePageToRAM(page,ramSlot){
 	console.log("page "+pageId(page)+" TO RAM slot "+ramSlot);
 		data.in_ram[ramSlot]=page;
         
-        visualObjects.memorySlots[0 + ramSlot].fill = '#F00';
+        visualObjects.memorySlots[ramSlot].fill = '#F00';
 	}
 }
 
