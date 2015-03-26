@@ -169,7 +169,6 @@ $("#ex8").on("slide", function(slideEvt) {
     }; // Now we GB;
     $("#ex8SliderVal").text(ram+label);
 
-    $("#virtmemsize").val(ram);
     $(".virtmemsize-label").text(label);
 });
 
