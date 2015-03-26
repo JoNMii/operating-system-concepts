@@ -28,11 +28,14 @@ if (algo == 0){ //FIFO/FCSF
 	config.algo = randomAlgorithm
 }
 
-//visualObjects = {}; // TODO: clear previously created objects
+// Clear previously created objects
+visualObjects = {};
+canvas.clear();
 
-//updateGraphics();
+// Redraw everything anew
+updateGraphics();
 
-var init = config.algo.init
+var init = config.algo.init;
 if(init && !config.initialised){
  init();
  config.initialised = true;
@@ -156,6 +159,7 @@ function updateGraphics(){
     drawCPU();
     drawMemory();
     drawPagefile();
+	drawMemorySlots();
 }
 
 function resetSimulation(){
