@@ -18,7 +18,14 @@ $(".reset-all").click(function(){
 });
 
 startbtn.click(function(){
-	startAlgo($("#algoinput").val(), $("#ramsize").val(), $("#framesize").val(), $("#framecount").val(), $("#speedinput").val());
+
+    var params = {
+    if (params.virtMemSize < params.ramSize){
+        alert("Virtual memory must be same or bigger then RAM!!!@#$%^!");
+        return;
+    }
+    console.log("StartingAlgo:",params);
+	startAlgo(params);
     startbtn.hide();
     pausebtn.attr("data-started",1);
     pausebtn.show();
@@ -76,6 +83,18 @@ function disableGUI(){
 // Ram size Slider
 $("#ex6").slider();
 $("#ex6").on("slide", function(slideEvt) {
+    var ramsliderVal = slideEvt.value;
+    var virtmemslider = $("#ex8");//.attr("data-slider-value");
+    //virtmemsize
+    console.log("ram > virt", ramsliderVal + " > " + virtmemslider.val());
+    //if (ramsliderVal > virtmemslider.attr("data-slider-value")){
+    //    virtmemslider.attr("data-slider-value", ramsliderVal);
+    //    virtmemslider.attr("data-slider-min", ramsliderVal);
+    //    $("#ex8").slider().destroy().slider();
+    //} else {
+    //    virtmemslider.attr("data-slider-min", ramsliderVal);
+    //}
+
     var ram = Math.pow(2, slideEvt.value); //KB;
 	$('#ramsize').val(ram);	
 	var label = " KB";
@@ -121,4 +140,45 @@ $("#ex7").on("slide", function(slideEvt) {
 	$(".framecount-label").text(framecount);
 	
 	console.log($("#framecount").val());
+});
+
+
+//Virtualmem size slider
+$("#ex8").slider();
+$("#ex8").on("slide", function(slideEvt) {
+    var ram = Math.pow(2, slideEvt.value); //KB;
+    $('#virtmemsize').val(ram);
+    var label = " KB";
+    if (ram > 2048){
+        label = " MB";
+        ram = ram/1024;
+    }; // Now we MB
+    if (ram > 2048){
+        label = " GB";
+        ram = ram/1024;
+    }; // Now we GB;
+    $("#ex8SliderVal").text(ram+label);
+
+    $("#virtmemsize").val(ram);
+    $(".virtmemsize-label").text(label);
+});
+
+//Swap size slider
+$("#ex9").slider();
+$("#ex9").on("slide", function(slideEvt) {
+    var ram = Math.pow(2, slideEvt.value); //KB;
+    $('#swapsize').val(ram);
+    var label = " KB";
+    if (ram > 2048){
+        label = " MB";
+        ram = ram/1024;
+    }; // Now we MB
+    if (ram > 2048){
+        label = " GB";
+        ram = ram/1024;
+    }; // Now we GB;
+    $("#ex9SliderVal").text(ram+label);
+
+    $("#swapsize").val(ram);
+    $(".swapsize-label").text(label);
 });
