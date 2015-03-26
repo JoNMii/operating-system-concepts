@@ -71,7 +71,7 @@
         <div class="well">
 
             <div class="btn-group col-xs-3 algo-menu">
-                <button type="button" class="btn col-xs-12 btn-default dropdown-toggle algo-text" data-toggle="dropdown" aria-expanded="false">
+                <button type="button" class="btn col-xs-12 btn-default dropdown-toggle algo-text ui-lockable" data-toggle="dropdown" aria-expanded="false">
                     Choose algorithm <span class="caret"></span>
                 </button>
                 <input hidden id="algoinput" value=1>
@@ -138,7 +138,7 @@
 
         <div>
             <!-- RamSize -->
-            <input id="ex6" type="text" data-slider-min="9" data-slider-max="26" data-slider-step="1" data-slider-tooltip="hide" data-slider-value="9"/>
+            <input id="ex6" type="text" class="slider ui-lockable"  data-slider-min="9" data-slider-max="26" data-slider-step="1" data-slider-tooltip="hide" data-slider-value="9"/>
             <input id="ramsize" hidden value="512">
             <div class="col-xs-3">
                 <span id="ex6CurrentSliderValLabel">&nbsp;&nbsp;&nbsp;Ram size: </span>
@@ -147,7 +147,7 @@
         </div>
         <div>
             <!-- Frame Size -->
-            <input id="ex7" type="text" data-slider-min="2" data-slider-max="7" data-slider-step="1" data-slider-tooltip="hide" data-slider-value="2"/>
+            <input id="ex7" type="text" class="slider ui-lockable"  data-slider-min="2" data-slider-max="7" data-slider-step="1" data-slider-tooltip="hide" data-slider-value="2"/>
             <input id="framesize" hidden value="4">
             <div class="col-xs-3">
                 <span id="ex7CurrentSliderValLabel">&nbsp;&nbsp;&nbsp;Frame size: </span>
@@ -162,7 +162,7 @@
         <strong class="framecount-label">128</strong>
         <div>
             <!-- Virtual memory Size -->
-            <input id="ex8" type="text" data-slider-min="9" data-slider-max="26" data-slider-step="1" data-slider-tooltip="hide" data-slider-value="9"/>
+            <input id="ex8" type="text" class="slider ui-lockable" data-slider-min="9" data-slider-max="26" data-slider-step="1" data-slider-tooltip="hide" data-slider-value="9"/>
             <input id="virtmemsize" hidden value="512">
             <div class="col-xs-3">
                 <span id="ex8CurrentSliderValLabel">&nbsp;&nbsp;&nbsp;Virtual memory size: </span>
@@ -171,7 +171,7 @@
         </div>
         <div>
             <!-- Swap size Size -->
-            <input id="ex9" type="text" data-slider-min="9" data-slider-max="28" data-slider-step="1" data-slider-tooltip="hide" data-slider-value="9"/>
+            <input id="ex9" type="text" class="slider ui-lockable" data-slider-min="9" data-slider-max="28" data-slider-step="1" data-slider-tooltip="hide" data-slider-value="9"/>
             <input id="swapsize" hidden value="512">
             <div class="col-xs-3">
                 <span id="ex9CurrentSliderValLabel">&nbsp;&nbsp;&nbsp;Swap size: </span>
