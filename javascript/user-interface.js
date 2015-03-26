@@ -87,7 +87,7 @@ function enableGUI(){
 }
 function disableGUI(){
     $(".ui-lockable").addClass("disabled");
-    $(".slider .ui-lockable").slider("disable");
+    //$(".slider .ui-lockable").slider("disable");
 }
 
 // Ram size Slider
