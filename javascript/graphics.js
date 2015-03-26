@@ -1,15 +1,13 @@
 var visualConfig = {};
 
 function initVisualConfig() {
-    console.log('Initializing visual config...');
     visualConfig = {
         cpuWidth : 100,
         cpuHeight : 100,
         cpuOffsetX : 50,
         
         ramWidth : 200,
-        ramWidth : 200,
-        ramHeight : 200,
+        ramHeight : 380,
         ramOffsetX : 350,
         frameBorderWidth : 1,
     };
