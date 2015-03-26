@@ -13,6 +13,7 @@ config.ramSize = params.ramSize;
 config.virualMemorySize = params.virtMemSize;
 config.frameSize = params.frameSize;
 config.frameCount = params.frameCount;
+config.swapSize = params.swapSize;
 config.speed = params.speed;
 config.algo = params.algoNumber;
 var algo = params.algoNumber;
@@ -133,7 +134,6 @@ function simulationTick(){
 	onEvent = algorythm().onEvent;
 	onEvent(generateEvent());
 	updateGraphics();
-	drawMemorySlots();
 	
 	canvas.renderAll();
 }
@@ -160,6 +160,7 @@ function updateGraphics(){
     drawMemory();
     drawPagefile();
 	drawMemorySlots();
+	drawPagefileSlots();
 }
 
 function resetSimulation(){
@@ -196,7 +197,7 @@ function getPagesInRAM(){
 }
 
 function pageSlotsInSWAP(){
-	return 30;
+	return Math.floor(config.swapSize / config.frameSize);
 }
 
 function pageSize(){
@@ -255,6 +256,8 @@ function writePageToSwap(page,swapSlot){
 	if(0<=swapSlot && swapSlot<pageSlotsInSWAP()){
 	console.log("page "+pageId(page)+" TO SWAP slot "+swapSlot);
 		data.in_swap[swapSlot]=page;
+		
+		visualObjects.pagefileSlots[swapSlot].fill = visualConfig.loadedPageColor;
 	}
 }
 
@@ -264,7 +267,7 @@ function writePageToRAM(page,ramSlot){
 	console.log("page "+pageId(page)+" TO RAM slot "+ramSlot);
 		data.in_ram[ramSlot]=page;
         
-        visualObjects.memorySlots[ramSlot].fill = '#F00';
+        visualObjects.memorySlots[ramSlot].fill = visualConfig.loadedPageColor;
 	}
 }
 

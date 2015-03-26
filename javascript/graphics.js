@@ -7,13 +7,30 @@ function initVisualConfig() {
         cpuOffsetX : 50,
         
         ramWidth : 200,
-        ramHeight : 380,
+        ramHeight : 350,
         ramOffsetX : 350,
+		
+		pfWidth : 200,
+		pfHeight : 380,
+		pfOffsetX : 700,
+		
         frameBorderWidth : 1,
+		
+		cpuColor : '#dddddd',
+		memoryColor : '#dddddd',
+		pagefileColor : '#dddddd',
+		
+		freePageColor : '#cccccc',
+		loadedPageColor : '#777777',
+		
+		memorySlotBorderColor : '#ff0000',
+		pagefileSlotBorderColor : '#ffff00',
     };
     
+	// Align vertically
     visualConfig.cpuOffsetY = canvas.getHeight() / 2 - visualConfig.cpuHeight / 2;
     visualConfig.ramOffsetY = canvas.getHeight() / 2 - visualConfig.ramHeight / 2;
+	visualConfig.pfOffsetY = canvas.getHeight() / 2 - visualConfig.pfHeight / 2;
 }
 
 function drawCPU(){
@@ -23,7 +40,7 @@ function drawCPU(){
             top:  visualConfig.cpuOffsetY,
             width:  visualConfig.cpuWidth,
             height: visualConfig.cpuHeight,
-            fill: '#444444',
+            fill: visualConfig.cpuColor,
         });
         
         var cpuText = new fabric.Text('CPU', {
@@ -52,7 +69,7 @@ function drawMemory() {
             top:  visualConfig.ramOffsetY,
             width:  visualConfig.ramWidth,
             height: visualConfig.ramHeight,
-            fill: '#999999',
+            fill: visualConfig.memoryColor,
         });
         
         var ramText = new fabric.Text('RAM', {
@@ -76,24 +93,19 @@ function drawMemory() {
 
 function drawPagefile(){
     if (visualObjects.Pagefile == undefined) {
-        var pfWidth = 200;
-        var pfHeight = 350;
-        var pfOffsetX = 700;
-        var pfOffsetY = canvas.getHeight() / 2 - pfHeight / 2;
-        
         var Pagefile = new fabric.Rect({
-            left: pfOffsetX,
-            top:  pfOffsetY,
-            width:  pfWidth,
-            height: pfHeight,
-            fill: '#bbbbbb',
+            left: visualConfig.pfOffsetX,
+            top:  visualConfig.pfOffsetY,
+            width:  visualConfig.pfWidth,
+            height: visualConfig.pfHeight,
+            fill: visualConfig.pagefileColor,
         });
         
         var pfText = new fabric.Text('SWAP', {
-            left: pfOffsetX,
-            top:  pfOffsetY,
-            width:  pfWidth,
-            height: pfHeight,
+            left: visualConfig.pfOffsetX,
+            top:  visualConfig.pfOffsetY,
+            width:  visualConfig.pfWidth,
+            height: visualConfig.pfHeight,
             textAlign: 'center',
         });
         
@@ -129,7 +141,7 @@ function drawMemorySlots() {
                     height: h,
                     fill: 'transparent',
                     strokeWidth: visualConfig.frameBorderWidth,
-                    stroke: '#ff0000',
+                    stroke: visualConfig.memorySlotBorderColor,
                 });
                 
                 frame.selectable = false;
@@ -137,6 +149,39 @@ function drawMemorySlots() {
                 canvas.add(frame);
                 
                 visualObjects.memorySlots.push(frame);
+            }
+        }
+    }
+}
+
+function drawPagefileSlots() {
+    if (visualObjects.pagefileSlots == undefined) {
+        var frameCount = pageSlotsInSWAP();
+		// console.log('Pagefile frame count: ' + frameCount);
+        if (frameCount > 0) {
+            visualObjects.pagefileSlots = [];
+            
+            for (var i = 0; i < frameCount; i++) {
+                var x = visualConfig.pfOffsetX;
+                var y = visualConfig.pfOffsetY + Math.floor(i * visualConfig.pfHeight / frameCount);
+                var w = visualConfig.pfWidth - visualConfig.frameBorderWidth;
+                var h = Math.floor((i + 1) * visualConfig.pfHeight / frameCount) - Math.floor(i * visualConfig.pfHeight / frameCount) - visualConfig.frameBorderWidth;
+                
+                var frame = new fabric.Rect({
+                    left: x,
+                    top:  y,
+                    width:  w,
+                    height: h,
+                    fill: 'transparent',
+                    strokeWidth: visualConfig.frameBorderWidth,
+                    stroke: visualConfig.pagefileSlotBorderColor,
+                });
+                
+                frame.selectable = false;
+                
+                canvas.add(frame);
+                
+                visualObjects.pagefileSlots.push(frame);
             }
         }
     }
