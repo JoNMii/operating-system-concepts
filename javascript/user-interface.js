@@ -4,6 +4,21 @@ stopbutn = $("#stop");
 resetbtn = $("#reset");
 fuckoffbtn = undefined;
 
+$(function(){
+   //ONLOAD SET PARAMS TO DEFAULT;
+    stopbutn.hide();
+    pausebtn.hide();
+    enableSliders();
+});
+
+function printUI(text){
+    var maxSize = 8;
+    var row = "<p><span>> </span>"+text+"</p>";
+    $("#console-out").append(row);
+    if ($("#console-out p").length > maxSize){
+        $("#console-out p").first().remove();
+    }
+}
 $( window ).resize(function() {
   canvas.setWidth($("#canvasrow").width());
 });
@@ -35,6 +50,7 @@ startbtn.click(function(){
     console.log("StartingAlgo:",params);
 	startAlgo(params);
     startbtn.hide();
+    stopbutn.show();
     pausebtn.attr("data-started",1);
     pausebtn.show();
     disableGUI();
@@ -62,7 +78,6 @@ pausebtn.click(function(){
 });
 resetbtn.click(function(){
 	resetSimulation();
-    pausebtn.hide();
     resetGUI();
 });
 
@@ -81,6 +96,32 @@ $("#ex1").on("slide", function(slideEvt) {
 });
 
 function resetGUI(){
+    pausebtn.hide();
+    stopbutn.hide();
+    startbtn.show();
+    $("#ex6SliderVal").text("512 KB");
+    $("#ex7SliderVal").text("32 KB");
+    $("#ex8SliderVal").text("512 KB");
+    $("#ex9SliderVal").text("512 KB");
+    $("#framecount-label").text("16");
+
+
+    $("#ramsize").val("512");
+    $("#framesize").val("32");
+    $("#virtmemsize").val("512");
+    $("#swapsize").val("512");
+    $("#framecount").val("16");
+
+
+    ex6Slider.destroy();
+    //ex6Slider = new Slider("#ex6");// $("#ex6").slider();
+    ex7Slider.destroy();
+    //ex7Slider = new Slider("#ex7");/
+    ex8Slider.destroy();
+    //ex8Slider = new Slider("#ex8");
+    ex9Slider.destroy();
+    //ex9Slider = new Slider("#ex9");
+    enableSliders();
 
 };
 function enableGUI(){
@@ -96,9 +137,13 @@ function disableGUI(){
     });
 }
 
+function enableSliders(){
+
+
+
 // Ram size Slider
-$("#ex6").slider();
-$("#ex6").on("slide", function(slideEvt) {
+ex6Slider = new Slider("#ex6");// $("#ex6").slider();
+ex6Slider.on("slide", function(slideEvt) {
     var ramsliderVal = slideEvt.value;
     var virtmemslider = $("#ex8");//.attr("data-slider-value");
     //virtmemsize
@@ -134,8 +179,9 @@ $("#ex6").on("slide", function(slideEvt) {
 });
 
 //Frame size slider
-$("#ex7").slider();
-$("#ex7").on("slide", function(slideEvt) {
+//$("#ex7").slider();
+ex7Slider = new Slider("#ex7");
+ex7Slider.on("slide", function(slideEvt) {
     var ram = Math.pow(2, slideEvt.value); //KB;
 	$('#framesize').val(ram);	
 	var label = " KB";
@@ -160,8 +206,8 @@ $("#ex7").on("slide", function(slideEvt) {
 
 
 //Virtualmem size slider
-$("#ex8").slider();
-$("#ex8").on("slide", function(slideEvt) {
+ex8Slider = new Slider("#ex8");
+ex8Slider.on("slide", function(slideEvt) {
     var ram = Math.pow(2, slideEvt.value); //KB;
     $('#virtmemsize').val(ram);
     var label = " KB";
@@ -179,8 +225,8 @@ $("#ex8").on("slide", function(slideEvt) {
 });
 
 //Swap size slider
-$("#ex9").slider();
-$("#ex9").on("slide", function(slideEvt) {
+ex9Slider = new Slider("#ex9");
+ex9Slider.on("slide", function(slideEvt) {
     var ram = Math.pow(2, slideEvt.value); //KB;
     $('#swapsize').val(ram);
     var label = " KB";
@@ -197,3 +243,4 @@ $("#ex9").on("slide", function(slideEvt) {
     $("#swapsize").val(ram);
     $(".swapsize-label").text(label);
 });
+}
