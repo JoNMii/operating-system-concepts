@@ -25,7 +25,11 @@ if (algo == 0){ //FIFO/FCSF
 
 } else if (algo == 5){ //Random
 	config.algo = randomAlgorithm
-}	
+}
+
+visualObjects = {}; // TODO: clear previously created objects
+
+updateGraphics();
 
 var init = config.algo.init
 if(init && !config.initialised){
@@ -125,7 +129,9 @@ function simulationTick(){
 	onEvent = algorythm().onEvent;
 	onEvent(generateEvent());
 	updateGraphics();
+	drawMemorySlots();
 	
+	canvas.renderAll();
 }
 
 function generateEvent(){
@@ -252,6 +258,8 @@ function writePageToRAM(page,ramSlot){
 	if(0<=ramSlot && ramSlot<pageSlotsInRAM()){
 	console.log("page "+pageId(page)+" TO RAM slot "+ramSlot);
 		data.in_ram[ramSlot]=page;
+        
+        visualObjects.memorySlots[0 + ramSlot].fill = '#F00';
 	}
 }
 

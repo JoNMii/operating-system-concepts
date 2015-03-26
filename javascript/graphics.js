@@ -1,23 +1,38 @@
+var visualConfig = {};
+
+function initVisualConfig() {
+    console.log('Initializing visual config...');
+    visualConfig = {
+        cpuWidth : 100,
+        cpuHeight : 100,
+        cpuOffsetX : 50,
+        
+        ramWidth : 200,
+        ramWidth : 200,
+        ramHeight : 200,
+        ramOffsetX : 350,
+        frameBorderWidth : 1,
+    };
+    
+    visualConfig.cpuOffsetY = canvas.getHeight() / 2 - visualConfig.cpuHeight / 2;
+    visualConfig.ramOffsetY = canvas.getHeight() / 2 - visualConfig.ramHeight / 2;
+}
+
 function drawCPU(){
     if (visualObjects.CPU == undefined) {
-        var cpuWidth = 100;
-        var cpuHeight = 100;
-        var cpuOffsetX = 50;
-        var cpuOffsetY = canvas.getHeight() / 2 - cpuHeight / 2;
-        
         var CPU = new fabric.Rect({
-            left: cpuOffsetX,
-            top: cpuOffsetY,
-            width: cpuWidth,
-            height: cpuHeight,
+            left: visualConfig.cpuOffsetX,
+            top:  visualConfig.cpuOffsetY,
+            width:  visualConfig.cpuWidth,
+            height: visualConfig.cpuHeight,
             fill: '#444444',
         });
         
         var cpuText = new fabric.Text('CPU', {
-            left: cpuOffsetX,
-            top: cpuOffsetY,
-            width: cpuWidth,
-            height: cpuHeight,
+            left: visualConfig.cpuOffsetX,
+            top:  visualConfig.cpuOffsetY,
+            width: visualConfig.cpuWidth,
+            height: visualConfig.cpuHeight,
             textAlign: 'center',
         });
         
@@ -34,24 +49,19 @@ function drawCPU(){
 
 function drawMemory() {
     if (visualObjects.RAM == undefined) {
-        var ramWidth = 200;
-        var ramHeight = 200;
-        var ramOffsetX = 350;
-        var ramOffsetY = canvas.getHeight() / 2 - ramHeight / 2;
-        
         var RAM = new fabric.Rect({
-            left: ramOffsetX,
-            top:  ramOffsetY,
-            width:  ramWidth,
-            height: ramHeight,
+            left: visualConfig.ramOffsetX,
+            top:  visualConfig.ramOffsetY,
+            width:  visualConfig.ramWidth,
+            height: visualConfig.ramHeight,
             fill: '#999999',
         });
         
         var ramText = new fabric.Text('RAM', {
-            left: ramOffsetX,
-            top:  ramOffsetY,
-            width:  ramWidth,
-            height: ramHeight,
+            left: visualConfig.ramOffsetX,
+            top:  visualConfig.ramOffsetY,
+            width:  visualConfig.ramWidth,
+            height: visualConfig.ramHeight,
             textAlign: 'center',
         });
         
@@ -97,5 +107,39 @@ function drawPagefile(){
         
         canvas.add(Pagefile);
         canvas.add(pfText);
+    }
+}
+
+function drawMemorySlots() {
+    if (visualObjects.memorySlots == undefined) {
+        var frameCount = pageSlotsInRAM();
+        if (frameCount > 0) {
+            visualObjects.memorySlots = [];
+            
+            for (var i = 0; i < frameCount; i++) {
+                var x = visualConfig.ramOffsetX;
+                var y = visualConfig.ramOffsetY + Math.floor(i * visualConfig.ramHeight / frameCount);
+                var w = visualConfig.ramWidth - visualConfig.frameBorderWidth;
+                var h = Math.floor((i + 1) * visualConfig.ramHeight / frameCount) - Math.floor(i * visualConfig.ramHeight / frameCount) - visualConfig.frameBorderWidth;
+                
+                //console.log('Drawing rect ' + x + ' ' + y + ' ' + w  + ' ' + h);
+                
+                var frame = new fabric.Rect({
+                    left: x,
+                    top:  y,
+                    width:  w,
+                    height: h,
+                    fill: 'transparent',
+                    strokeWidth: visualConfig.frameBorderWidth,
+                    stroke: '#ff0000',
+                });
+                
+                frame.selectable = false;
+                
+                canvas.add(frame);
+                
+                visualObjects.memorySlots.push(frame);
+            }
+        }
     }
 }

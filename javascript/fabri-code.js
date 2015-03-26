@@ -4,6 +4,8 @@ $(function () {
 		canvas = new fabric.Canvas('c');
   		canvas.setHeight(400);
 		canvas.setWidth($("#canvasrow").width()); //was 800 ;d
+		
+		initVisualConfig();
 
 		function observeNumeric(property) {
 		    document.getElementById(property).onchange = function() {
