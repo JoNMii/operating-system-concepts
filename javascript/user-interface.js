@@ -20,6 +20,14 @@ $(".reset-all").click(function(){
 startbtn.click(function(){
 
     var params = {
+        "algoNumber" : parseInt($("#algoinput").val()),
+        "ramSize": parseInt($("#ramsize").val()),
+        "frameSize" : parseInt($("#framesize").val()),
+        "frameCount" : parseInt($("#framecount").val()),
+        "virtMemSize": parseInt($("#virtmemsize").val()),
+        "swapSize": parseInt($("#swapsize").val()),
+        "speed" :  parseInt($("#speedinput").val())
+    };
     if (params.virtMemSize < params.ramSize){
         alert("Virtual memory must be same or bigger then RAM!!!@#$%^!");
         return;
@@ -74,10 +82,12 @@ function resetGUI(){
 
 };
 function enableGUI(){
-
+    $(".ui-lockable").removeClass("disabled");
+    $(".slider .ui-lockable").slider("enable");
 }
 function disableGUI(){
-
+    $(".ui-lockable").addClass("disabled");
+    $(".slider .ui-lockable").slider("disable");
 }
 
 // Ram size Slider

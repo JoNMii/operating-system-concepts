@@ -6,16 +6,16 @@ CPU+RAM+Swap file
 var config = {} // Animation configuration
 var visualObjects = {} // Handlers for main graphical objects (CPU / Memory / Pagefile)
 
-function startAlgo(algo, ramSize, frameSize, frameCount, speed){
-console.log("Simulation started:",{"algo":algo, "ramSize":ramSize, "frameSize":frameSize, "frameCount":frameCount, "speed":speed});
+function startAlgo(params){
+console.log("Simulation started:",params);
 
-config.ramSize = ramSize;
-config.virualMemorySize = ramSize*8;
-config.frameSize = frameSize;
-config.frameCount = frameCount;
-config.speed = speed;
-config.algo = exampleAlgorythm;
-
+config.ramSize = params.ramSize;
+config.virualMemorySize = params.virtMemSize;
+config.frameSize = params.frameSize;
+config.frameCount = params.frameCount;
+config.speed = params.speed;
+config.algo = params.algoNumber;
+var algo = params.algoNumber;
 if (algo == 0){ //FIFO/FCSF
 
 } else if (algo == 1){ //Second-chance
@@ -34,7 +34,7 @@ if(init && !config.initialised){
  config.initialised = true;
 }
 
-setStep(speed);
+setStep(params.speed);
 unpauseAlgo();
 };
 
