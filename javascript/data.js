@@ -58,7 +58,11 @@ function equalPages(page1,page2){
 }
 
 function pageId(page){
-	return page.page_id;
+	if(typeof page === "number"){
+		return page;	
+	} else {
+		return page.page_id;
+	}
 }
 
 function findKeyFor(obj,filter_func){
