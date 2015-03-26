@@ -9,11 +9,12 @@ var visualObjects = {} // Handlers for main graphical objects (CPU / Memory / Pa
 function startAlgo(algo, ramSize, frameSize, frameCount, speed){
 console.log("Simulation started:",{"algo":algo, "ramSize":ramSize, "frameSize":frameSize, "frameCount":frameCount, "speed":speed});
 
-config.ramSize = ramSize
-config.frameSize = frameSize
-config.frameCount = frameCount
-config.speed = speed
-config.algo = exampleAlgorythm
+config.ramSize = ramSize;
+config.virualMemorySize = ramSize*8;
+config.frameSize = frameSize;
+config.frameCount = frameCount;
+config.speed = speed;
+config.algo = exampleAlgorythm;
 
 if (algo == 0){ //FIFO/FCSF
 
@@ -132,7 +133,7 @@ function generateEvent(){
     // Random: 50/50
     var requestType = Math.floor(2 * Math.random()) ? "read" : "write";
     // Random address from 0 to RAM_size - 1
-    var address = Math.floor(config.ramSize * Math.random());
+    var address = Math.floor(config.virualMemorySize * Math.random());
     
     var request = {
         "type" : requestType,
