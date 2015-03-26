@@ -13,14 +13,18 @@ function simpleAlgorithm() {
 		var evictPage = function(){
 			var totalPages = pageSlotsInRAM();
 			var evicted = self.onEvict();
+			var evictedPage = getPagesInRAM()[evicted];
 			console.log("About to evict page",evicted);
-			//TODO search for existing pages with the matching id			
-			var swapSlot = getFreeSWAPSlot()
+			//search for existing pages with the matching id			
+			var swapSlot = findSWAPSlotByPageId(evictedPage.page_id);
+			if(swapSlot<=-1){
+				swapSlot = getFreeSWAPSlot();
+			}
 			if(swapSlot<=-1){
 				console.error("OH SHIT IM out of MEMORY");
 				return -1;
 			}
-			writePageToSwap(getPagesInRAM()[evicted],swapSlot);
+			writePageToSwap(evictedPage,swapSlot);
 			
 			return evicted;
 		}
