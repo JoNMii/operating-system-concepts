@@ -76,6 +76,8 @@ $("#ex1").on("slide", function(slideEvt) {
 	$("#ex1SliderVal").text(speed+"X");
 	$("#speedinput").val(speed);
 	$("#speed").val(speed);
+
+    setStep(speed);
 });
 
 function resetGUI(){
@@ -83,11 +85,15 @@ function resetGUI(){
 };
 function enableGUI(){
     $(".ui-lockable").removeClass("disabled");
-    $(".slider .ui-lockable").slider("enable");
+    $(".slider.ui-lockable").each(function(i,obj){
+        $(obj).parent().find(".slider").removeClass("slider-disabled");
+    });
 }
 function disableGUI(){
     $(".ui-lockable").addClass("disabled");
-    //$(".slider .ui-lockable").slider("disable");
+    $(".slider.ui-lockable").each(function(i,obj){
+       $(obj).parent().find(".slider").addClass("slider-disabled");
+    });
 }
 
 // Ram size Slider
