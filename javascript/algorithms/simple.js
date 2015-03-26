@@ -13,6 +13,7 @@ function simpleAlgorithm() {
 		var evictPage = function(){
 			var totalPages = pageSlotsInRAM();
 			var evicted = self.onEvict();
+			console.log("About to evict page ",evicted);
 			var swapSlot = getFreeSWAPSlot()
 			if(swapSlot<=-1){
 				console.error("OH SHIT IM out of MEMORY");

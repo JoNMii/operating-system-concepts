@@ -5,17 +5,20 @@ var LRU_Algorithm = function(){
 		var pages = getPagesInRAM();
 		var oldestPage = pages[0];
 		var oldestLU = getFlags(oldestPage).last_use;
+		var result = 0;
 		for(i in pages){
 			var LU = getFlags(pages[i]).last_use;
+			console.log("Last usage",LU,pages[i]);
 			if(LU === undefined){
-				return pages[i];
+				return i;
 			}
 			if(oldestLU>LU){
 				oldestLU = LU;
 				oldestPage = pages[i];
+				result = i;
 			}
 		}
-		return oldestPage;
+		return result;
 	}
 	var defaultOnEvent = simple.onEvent;
 	simple.onEvent=function(event){
