@@ -1,3 +1,9 @@
+startbtn = $("#start");
+pausebtn = $("#pause");
+stopbutn = $("#stop");
+resetbtn = $("#reset");
+fuckoffbtn = undefined;
+
 $( window ).resize(function() {
   canvas.setWidth($("#canvasrow").width());
 });
@@ -11,16 +17,38 @@ $(".reset-all").click(function(){
 
 });
 
-$("#start").click(function(){
+startbtn.click(function(){
 	startAlgo($("#algoinput").val(), $("#ramsize").val(), $("#framesize").val(), $("#framecount").val(), $("#speedinput").val());
+    startbtn.hide();
+    pausebtn.attr("data-started",1);
+    pausebtn.show();
+    disableGUI();
 });
 
-$("#stop").click(function(){
+stopbutn.click(function(){
 	stopAlgo();
+    startbtn.show();
+    pausebtn.hide();
+    pausebtn.attr("data-started",0);
+    enableGUI();
 });
-
-$("#reset").click(function(){
+pausebtn.click(function(){
+   if ($(this).attr("data-started") == 1) {
+       pauseAlgo();
+       $(this).attr("data-started", 0);
+       $(this).children().first().first().text("Unpause");
+       console.log("PAUSED");
+   } else {
+       unpauseAlgo();
+       $(this).attr("data-started", 1);
+       $(this).children().first().first().text("Pause");
+       console.log("UNPAUSED");
+   }
+});
+resetbtn.click(function(){
 	resetSimulation();
+    pausebtn.hide();
+    resetGUI();
 });
 
 // Speed Slider
@@ -34,6 +62,16 @@ $("#ex1").on("slide", function(slideEvt) {
 	$("#speedinput").val(speed);
 	$("#speed").val(speed);
 });
+
+function resetGUI(){
+
+};
+function enableGUI(){
+
+}
+function disableGUI(){
+
+}
 
 // Ram size Slider
 $("#ex6").slider();
