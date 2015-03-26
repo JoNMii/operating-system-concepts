@@ -1,21 +1,21 @@
 function simpleAlgorithm() {
-return {
-	"name":"Name me",
-	"onEvict":function(){
+	var self = this;
+	this.name="Name me";
+	this.onEvict = function(){
 		console.log("Implement me!!!");
 		return 0;
-	},
-	"onEvent": function(event) {
+	};
+	this.onEvent = function(event) {
 		var pageId = addressToPageId(event.address);
 		var pageInRAM = findRAMPageById(pageId);
 		var pageInSWAP = findSWAPPageById(pageId);
 		
 		var evictPage = function(){
 			var totalPages = pageSlotsInRAM();
-			var evicted = this.onEvict();
-			var swapSlot = getFreeRAMSlot()
+			var evicted = self.onEvict();
+			var swapSlot = getFreeSWAPSlot()
 			if(swapSlot<=-1){
-				console.error("OH SHIT IM out of RAM");
+				console.error("OH SHIT IM out of MEMORY");
 				return -1;
 			}
 			writePageToSwap(getPagesInRAM()[evicted],swapSlot);
@@ -43,7 +43,6 @@ return {
 				}
 				createPage(target, pageId);
 			}
-    },
-	"init" : function(){console.log("init called");}
-};
+    	};
+	this.init=function(){console.log("init called");};
 }

@@ -1,5 +1,5 @@
 var randomAlgorithm = function(){
-	var simple = simpleAlgorithm();
+	var simple = new simpleAlgorithm();
 	simple.onEvict = function(){
 		return Math.floor(Math.random*pageSlotsInRAM());
 	}

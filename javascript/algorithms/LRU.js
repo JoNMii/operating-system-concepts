@@ -1,6 +1,6 @@
 var LRU_Algorithm = function(){
 	var turn = 0;
-	var simple = simpleAlgorithm();
+	var simple = new simpleAlgorithm();
 	simple.onEvict = function(){
 		var pages = getPagesInRAM();
 		var oldestPage = pages[0];
@@ -12,7 +12,7 @@ var LRU_Algorithm = function(){
 			}
 			if(oldestLU>LU){
 				oldestLU = LU;
-				oldestPage = page[i];
+				oldestPage = pages[i];
 			}
 		}
 		return oldestPage;
