@@ -1,24 +1,32 @@
-var LRU_Algorithm = {
-    "name" : "Least Recently Used",
-    "init" : function() {},
-    "onEvent" : function(event) {
-        var read = function(address) {
-            
-        };
-        
-        var write = function(address) {
-            
-        };
-        
-        switch(event.type) {
-            case "read":
-                read(event.address);
-                break;
-            case "write":
-                write(event.address);
-                break;
-            default:
-                throw "Unimplemented event type: " + event.type;
-        }
-    }
-}
+var LRU_Algorithm = function(){
+	var turn = 0;
+	var simple = new simpleAlgorithm();
+	simple.onEvict = function(){
+		var pages = getPagesInRAM();
+		var oldestPage = pages[0];
+		var oldestLU = getFlags(oldestPage).last_use;
+		var result = 0;
+		for(i in pages){
+			var LU = getFlags(pages[i]).last_use;
+			console.log("Last usage",LU,pages[i]);
+			if(LU === undefined){
+				return i;
+			}
+			if(oldestLU>LU){
+				oldestLU = LU;
+				oldestPage = pages[i];
+				result = i;
+			}
+		}
+		return result;
+	}
+	var defaultOnEvent = simple.onEvent;
+	simple.onEvent=function(event){
+		turn++;
+		var pageId = addressToPageId(event.address);
+		defaultOnEvent(event);
+		setFlags(pageId,{"last_use":turn});
+	}
+	simple.name="LRU";
+	return simple;
+}();
