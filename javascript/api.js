@@ -20,7 +20,7 @@ var algo = params.algoNumber;
 if (algo == 0){ //FIFO/FCSF
 
 } else if (algo == 1){ //Second-chance
-
+    config.algo = second_chance
 } else if (algo == 2){ //LRU
 	config.algo = LRU_Algorithm
 } else if (algo == 3){ //LFU
