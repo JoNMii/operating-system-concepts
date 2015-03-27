@@ -16,7 +16,13 @@ var second_chance = function(){
 	        } else {
 	            var tmp = eventlist[0];
 	            eventlist.shift();
-	            return findRAMPageById(tmp);
+	            var pages = getPagesInRAM();
+	            var z = findRAMPageById(tmp);
+	            for(i in pages) {
+	                if (pages[i] == z) {
+	                    return i;
+	                }
+	            }
 	        }
 	    }
 	}
