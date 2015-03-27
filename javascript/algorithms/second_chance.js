@@ -1,5 +1,5 @@
 var second_chance = {
-    var eventList;
+    var eventList = new Array();
 	var simple = new simpleAlgorithm();
 	simple.name = "Second Chance";
 	var defaultOnEvent = simple.onEvent;
@@ -34,8 +34,5 @@ var second_chance = {
 	    defaultOnEvent(event);
 	    setFlags(pageId, flags);
 	}
-	simple.init = function() {
-	    console.log("init called");
-	    eventList = new Array();
-	}
+
 }();
