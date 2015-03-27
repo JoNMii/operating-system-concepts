@@ -29,10 +29,10 @@ var second_chance = function(){
 	}
 	
     simple.onEvent = function(event) {
-	    var pageId = addressToPageId(event.address);
-	    if (eventlist.indexOf(pageId) == -1) {
-	        eventlist.push(pageId);
-	    }
+        var pageId = addressToPageId(event.address);
+        if (eventlist.indexOf(pageId) == -1) {
+            eventlist.push(pageId);
+        }
         var flags = getFlags(pageId);
         if (!flags) {
             flags = {"count": 0};
@@ -41,8 +41,8 @@ var second_chance = function(){
         } else {
             flags.count += 1;
         }
-	    if (event.type == "write") {
-	        flags.dirty = true;
+        if (event.type == "write") {
+            flags.dirty = true;
 	    }
 	    defaultOnEvent(event);
 	    setFlags(pageId, flags);
