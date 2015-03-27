@@ -1,5 +1,5 @@
 var second_chance = {
-    var eventList = new Array();
+    var eventList = [];
 	var simple = new simpleAlgorithm();
 	simple.name = "Second Chance";
 	var defaultOnEvent = simple.onEvent;
