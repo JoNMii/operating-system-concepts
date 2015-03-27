@@ -4,6 +4,7 @@ var second_chance = function(){
 	var simple = new simpleAlgorithm();
 	simple.name = "Second Chance";
 	var defaultOnEvent = simple.onEvent;
+	
 	simple.onEvict = function() {
 	    while(true) {
 	        var flags = getFlags(eventlist[0]);
@@ -26,10 +27,11 @@ var second_chance = function(){
 	        }
 	    }
 	}
-	simple.onEvent = function(event) {
+	
+    simple.onEvent = function(event) {
 	    var pageId = addressToPageId(event.address);
 	    if (eventlist.indexOf(pageId) == -1) {
-	    	eventlist.push(pageId);
+	        eventlist.push(pageId);
 	    }
         var flags = getFlags(pageId);
         if (!flags) {
@@ -44,11 +46,12 @@ var second_chance = function(){
 	    }
 	    defaultOnEvent(event);
 	    setFlags(pageId, flags);
-	    var tmp = getFlags(pageId);
 	}
+	
     simple.init = function() {
         console.log("init called");
         eventlist = [];
     }
+    
     return simple;
 }();
