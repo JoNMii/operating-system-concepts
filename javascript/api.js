@@ -44,7 +44,7 @@ if(init && !config.initialised){
 
 setStep(params.speed);
 unpauseAlgo();
-};
+}
 
 function setStep(speed){
 	config.speed = speed;
@@ -57,21 +57,6 @@ function pauseAlgo(){
 	var timer = config.timer;
 	clearInterval(timer);
 	delete config.timer;
-}
-
-function unpauseAlgo(){
-	//timer already started
-	if(config.timer){
-		pauseAlgo();
-	}
-	var step = 1000/config.speed;
-	config.timer = setInterval(function(){simulationTick()},step);
-}
-
-function stopAlgo(){
-	pauseAlgo();
-	config.initialised = false;
-	data.clear();
 }
 
 function unpauseAlgo(){
@@ -146,7 +131,7 @@ function generateEvent(){
     
     var request = {
         "type" : requestType,
-        "address" : address,
+        "address" : address
         /* "data" : TODO: if necessary */
     };
     
