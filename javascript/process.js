@@ -43,7 +43,7 @@ var processMaster = {
                 this.processList[key].endProcess();
                 delete this.processList[key];
             } else {
-                this.processList[key].createAction();
+                key.createAction();
             };
         }
     },
