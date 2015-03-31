@@ -12,6 +12,7 @@ function simpleAlgorithm() {
 		
 		var evictPage = function(){
 			var evicted = self.onEvict(); // RAM slot
+			console.assert(typeof evicted === "number", "onEvict() must return a number! Got " + typeof evicted + " instead...");
 			var evictedPage = getPagesInRAM()[evicted];
 			console.assert(evictedPage !== undefined, "Cannot evict page " + evicted + ": not in RAM! ");
 			console.log("About to evict page",evicted);

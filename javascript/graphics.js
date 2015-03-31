@@ -114,6 +114,10 @@ Graphics.processDrawingEventQueue = function () {
     }
 };
 
+Graphics.clearDrawingEventQueue = function () {
+    this.drawingEventQueue = [];
+}
+
 function initVisualConfig() {
     visualConfig = {
         cpuWidth : 100,
@@ -151,6 +155,7 @@ function clearGraphics() {
     visualObjects = {};
     visualObjects.memorySlots = {};
     visualObjects.pagefileSlots = {};
+    Graphics.clearDrawingEventQueue();
     canvas.clear();
 }
 

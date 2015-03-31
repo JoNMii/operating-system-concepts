@@ -21,7 +21,7 @@ var second_chance = function(){
 	            var z = findRAMPageById(tmp);
 	            for(i in pages) {
 	                if (pages[i] == z) {
-	                    return i;
+	                    return parseInt(i);
 	                }
 	            }
 	        }
