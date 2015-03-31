@@ -40,7 +40,7 @@ var processMaster = {
         };
         for (key in this.processList) {
             if (this.processList[key] < new Date().getTime()) {
-                this.processList[key].endProcess();
+                key.endProcess();
                 delete this.processList[key];
             } else {
                 key.createAction();
