@@ -3,8 +3,7 @@ CPU+RAM+Swap file
 */
 
 /*** Global variables ***/
-var config = {} // Animation configuration
-var visualObjects = {} // Handlers for main graphical objects (CPU / Memory / Pagefile)
+var config = {}; // Animation configuration
 
 function startAlgo(params){
 console.log("Simulation started:",params);
@@ -16,6 +15,7 @@ config.frameCount = params.frameCount;
 config.swapSize = params.swapSize;
 config.speed = params.speed;
 config.algo = params.algoNumber;
+config.waitUntilTimeStamp = -1;
 var algo = params.algoNumber;
 if (algo == 0){ //FIFO/FCSF
 
@@ -30,8 +30,7 @@ if (algo == 0){ //FIFO/FCSF
 }
 
 // Clear previously created objects
-visualObjects = {};
-canvas.clear();
+clearGraphics();
 
 // Redraw everything anew
 updateGraphics();
@@ -51,6 +50,14 @@ function setStep(speed){
 	if(config.timer){
 		unpauseAlgo();
 	}
+}
+
+function sleep(milliseconds) {
+	config.waitUntilTimeStamp = Date.now() + (milliseconds === undefined ? 2000000000 : milliseconds);
+}
+
+function awaken() {
+	config.waitUntilTimeStamp = -1;
 }
 
 function pauseAlgo(){
@@ -78,49 +85,51 @@ function stopAlgo(){
 var exampleMEMrequestRead={
 	"type":"read",
 	"address":124//virtual address
-}
+};
 
 var exampleMEMrequestWrite={
 	"type":"write",
 	"address":124,
 	"data":13 //ignore the data for now
-}
+};
 //------------
 
 var examplePage ={
 	"page_id":1,
 	"min_address":24,
 	"max_address":64
-}
+};
 
 var examplePage2 ={
 	"page_id":2,
 	"min_address":16,
 	"max_address":24
-}
+};
 
 var examplePage3 ={
 	"page_id":3,
 	"min_address":64,
 	"max_address":72
-}
+};
 
 var exampleAlgorythm = {
 	"name":"do nothing",
 	"onEvent": function(event){console.log(event);},
 	"init" : function(){console.log("init called");}
-}
+};
 
 //example/mock implementation.
 //replace with actual logic
 
 //increases time by one timeunit
 function simulationTick(){
-	onEvent = algorythm().onEvent;
+	if (Date.now() < config.waitUntilTimeStamp) {
+		console.log('Sleeping...');
+		return;
+	}
+	var onEvent = algorythm().onEvent;
 	onEvent(generateEvent());
 	updateGraphics();
-	
-	canvas.renderAll();
 }
 
 function generateEvent(){
@@ -136,16 +145,6 @@ function generateEvent(){
     };
     
 	return request;
-}
-
-function updateGraphics(){
-	//redraw/revalidate the visuals
-    
-    drawCPU();
-    drawMemory();
-    drawPagefile();
-	drawMemorySlots();
-	drawPagefileSlots();
 }
 
 function resetSimulation(){
@@ -241,8 +240,6 @@ function writePageToSwap(page,swapSlot){
 	if(0<=swapSlot && swapSlot<pageSlotsInSWAP()){
 	console.log("page "+pageId(page)+" TO SWAP slot "+swapSlot);
 		data.in_swap[swapSlot]=page;
-		
-		visualObjects.pagefileSlots[swapSlot].fill = visualConfig.loadedPageColor;
 	}
 }
 
@@ -251,8 +248,6 @@ function writePageToRAM(page,ramSlot){
 	if(0<=ramSlot && ramSlot<pageSlotsInRAM()){
 	console.log("page "+pageId(page)+" TO RAM slot "+ramSlot);
 		data.in_ram[ramSlot]=page;
-        
-        visualObjects.memorySlots[ramSlot].fill = visualConfig.loadedPageColor;
 	}
 }
 

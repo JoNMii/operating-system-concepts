@@ -8,9 +8,9 @@ var data={
 "deleteRAMPage" : function(page){
 	var thisPage = function(item){
 		return equalPages(page,item);	
-	}
+	};
 
-	var keyInRAM = data.in_ram.findKeyFor(thisPage);
+	var keyInRAM = findKeyFor(data.in_ram, thisPage);
 	if(keyInRAM != null){
 		delete data.in_ram[keyInRAM];
 	}
@@ -25,9 +25,9 @@ var data={
 "deleteSWAPPage" : function(page){
 	var thisPage = function(item){
 		return equalPages(page,item);	
-	}
+	};
 	
-	var keyInSwap = data.in_swap.findKeyFor(thisPage);
+	var keyInSwap = findKeyFor(data.in_swap, thisPage);
 	if(keyInSwap != null){
 		delete data.in_swap[keyInSwap];
 	}
@@ -42,7 +42,7 @@ var data={
 	data.in_swap={};
 	data.flags={};
 }
-}
+};
 
 var nextPageIdVal = 1;
 function nextPageId(){
@@ -67,7 +67,7 @@ function pageId(page){
 
 function findKeyFor(obj,filter_func){
 	for (var key in obj) {
-		var der = filter_func(key);
+		var der = filter_func(obj[key]);
 		if(der){
 			return key;
 		}
@@ -85,4 +85,4 @@ Array.prototype.getUniqueBy = function(id_func){
       u[this[i]] = 1;
    }
    return a;
-}
+};
