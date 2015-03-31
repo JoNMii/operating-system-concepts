@@ -172,7 +172,7 @@ function updateGraphics() {
     canvas.renderAll();
 }
 
-function drawCPU(){
+function drawCPU() {
     if (visualObjects.CPU === undefined) {
         var CPU = new Graphics.CPU();
         
@@ -218,7 +218,7 @@ function drawMemory() {
     }
 }
 
-function drawPagefile(){
+function drawPagefile() {
     if (visualObjects.Pagefile === undefined) {
         var Pagefile = new Graphics.SWAP();
         
@@ -313,129 +313,97 @@ function getAnimationDuration() {
     return 600;
 }
 
-function animateCreatePage(ramSlot) {
-    console.assert(!(ramSlot in visualObjects.memorySlots), "Error: memory slot already occupied! Trying to overwrite slot " + ramSlot);
+function getAnimationEasing() {
+    return fabric.util.easeInOutCubic;
+}
 
-    var slot = new Graphics.MemorySlot(ramSlot);
-    console.log('New slot created: ', ramSlot, slot);
-    visualObjects.memorySlots[ramSlot] = slot;
-    canvas.add(slot);
-    canvas.renderAll();
+function animateCreatePage(ramSlot) {
+    if (ramSlot in visualObjects.memorySlots) {
+        console.log('Warning: overwriting RAM slot', ramSlot);
+    } else {
+        var slot = new Graphics.MemorySlot(ramSlot);
+        console.log('New slot created: ', ramSlot, slot);
+        visualObjects.memorySlots[ramSlot] = slot;
+        canvas.add(slot);
+        canvas.renderAll();
+    }
 }
 
 function animatePageHit() {
     // TODO: implement something like a 'bounce'
 }
 
-// TODO: implement
-function animateInterchange(memorySlot, pagefileSlot) {
-    console.log('Swapping ' + memorySlot + ' <--> ' + pagefileSlot);
-
-    console.assert(memorySlot in visualObjects.memorySlots, "Error: empty memory slot while swapping -> " + memorySlot);
-    console.assert(pagefileSlot in visualObjects.pagefileSlots, "Error: empty pagefile slot while swapping -> " + pagefileSlot);
-
-    var memoryX = visualObjects.memorySlots[memorySlot].left;
-    var memoryY = visualObjects.memorySlots[memorySlot].top;
-    var pagefileX = visualObjects.pagefileSlots[pagefileSlot].left;
-    var pagefileY = visualObjects.pagefileSlots[pagefileSlot].top;
-
-    visualObjects.memorySlots[memorySlot].animate({
-            left : pagefileX,
-            top : pagefileY
-        }, {
-            duration: getAnimationDuration(),
-            onChange : canvas.renderAll.bind(canvas)
-            //onStart : console.log('Animation started! TODO: consider pausing the algorithm'),
-            //onComplete : console.log('Animation completed! TODO: consider unpausing the algorithm')
-        }
-    );
-
-    visualObjects.pagefileSlots[pagefileSlot].animate({
-            left : memoryX,
-            top : memoryY
-        }, {
-            duration: getAnimationDuration(),
-            onChange : canvas.renderAll.bind(canvas)
-            //onStart : console.log('Animation started! TODO: consider pausing the algorithm'),
-            //onComplete : console.log('Animation completed! TODO: consider unpausing the algorithm')
-        }
-    );
-
-    // TODO: perhaps the following code is unnecessary
-    //visualObjects.memorySlots[memorySlot] = new Graphics.MemorySlot(memorySlot);
-    //visualObjects.pagefileSlots[pagefileSlot] = new Graphics.PagefileSlot(pagefileSlot);
-}
-
 function animateRamToSwap(memorySlot, pagefileSlot) {
     console.log('Animating RAM to SWAP ' + memorySlot + ' --> ' + pagefileSlot);
 
-    console.assert(memorySlot in visualObjects.memorySlots, "Error: slot " + memorySlot + " is not in memory!");
-    console.assert(!(pagefileSlot in visualObjects.pagefileSlots), "Error: slot " + pagefileSlot + " in pagefile already occupied!");
+    console.assert(memorySlot in visualObjects.memorySlots, "Error: slot " + memorySlot + " is empty!");
 
-    var toX = Graphics.PagefileSlot.calculateOffsetX(pagefileSlot);
-    var toY = Graphics.PagefileSlot.calculateOffsetY(pagefileSlot);
-    var toWidth = visualConfig.pfWidth;
-    var toHeight = Graphics.PagefileSlot.calculateOffsetY(pagefileSlot + 1) - toY;
+    var target = new Graphics.PagefileSlot(pagefileSlot);
 
     console.log('Pausing algorithm during animation: animateRamToSwap()...');
     sleep(); // Sleep infinitely - rely on onComplete() event to awaken
 
     visualObjects.memorySlots[memorySlot].animate({
-            left : toX,
-            top : toY,
-            width : toWidth,
-            height : toHeight
+            left : target.left,
+            top : target.top,
+            width : target.width,
+            height : target.height
         }, {
             duration: getAnimationDuration(),
             onChange : canvas.renderAll.bind(canvas),
             onComplete : function () {
                 canvas.remove(visualObjects.memorySlots[memorySlot]);
-                console.log('DELETING MEMORY SLOT ' + memorySlot);
-                delete visualObjects.memorySlots[memorySlot];
+                // Warning: self-destruction
+                visualObjects.memorySlots[memorySlot] = new Graphics.MemorySlot(memorySlot);
+                canvas.add(visualObjects.memorySlots[memorySlot]);
 
-                visualObjects.pagefileSlots[pagefileSlot] = new Graphics.PagefileSlot(pagefileSlot);
-                canvas.add(visualObjects.pagefileSlots[pagefileSlot]);
+                if (visualObjects.pagefileSlots[pagefileSlot] === undefined) {
+                    visualObjects.pagefileSlots[pagefileSlot] = new Graphics.PagefileSlot(pagefileSlot);
+                    canvas.add(visualObjects.pagefileSlots[pagefileSlot]);
+                }
+                
                 canvas.renderAll();
 
                 awaken(); // Resume normal execution
-            }
+            },
+            easing : getAnimationEasing()
         }
     );
 }
 
 function animateSwapToRam(memorySlot, pagefileSlot) {
-    console.log('Animating SWAP to RAM ' + memorySlot + ' --> ' + pagefileSlot);
+    console.log('Animating SWAP to RAM ' + pagefileSlot + ' --> ' + memorySlot);
 
-    console.assert(!(memorySlot in visualObjects.memorySlots), "Error: slot " + memorySlot + " in memory is already occupied!");
     console.assert(pagefileSlot in visualObjects.pagefileSlots, "Error: slot " + pagefileSlot + " in pagefile is empty!");
 
-    var toX = Graphics.MemorySlot.calculateOffsetX(memorySlot);
-    var toY = Graphics.MemorySlot.calculateOffsetY(memorySlot);
-    var toWidth = visualConfig.ramWidth;
-    var toHeight = Graphics.MemorySlot.calculateOffsetY(memorySlot + 1) - toY;
+    var target = new Graphics.MemorySlot(memorySlot);
 
     console.log('Pausing algorithm during animation: animateSwapToRam()...');
     sleep(); // Sleep infinitely - rely on onComplete() event to awaken
 
     visualObjects.pagefileSlots[pagefileSlot].animate({
-            left : toX,
-            top : toY,
-            width : toWidth,
-            height : toHeight
+            left : target.left,
+            top : target.top,
+            width : target.width,
+            height : target.height
         }, {
             duration: getAnimationDuration(),
             onChange : canvas.renderAll.bind(canvas),
             onComplete : function () {
                 canvas.remove(visualObjects.pagefileSlots[pagefileSlot]);
-                console.log('DELETING PAGEFILE SLOT ' + pagefileSlot);
-                delete visualObjects.pagefileSlots[pagefileSlot];
+                // Warning: self-destruction
+                visualObjects.pagefileSlots[pagefileSlot] = new Graphics.PagefileSlot(pagefileSlot);
+                canvas.add(visualObjects.pagefileSlots[pagefileSlot]);
+                if (visualObjects.memorySlots[memorySlot] === undefined) {
+                    visualObjects.memorySlots[memorySlot] = new Graphics.MemorySlot(memorySlot);
+                    canvas.add(visualObjects.memorySlots[memorySlot]);
+                }
 
-                visualObjects.memorySlots[memorySlot] = new Graphics.MemorySlot(memorySlot);
-                canvas.add(visualObjects.memorySlots[memorySlot]);
                 canvas.renderAll();
 
                 awaken(); // Resume normal execution
-            }
+            },
+            easing : getAnimationEasing()
         }
     );
 }

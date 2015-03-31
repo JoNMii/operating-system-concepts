@@ -49,11 +49,11 @@ function simpleAlgorithm() {
 				var swapSlot = findSWAPSlotByPageId(pageInSWAP.page_id);
 				var target = getFreeRAMSlot();
 				if (target <= -1) {
-					// No free RAM slots, swap RAM slot and SWAP slot
 					target = evictPage();
 				}
 
 				writePageToRAM(pageInSWAP, target);
+				deletePageFromSWAP(pageInSWAP);
 
 				Graphics.enqueueDrawingEvent(function() {
 					animateSwapToRam(target, swapSlot);
