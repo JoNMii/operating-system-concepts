@@ -169,7 +169,7 @@ function getFreeRAMSlot(){
 			}
 		}
 		if(!found){
-			return i;
+			return parseInt(i);
 		}
 	}
 	return -1;
@@ -275,7 +275,7 @@ function findSWAPSlotByPageId(id){
 	var pages = getPagesInSWAP();
 	for(i in pages){
 		if(pageId(pages[i])==id){
-			return i;
+			return parseInt(i);
 		}
 	}
 	return -1;

@@ -116,7 +116,7 @@ Graphics.processDrawingEventQueue = function () {
 
 Graphics.clearDrawingEventQueue = function () {
     this.drawingEventQueue = [];
-}
+};
 
 function initVisualConfig() {
     visualConfig = {
@@ -395,6 +395,43 @@ function animateRamToSwap(memorySlot, pagefileSlot) {
 
                 visualObjects.pagefileSlots[pagefileSlot] = new Graphics.PagefileSlot(pagefileSlot);
                 canvas.add(visualObjects.pagefileSlots[pagefileSlot]);
+                canvas.renderAll();
+
+                awaken(); // Resume normal execution
+            }
+        }
+    );
+}
+
+function animateSwapToRam(memorySlot, pagefileSlot) {
+    console.log('Animating SWAP to RAM ' + memorySlot + ' --> ' + pagefileSlot);
+
+    console.assert(!(memorySlot in visualObjects.memorySlots), "Error: slot " + memorySlot + " in memory is already occupied!");
+    console.assert(pagefileSlot in visualObjects.pagefileSlots, "Error: slot " + pagefileSlot + " in pagefile is empty!");
+
+    var toX = Graphics.MemorySlot.calculateOffsetX(memorySlot);
+    var toY = Graphics.MemorySlot.calculateOffsetY(memorySlot);
+    var toWidth = visualConfig.ramWidth;
+    var toHeight = Graphics.MemorySlot.calculateOffsetY(memorySlot + 1) - toY;
+
+    console.log('Pausing algorithm during animation: animateSwapToRam()...');
+    sleep(); // Sleep infinitely - rely on onComplete() event to awaken
+
+    visualObjects.pagefileSlots[pagefileSlot].animate({
+            left : toX,
+            top : toY,
+            width : toWidth,
+            height : toHeight
+        }, {
+            duration: getAnimationDuration(),
+            onChange : canvas.renderAll.bind(canvas),
+            onComplete : function () {
+                canvas.remove(visualObjects.pagefileSlots[pagefileSlot]);
+                console.log('DELETING PAGEFILE SLOT ' + pagefileSlot);
+                delete visualObjects.pagefileSlots[pagefileSlot];
+
+                visualObjects.memorySlots[memorySlot] = new Graphics.MemorySlot(memorySlot);
+                canvas.add(visualObjects.memorySlots[memorySlot]);
                 canvas.renderAll();
 
                 awaken(); // Resume normal execution
