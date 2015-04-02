@@ -1,4 +1,4 @@
-var pageToFrame = {
+function pageToFrame() {
     pageTable: {}, //{pageid: [ramSlot, V or I]}
     maxPages: 0,
     init: function() {
@@ -32,6 +32,7 @@ var pageToFrame = {
 
 
 function process() {
+    this.table = 0;
     this.pageList = []; //virtual pages available for process
     this.maxPageCount = 0;
     this.createPage = function() {
@@ -43,6 +44,8 @@ function process() {
         for(var i=0; i<this.maxPageCount; i++) {
             this.createPage();
         };
+        this.table = new pageToFrame();
+        this.table.init();
     };
     this.createAction = function() {
         var action;
