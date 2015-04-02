@@ -81,7 +81,10 @@ var processMaster = {
         }
     },
     killAll: function() {
-    //TODO: implement kill all processes
+        for(var i in this.processList) {
+            i.endProcess();
+            delete this.processList[i];
+        };
     },
 };
 
