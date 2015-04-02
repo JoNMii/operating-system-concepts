@@ -7,40 +7,46 @@ var visualObjects = { // Handlers for main graphical objects (CPU / Memory / Pag
 var Graphics = {
     MemorySlot : fabric.util.createClass(fabric.Rect, {
         initialize : function (position) {
-            var x, y, w, h;
-            var frameCount = pageSlotsInRAM();
-            x = Graphics.MemorySlot.calculateOffsetX(position);
-            y = Graphics.MemorySlot.calculateOffsetY(position);
-            w = visualConfig.ramWidth - visualConfig.frameBorderWidth;
-            h = Math.floor((position + 1) * visualConfig.ramHeight / frameCount) - Math.floor(position * visualConfig.ramHeight / frameCount) - visualConfig.frameBorderWidth;
+            var vc = visualConfig;
 
-            this.left = x;
-            this.top = y;
-            this.width = w;
-            this.height = h;
+            // Main parameters
+            this.left = Graphics.MemorySlot.calculateOffsetX(position);
+            this.top = Graphics.MemorySlot.calculateOffsetY(position);
+            this.width = vc.ramWidth - vc.slotBorderWidth - 2 * vc.ramPadding;
+            this.height = Graphics.MemorySlot.calculateOffsetY(position + 1)
+                - Graphics.MemorySlot.calculateOffsetY(position)
+                - vc.slotBorderWidth
+                - vc.ramSpacing;
+
+            // Look and feel
+            this.rx = vc.slotBorderRadius;
+            this.ry = vc.slotBorderRadius;
             this.fill = 'transparent';
-            this.strokeWidth = visualConfig.frameBorderWidth;
-            this.stroke = visualConfig.memorySlotBorderColor;
+            this.strokeWidth = vc.slotBorderWidth;
+            this.stroke = vc.memorySlotBorderColor;
 
             this.selectable = false;
         }
     }),
     PagefileSlot : fabric.util.createClass(fabric.Rect, {
         initialize : function (position) {
-            var x, y, w, h;
-            var frameCount = pageSlotsInSWAP();
-            x = Graphics.PagefileSlot.calculateOffsetX(position);
-            y = Graphics.PagefileSlot.calculateOffsetY(position);
-            w = visualConfig.pfWidth - visualConfig.frameBorderWidth;
-            h = Math.floor((position + 1) * visualConfig.pfHeight / frameCount) - Math.floor(position * visualConfig.pfHeight / frameCount) - visualConfig.frameBorderWidth;
+            var vc = visualConfig;
 
-            this.left = x;
-            this.top = y;
-            this.width = w;
-            this.height = h;
+            // Main parameters
+            this.left = Graphics.PagefileSlot.calculateOffsetX(position);
+            this.top = Graphics.PagefileSlot.calculateOffsetY(position);
+            this.width = vc.pfWidth - vc.slotBorderWidth - 2 * vc.pfPadding;
+            this.height = Graphics.PagefileSlot.calculateOffsetY(position + 1)
+                - Graphics.PagefileSlot.calculateOffsetY(position)
+                - vc.slotBorderWidth
+                - vc.pfSpacing;
+
+            // Look and feel
+            this.rx = vc.slotBorderRadius;
+            this.ry = vc.slotBorderRadius;
             this.fill = 'transparent';
-            this.strokeWidth = visualConfig.frameBorderWidth;
-            this.stroke = visualConfig.memorySlotBorderColor;
+            this.strokeWidth = vc.slotBorderWidth;
+            this.stroke = vc.memorySlotBorderColor;
 
             this.selectable = false;
         }
@@ -52,6 +58,8 @@ var Graphics = {
             this.width = visualConfig.cpuWidth;
             this.height = visualConfig.cpuHeight;
             this.fill = visualConfig.cpuColor;
+            this.rx = visualConfig.cpuBorderRadius;
+            this.ry = visualConfig.cpuBorderRadius;
         }
     }),
     RAM : fabric.util.createClass(fabric.Rect, {
@@ -61,6 +69,8 @@ var Graphics = {
             this.width =  visualConfig.ramWidth;
             this.height = visualConfig.ramHeight;
             this.fill = visualConfig.memoryColor;
+            this.rx = visualConfig.ramBorderRadius;
+            this.ry = visualConfig.ramBorderRadius;
         }
     }),
     SWAP : fabric.util.createClass(fabric.Rect, {
@@ -70,6 +80,8 @@ var Graphics = {
             this.width = visualConfig.pfWidth;
             this.height = visualConfig.pfHeight;
             this.fill = visualConfig.pagefileColor;
+            this.rx = visualConfig.pfBorderRadius;
+            this.ry = visualConfig.pfBorderRadius;
         }
     }),
 
@@ -77,19 +89,23 @@ var Graphics = {
 };
 
 Graphics.MemorySlot.calculateOffsetX = function (position) {
-    return visualConfig.ramOffsetX;
+    return visualConfig.ramOffsetX + visualConfig.ramPadding;
 };
 
 Graphics.MemorySlot.calculateOffsetY = function (position) {
-    return visualConfig.ramOffsetY + Math.floor(position * visualConfig.ramHeight / pageSlotsInRAM());
+    return visualConfig.ramOffsetY + visualConfig.ramPadding
+        + Math.floor(position * (visualConfig.ramHeight - 2 * visualConfig.ramPadding) / pageSlotsInRAM())
+        + visualConfig.ramSpacing / 2;
 };
 
 Graphics.PagefileSlot.calculateOffsetX = function (position) {
-    return visualConfig.pfOffsetX;
+    return visualConfig.pfOffsetX + visualConfig.pfPadding;
 };
 
 Graphics.PagefileSlot.calculateOffsetY = function (position) {
-    return visualConfig.pfOffsetY + Math.floor(position * visualConfig.pfHeight / pageSlotsInSWAP());
+    return visualConfig.pfOffsetY + visualConfig.pfPadding
+        + Math.floor(position * (visualConfig.pfHeight - 2 * visualConfig.pfPadding) / pageSlotsInSWAP())
+        + visualConfig.pfSpacing / 2;
 };
 
 Graphics.enqueueDrawingEvent = function(callback) {
@@ -123,23 +139,32 @@ function initVisualConfig() {
         cpuWidth : 100,
         cpuHeight : 100,
         cpuOffsetX : 50,
+        cpuPadding : 5,
+        cpuBorderRadius : 3,
         
         ramWidth : 200,
         ramHeight : 350,
         ramOffsetX : 350,
+        ramPadding : 5,
+        ramSpacing : 6, // Inner spacing between frames
+        ramBorderRadius : 3,
 		
 		pfWidth : 200,
 		pfHeight : 380,
 		pfOffsetX : 700,
+        pfPadding : 5,
+        pfSpacing : 6,
+        pfBorderRadius : 3,
 		
-        frameBorderWidth : 1,
+        slotBorderWidth : 1,
+        slotBorderRadius : 3,
 		
 		cpuColor : '#dddddd',
 		memoryColor : '#dddddd',
 		pagefileColor : '#dddddd',
 		
-		freePageColor : '#cccccc',
-		loadedPageColor : '#777777',
+		//freePageColor : '#cccccc',
+		//loadedPageColor : '#777777',
 		
 		memorySlotBorderColor : '#ff0000',
 		pagefileSlotBorderColor : '#ffff00'
@@ -250,8 +275,8 @@ function drawMemorySlots() {
             for (var i = 0; i < frameCount; i++) {
                 var x = visualConfig.ramOffsetX;
                 var y = visualConfig.ramOffsetY + Math.floor(i * visualConfig.ramHeight / frameCount);
-                var w = visualConfig.ramWidth - visualConfig.frameBorderWidth;
-                var h = Math.floor((i + 1) * visualConfig.ramHeight / frameCount) - Math.floor(i * visualConfig.ramHeight / frameCount) - visualConfig.frameBorderWidth;
+                var w = visualConfig.ramWidth - visualConfig.slotBorderWidth;
+                var h = Math.floor((i + 1) * visualConfig.ramHeight / frameCount) - Math.floor(i * visualConfig.ramHeight / frameCount) - visualConfig.slotBorderWidth;
                 
                 //console.log('Drawing rect ' + x + ' ' + y + ' ' + w  + ' ' + h);
                 
@@ -261,7 +286,7 @@ function drawMemorySlots() {
                     width:  w,
                     height: h,
                     fill: 'transparent',
-                    strokeWidth: visualConfig.frameBorderWidth,
+                    strokeWidth: visualConfig.slotBorderWidth,
                     stroke: visualConfig.memorySlotBorderColor
                 });
                 
@@ -285,8 +310,8 @@ function drawPagefileSlots() {
             for (var i = 0; i < frameCount; i++) {
                 var x = visualConfig.pfOffsetX;
                 var y = visualConfig.pfOffsetY + Math.floor(i * visualConfig.pfHeight / frameCount);
-                var w = visualConfig.pfWidth - visualConfig.frameBorderWidth;
-                var h = Math.floor((i + 1) * visualConfig.pfHeight / frameCount) - Math.floor(i * visualConfig.pfHeight / frameCount) - visualConfig.frameBorderWidth;
+                var w = visualConfig.pfWidth - visualConfig.slotBorderWidth;
+                var h = Math.floor((i + 1) * visualConfig.pfHeight / frameCount) - Math.floor(i * visualConfig.pfHeight / frameCount) - visualConfig.slotBorderWidth;
 
                 var frame = new fabric.Rect({
                     left: x,
@@ -294,7 +319,7 @@ function drawPagefileSlots() {
                     width:  w,
                     height: h,
                     fill: 'transparent',
-                    strokeWidth: visualConfig.frameBorderWidth,
+                    strokeWidth: visualConfig.slotBorderWidth,
                     stroke: visualConfig.pagefileSlotBorderColor
                 });
 
