@@ -342,30 +342,29 @@ function getAnimationEasing() {
     return fabric.util.easeInOutCubic;
 }
 
-function animateCreatePage(ramSlot) {
-    if (ramSlot in visualObjects.memorySlots) {
-        console.log('Warning: overwriting RAM slot', ramSlot);
-    } else {
-        var slot = new Graphics.MemorySlot(ramSlot);
-        console.log('New slot created: ', ramSlot, slot);
-        visualObjects.memorySlots[ramSlot] = slot;
-        canvas.add(slot);
-        canvas.renderAll();
-    }
+function animateCreatePage(memorySlot) {
+    console.assert(!(memorySlot in visualObjects.memorySlots), "Error: overwriting memory slot " + memorySlot);
+
+    var slot = new Graphics.MemorySlot(memorySlot);
+    console.log('New slot created: ', memorySlot, slot);
+    visualObjects.memorySlots[memorySlot] = slot;
+    canvas.add(slot);
+    canvas.renderAll();
 }
 
-function animatePageHit() {
+function animatePageHit(memorySlot) {
     // TODO: implement something like a 'bounce'
+    console.assert(memorySlot in visualObjects.memorySlots, "Error: page hit in empty slot -> " + memorySlot);
 }
 
 function animateRamToSwap(memorySlot, pagefileSlot) {
     console.log('Animating RAM to SWAP ' + memorySlot + ' --> ' + pagefileSlot);
 
-    console.assert(memorySlot in visualObjects.memorySlots, "Error: slot " + memorySlot + " is empty!");
+    console.assert(!(pagefileSlot in visualObjects.pagefileSlots), "Error: slot " + pagefileSlot + " in pagefile is not empty!");
+    console.assert(memorySlot in visualObjects.memorySlots, "Error: slot " + memorySlot + " in memory is empty!");
 
     var target = new Graphics.PagefileSlot(pagefileSlot);
 
-    console.log('Pausing algorithm during animation: animateRamToSwap()...');
     sleep(); // Sleep infinitely - rely on onComplete() event to awaken
 
     visualObjects.memorySlots[memorySlot].animate({
@@ -379,13 +378,10 @@ function animateRamToSwap(memorySlot, pagefileSlot) {
             onComplete : function () {
                 canvas.remove(visualObjects.memorySlots[memorySlot]);
                 // Warning: self-destruction
-                visualObjects.memorySlots[memorySlot] = new Graphics.MemorySlot(memorySlot);
-                canvas.add(visualObjects.memorySlots[memorySlot]);
+                delete visualObjects.memorySlots[memorySlot];
 
-                if (visualObjects.pagefileSlots[pagefileSlot] === undefined) {
-                    visualObjects.pagefileSlots[pagefileSlot] = new Graphics.PagefileSlot(pagefileSlot);
-                    canvas.add(visualObjects.pagefileSlots[pagefileSlot]);
-                }
+                visualObjects.pagefileSlots[pagefileSlot] = target;
+                canvas.add(visualObjects.pagefileSlots[pagefileSlot]);
                 
                 canvas.renderAll();
 
@@ -399,11 +395,11 @@ function animateRamToSwap(memorySlot, pagefileSlot) {
 function animateSwapToRam(memorySlot, pagefileSlot) {
     console.log('Animating SWAP to RAM ' + pagefileSlot + ' --> ' + memorySlot);
 
+    console.assert(!(memorySlot in visualObjects.memorySlots), "Error: slot " + memorySlot + " in memory is not empty!");
     console.assert(pagefileSlot in visualObjects.pagefileSlots, "Error: slot " + pagefileSlot + " in pagefile is empty!");
 
     var target = new Graphics.MemorySlot(memorySlot);
 
-    console.log('Pausing algorithm during animation: animateSwapToRam()...');
     sleep(); // Sleep infinitely - rely on onComplete() event to awaken
 
     visualObjects.pagefileSlots[pagefileSlot].animate({
@@ -417,12 +413,9 @@ function animateSwapToRam(memorySlot, pagefileSlot) {
             onComplete : function () {
                 canvas.remove(visualObjects.pagefileSlots[pagefileSlot]);
                 // Warning: self-destruction
-                visualObjects.pagefileSlots[pagefileSlot] = new Graphics.PagefileSlot(pagefileSlot);
-                canvas.add(visualObjects.pagefileSlots[pagefileSlot]);
-                if (visualObjects.memorySlots[memorySlot] === undefined) {
-                    visualObjects.memorySlots[memorySlot] = new Graphics.MemorySlot(memorySlot);
-                    canvas.add(visualObjects.memorySlots[memorySlot]);
-                }
+                delete visualObjects.pagefileSlots[pagefileSlot];
+                visualObjects.memorySlots[memorySlot] = target;
+                canvas.add(visualObjects.memorySlots[memorySlot]);
 
                 canvas.renderAll();
 

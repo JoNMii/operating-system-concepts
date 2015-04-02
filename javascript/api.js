@@ -133,7 +133,7 @@ var exampleAlgorythm = {
 //increases time by one timeunit
 function simulationTick(){
 	if (Date.now() < config.waitUntilTimeStamp) {
-		console.log('Sleeping...');
+		//console.log('Sleeping...');
 		return;
 	}
 	var onEvent = algorythm().onEvent;
@@ -170,16 +170,10 @@ function pageSlotsInRAM(){
 }
 
 function getFreeRAMSlot(){
-	var usedSlots = Object.keys(getPagesInRAM());
-	for(var i=0;i<pageSlotsInRAM();i++){
-		var found = false;
-		for(var j=0;j<usedSlots.length;j++){
-			if(i==j){
-				found = true;
-			}
-		}
-		if(!found){
-			return parseInt(i);
+	var pages = getPagesInRAM();
+	for (var i = 0; i < pageSlotsInRAM(); i++) {
+		if (!(i in pages)) {
+			return i;
 		}
 	}
 	return -1;
@@ -199,15 +193,9 @@ function pageSize(){
 }
 
 function getFreeSWAPSlot(){
-	var usedSlots = Object.keys(getPagesInSWAP());
-	for(var i=0;i<pageSlotsInSWAP();i++){
-		var found = false;
-		for(var j=0;j<usedSlots.length;j++){
-			if(i==j){
-				found = true;
-			}
-		}
-		if(!found){
+	var pages = getPagesInSWAP();
+	for (var i = 0; i < pageSlotsInSWAP(); i++) {
+		if (!(i in pages)) {
 			return i;
 		}
 	}
@@ -281,6 +269,16 @@ function findSWAPPageById(id){
 	return null;
 }
 
+function findRAMSlotByPageId(id){
+	var pages = getPagesInRAM();
+	for(i in pages){
+		if(pageId(pages[i])==id){
+			return parseInt(i);
+		}
+	}
+	return -1;
+}
+
 function findSWAPSlotByPageId(id){
 	var pages = getPagesInSWAP();
 	for(i in pages){
@@ -302,7 +300,7 @@ function deletePageFromRAM(page){
 }
 
 function deletePageFromSWAP(page){
-	data.deleteRAMPage(page);
+	data.deleteSWAPPage(page);
 }
 
 //create a page but do not assign it any memory

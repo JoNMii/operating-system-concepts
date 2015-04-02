@@ -30,6 +30,7 @@ function simpleAlgorithm() {
 			}
 
 			writePageToSwap(evictedPage, swapSlot);
+			deletePageFromRAM(evictedPage);
 
 			Graphics.enqueueDrawingEvent(function() {
 				animateRamToSwap(evicted, swapSlot);
@@ -41,42 +42,46 @@ function simpleAlgorithm() {
 		if(pageInRAM) {
 			//nothing to do here
 			pageHit(pageId);
+			var memorySlot = findRAMSlotByPageId(pageId);
 			Graphics.enqueueDrawingEvent(function() {
-				animatePageHit();
+				animatePageHit(memorySlot);
 			});
-		} else {
-			if (pageInSWAP) {
-				//page is in swap file move it to RAM
-				var swapSlot = findSWAPSlotByPageId(pageInSWAP.page_id);
-				var target = getFreeRAMSlot();
+
+		} else if (pageInSWAP) {
+			//page is in swap file move it to RAM
+			var swapSlot = findSWAPSlotByPageId(pageInSWAP.page_id);
+			var target = getFreeRAMSlot();
+			if (target <= -1) {
+				target = evictPage();
 				if (target <= -1) {
-					target = evictPage();
+					// Out of memory
+					return -1;
 				}
-
-				writePageToRAM(pageInSWAP, target);
-				deletePageFromSWAP(pageInSWAP);
-
-				Graphics.enqueueDrawingEvent(function() {
-					animateSwapToRam(target, swapSlot);
-				});
-
-			} else {
-				//page is not realized, create it
-				var target = getFreeRAMSlot();
-				if (target <= -1) {
-					target = evictPage();
-					if (target <= -1) {
-						console.error('Failed to evict a page!');
-						return -1;
-					}
-				}
-
-				createPage(target, pageId);
-
-				Graphics.enqueueDrawingEvent(function () {
-					animateCreatePage(target);
-				});
 			}
+
+			writePageToRAM(pageInSWAP, target);
+			deletePageFromSWAP(pageInSWAP);
+
+			Graphics.enqueueDrawingEvent(function () {
+				animateSwapToRam(target, swapSlot);
+			});
+
+		} else {
+			//page is not realized, create it
+			var target = getFreeRAMSlot();
+			if (target <= -1) {
+				target = evictPage();
+				if (target <= -1) {
+					// Out of memory
+					return -1;
+				}
+			}
+			console.log('Creating page in memory slot ' + target + ' (pageId:' + pageId + ')');
+			createPage(target, pageId);
+
+			Graphics.enqueueDrawingEvent(function () {
+				animateCreatePage(target);
+			});
 		}
 	};
 	this.init=function(){console.log("init called");};
