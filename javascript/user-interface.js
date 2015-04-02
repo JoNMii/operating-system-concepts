@@ -197,7 +197,14 @@ function disableGUI() {
 
 function enableSliders() {
 
+//Process count slider
+    ex12bSlider = new Slider("#ex12b", { id: "slider12b", min: 1, max: 20, range: true, value: [1, 5] });
+    ex12bSlider.on("slide", function(slideEvt) {
+        var range = slideEvt.value;
+        $('#processmin').val(range[0]);
+        $('#processmax').val(range[0]);
 
+    });
 
 // Ram size Slider
     ex6Slider = new Slider("#ex6");// $("#ex6").slider();
@@ -271,7 +278,15 @@ function enableSliders() {
     });
 }
 
-
+function outOfMemoryShow(){
+    $(".bsod").show();
+    $(".bsod img").click(function(){
+        outofMemoryHide();
+    });
+}
+function outofMemoryHide(){
+    $(".bsod").hide();
+}
 function kbToLabel(kbCount){
     var label = " KB";
     var kb = kbCount

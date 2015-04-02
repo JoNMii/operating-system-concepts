@@ -31,3 +31,12 @@ min-width:600px;
 #speedSliderContainer{
     padding-top: 6px;
 }
+#slider12b .slider-selection {
+    background: gray;
+}
+
+.bsod{
+    position:absolute;
+    top:0;
+    left:0;
+}

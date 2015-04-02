@@ -24,6 +24,7 @@ function simpleAlgorithm() {
 			}
 			if(swapSlot<=-1){
 				console.error("OH SHIT IM out of MEMORY");
+                outOfMemoryShow();
 				stopAlgo();
 				return -1;
 			}
