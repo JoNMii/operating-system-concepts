@@ -18,7 +18,7 @@ config.algo = params.algoNumber;
 config.waitUntilTimeStamp = -1;
 var algo = params.algoNumber;
 if (algo == 0){ //FIFO/FCSF
-
+	config.algo = FIFO_Algorithm
 } else if (algo == 1){ //Second-chance
     config.algo = second_chance
 } else if (algo == 2){ //LRU
