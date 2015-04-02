@@ -9,6 +9,7 @@ $(function () {
     stopbutn.hide();
     pausebtn.hide();
     enableSliders();
+    clearStats();
 });
 
 function printUI(text) {
@@ -19,6 +20,61 @@ function printUI(text) {
         $("#console-out p").first().remove();
     }
 }
+
+
+function setFreeRam(num){
+    freeMemStat = num;
+    //Calculate GBs
+    var maxMemSise = $('#ramsize').val();
+    var ram = num;
+
+    var label = kbToLabel(ram)+" / "+kbToLabel(maxMemSise);
+    $("#freeMemStat").text(label);
+}
+function setPagePoolStat(num){
+    pagedPoolStat = num;
+
+    var swapSize = $('#swapsize').val()
+    var frameSize = $('#framesize').val()
+    var swapPageCount = swapSize/frameSize;
+
+    var percent = (pagedPoolStat/swapPageCount)*100;
+    var label = percent+"%";
+    $("#pagePoolStat").text(label);
+}
+function setPageHitStat(num){
+    pageHitStat = num;
+    $("#pageHitStat").text(num);
+}
+function setPageFaultStat(num){
+    pageFaultStat = num;
+    $("#pageFaultStat").text(num);
+}
+function incPageFault(){
+    pageFaultStat++;
+    setPageFaultStat(pageFaultStat)
+    return pageFaultStat;
+}
+function incPageHit(){
+    pageHitStat++
+    setPageHitStat(pageHitStat);
+    return pageHitStat;
+}
+
+function clearStats(){
+    freeMemStat = 0;
+    pagedPoolStat = 0;
+    pageHitStat = 0;
+    pageFaultStat = 0;
+    $("#pageFaultStat").text(pageFaultStat);
+    $("#pageHitStat").text(pageHitStat);
+    $("#pagePoolStat").text(pagedPoolStat);
+    $("#freeMemStat").text(freeMemStat);
+
+    setFreeRam($('#ramsize').val());
+    setPagePoolStat(0);
+}
+
 $(window).resize(function () {
     canvas.setWidth($("#canvasrow").width());
 });
@@ -96,6 +152,7 @@ $("#ex1").on("slide", function (slideEvt) {
 });
 
 function resetGUI() {
+    clearStats();
     pausebtn.hide();
     stopbutn.hide();
     startbtn.show();
@@ -158,18 +215,8 @@ function enableSliders() {
 
         var ram = Math.pow(2, slideEvt.value); //KB;
         $('#ramsize').val(ram);
-        var label = " KB";
-        if (ram > 2048) {
-            label = " MB";
-            ram = ram / 1024;
-        }
-        ; // Now we MB
-        if (ram > 2048) {
-            label = " GB";
-            ram = ram / 1024;
-        }
-        ; // Now we GB;
-        $("#ex6SliderVal").text(ram + label);
+        var label = kbToLabel(ram);
+        $("#ex6SliderVal").text(label);
 
         console.log($('#ramsize').val() + " div " + $('#framesize').val());
         var framecount = $('#ramsize').val() / $('#framesize').val();
@@ -186,18 +233,8 @@ function enableSliders() {
     ex7Slider.on("slide", function (slideEvt) {
         var ram = Math.pow(2, slideEvt.value); //KB;
         $('#framesize').val(ram);
-        var label = " KB";
-        if (ram > 2048) {
-            label = " MB";
-            ram = ram / 1024;
-        }
-        ; // Now we MB
-        if (ram > 2048) {
-            label = " GB";
-            ram = ram / 1024;
-        }
-        ; // Now we GB;
-        $("#ex7SliderVal").text(ram + label);
+        var label = kbToLabel(ram);
+        $("#ex7SliderVal").text( label);
 
         console.log($('#ramsize').val() + " div " + $('#framesize').val());
         var framecount = $('#ramsize').val() / $('#framesize').val();
@@ -214,18 +251,8 @@ function enableSliders() {
     ex8Slider.on("slide", function (slideEvt) {
         var ram = Math.pow(2, slideEvt.value); //KB;
         $('#virtmemsize').val(ram);
-        var label = " KB";
-        if (ram > 2048) {
-            label = " MB";
-            ram = ram / 1024;
-        }
-        ; // Now we MB
-        if (ram > 2048) {
-            label = " GB";
-            ram = ram / 1024;
-        }
-        ; // Now we GB;
-        $("#ex8SliderVal").text(ram + label);
+        var label = kbToLabel(ram);
+        $("#ex8SliderVal").text(label);
 
         $(".virtmemsize-label").text(label);
     });
@@ -235,20 +262,30 @@ function enableSliders() {
     ex9Slider.on("slide", function (slideEvt) {
         var ram = Math.pow(2, slideEvt.value); //KB;
         $('#swapsize').val(ram);
-        var label = " KB";
-        if (ram > 2048) {
-            label = " MB";
-            ram = ram / 1024;
-        }
-        ; // Now we MB
-        if (ram > 2048) {
-            label = " GB";
-            ram = ram / 1024;
-        }
-        ; // Now we GB;
-        $("#ex9SliderVal").text(ram + label);
+        var label = kbToLabel(ram);
 
-        $("#swapsize").val(ram);
+        $("#ex9SliderVal").text(label);
+
         $(".swapsize-label").text(label);
     });
+}
+
+
+function kbToLabel(kbCount){
+    var label = " KB";
+    var kb = kbCount
+    if (kb > 2048) {
+        label = " MB";
+        kb = kb / 1024;
+    }
+    ; // Now we MB
+    if (kb > 2048) {
+        label = " GB";
+        kb = kb / 1024;
+    }
+    ; // Now we GB;
+    kb = Math.round(kb*100)/100;
+
+    label = kb + label;
+    return label;
 }

@@ -4,7 +4,12 @@ CPU+RAM+Swap file
 
 /*** Global variables ***/
 var config = {}; // Animation configuration
-
+var statsObj = {
+    freeRam:0,
+    pagePool:0,
+    pageHits:0,
+    pageFaults:0
+}; //Statistics object;
 function startAlgo(params){
 console.log("Simulation started:",params);
 
@@ -28,6 +33,7 @@ if (algo == 0){ //FIFO/FCSF
 } else if (algo == 5){ //Random
 	config.algo = randomAlgorithm
 }
+    statsObj.freeRam = config.ramSize;
 
 // Clear previously created objects
 clearGraphics();
@@ -130,6 +136,7 @@ function simulationTick(){
 	var onEvent = algorythm().onEvent;
 	onEvent(generateEvent());
 	updateGraphics();
+    updateStatistics();
 }
 
 function generateEvent(){
@@ -312,4 +319,10 @@ function createPage(ramSlot,pageId){
 	var page = createBacklessPage(pageId);
 	writePageToRAM(page,ramSlot);
 	return page;
+}
+function updateStatistics(){
+    setFreeRam(statsObj.freeRam);
+    setPagePoolStat(statsObj.pagePool);
+    setPageHitStat(statsObj.pageHits);
+    setPagePoolStat(statsObj.pageFaults);
 }
