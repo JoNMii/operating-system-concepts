@@ -1,14 +1,14 @@
 function pageToFrame() {
-    pageTable: {}, //{pageid: [ramSlot, V or I]}
-    maxPages: 0,
-    init: function() {
+    this.pageTable = {}; //{pageid: [ramSlot, V or I]}
+    this.maxPages = 0;
+    this.init = function() {
         this.pageTable = {};
         this.maxPages = config.virualMemorySize/config.frameSize;
         for (var i=0; i<this.maxPages; i++) {
             this.pageTable[i] = [-1, "I"]; //All entries invalid
         };
-    },
-    getFrame: function(pageId) {
+    };
+    this.getFrame = function(pageId) {
         if (pageId >= (this.maxPages) || pageId < 0) {
             console.log("Invalid page id: ",pageId);
             return -1;
@@ -27,7 +27,7 @@ function pageToFrame() {
             //Page already in Ram, return ramSlot
             return this.pageTable[pageId][0];
         };
-    },
+    };
 };
 
 
