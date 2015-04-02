@@ -1,22 +1,27 @@
 var pageToFrame = {
     pageTable: {}, //{pageid: [ramSlot, V or I]}
+    maxPages: 0,
     init: function() {
-        this.pageTable = {}; //Clear table
-        //Set up page table
-        for (var i=0; i<config.virualMemorySize/config.frameSize; i++) {
+        this.pageTable = {};
+        this.maxPages = config.virualMemorySize/config.frameSize;
+        for (var i=0; i<this.maxPages; i++) {
             this.pageTable[i] = [-1, "I"]; //All entries invalid
         };
     },
     getFrame: function(pageId) {
-        if (pageId >= (config.virualMemorySize/config.frameSize) || pageId < 0) {
+        if (pageId >= (this.maxPages) || pageId < 0) {
             console.log("Invalid page id: ",pageId);
             return -1;
         } else if (this.pageTable[pageId][1] == "I") {
-            //Read page into Ram
-            //Use algo to find witch frame to swap out
-            //Change swapped out to I
-            //Write address into table and change from I to V
-            //Return ramslot
+            var swapOutSlot = 0; //TODO: change to slot returned by algo
+            for (var i=0; i<this.maxPages; i++) {
+                if (this.pageTable[i][0] == swapOutSlot) {
+                    this.pageTable[i][1] == "I";
+                    break;
+                };
+            };
+            this.pageTable[pageId][0] = swapOutSlot;
+            this.pageTable[pageId][1] = "V";
             return this.pageTable[pageId][0];
         } else {
             //Page already in Ram, return ramSlot
