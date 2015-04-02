@@ -1,37 +1,38 @@
 var FIFO_Algorithm = function(){
-	var turn = 0; //???
 
 	var simple = new simpleAlgorithm();
+	simple.name="FIFO";
 
-	simple.onEvict = function(){
+	simple.onEvict = function(){ 	//finds the page to swap out
 		var pages = getPagesInRAM();
 		var oldestPage = pages[0];
-
-		var oldestLU = getFlags(oldestPage).last_use;
-
-		var result = 0;
-		for(i in pages){
-			var LU = getFlags(pages[i]).last_use;
-			console.log("Last usage",LU,pages[i]);
-			if(LU === undefined){
-				return i;
-			}
-			if(oldestLU>LU){
-				oldestLU = LU;
-				oldestPage = pages[i];
-				result = i;
-			}
-		}
-		return result;
+		return oldestPage;
 	}
 	
 	var defaultOnEvent = simple.onEvent;
+
 	simple.onEvent=function(event){
-		turn++;
+		
+		defaultOnEvent(event);	//rekursija??
+		
 		var pageId = addressToPageId(event.address);
-		defaultOnEvent(event);
-		setFlags(pageId,{"last_use":turn});
+
+		if (eventlist.indexOf(pageId) == -1) {
+            eventlist.push(pageId);
+        }
+
+        var flags = getFlags(pageId);
+
+        if (event.type == "write") {
+        	if (!flags) {
+            flags = {"dirty": true};
+        	} else {
+        	    flags.dirty = true;
+        	}
+	    }
+	
+	    setFlags(pageId, flags);
 	}
-	simple.name="FIFO";
+
 	return simple;
 }();
