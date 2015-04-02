@@ -1,5 +1,39 @@
+function pageToFrame() {
+    pageTable: {}, //{pageid: [ramSlot, V or I]}
+    maxPages: 0,
+    init: function() {
+        this.pageTable = {};
+        this.maxPages = config.virualMemorySize/config.frameSize;
+        for (var i=0; i<this.maxPages; i++) {
+            this.pageTable[i] = [-1, "I"]; //All entries invalid
+        };
+    },
+    getFrame: function(pageId) {
+        if (pageId >= (this.maxPages) || pageId < 0) {
+            console.log("Invalid page id: ",pageId);
+            return -1;
+        } else if (this.pageTable[pageId][1] == "I") {
+            var swapOutSlot = 0; //TODO: change to slot returned by algo
+            for (var i=0; i<this.maxPages; i++) {
+                if (this.pageTable[i][0] == swapOutSlot) {
+                    this.pageTable[i][1] == "I";
+                    break;
+                };
+            };
+            this.pageTable[pageId][0] = swapOutSlot;
+            this.pageTable[pageId][1] = "V";
+            return this.pageTable[pageId][0];
+        } else {
+            //Page already in Ram, return ramSlot
+            return this.pageTable[pageId][0];
+        };
+    },
+};
+
+
 function process() {
-    this.pageList = []; //Pages available for process
+    this.table = 0;
+    this.pageList = []; //virtual pages available for process
     this.maxPageCount = 0;
     this.createPage = function() {
         //TODO: Implement page creation
@@ -10,6 +44,8 @@ function process() {
         for(var i=0; i<this.maxPageCount; i++) {
             this.createPage();
         };
+        this.table = new pageToFrame();
+        this.table.init();
     };
     this.createAction = function() {
         var action;
@@ -48,7 +84,10 @@ var processMaster = {
         }
     },
     killAll: function() {
-    //TODO: implement kill all processes
+        for(var i in this.processList) {
+            i.endProcess();
+            delete this.processList[i];
+        };
     },
 };
 
