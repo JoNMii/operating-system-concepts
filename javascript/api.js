@@ -21,6 +21,9 @@ config.swapSize = params.swapSize;
 config.speed = params.speed;
 config.algo = params.algoNumber;
 config.waitUntilTimeStamp = -1;
+config.processMax = params.processMax;
+config.processMin = params.processMin;
+
 var algo = params.algoNumber;
 if (algo == 0){ //FIFO/FCSF
 	config.algo = FIFO_Algorithm

@@ -97,7 +97,9 @@ startbtn.click(function () {
         "frameCount": parseInt($("#framecount").val()),
         "virtMemSize": parseInt($("#virtmemsize").val()),
         "swapSize": parseInt($("#swapsize").val()),
-        "speed": parseInt($("#speedinput").val())
+        "speed": parseInt($("#speedinput").val()),
+        "processMin": parseInt($("#processmin").val()),
+        "processMax": parseInt($("#processmax").val())
     };
     if (params.virtMemSize < params.ramSize) {
         alert("Virtual memory must be same or bigger then RAM!!!@#$%^!");
@@ -279,6 +281,7 @@ function enableSliders() {
 }
 
 function outOfMemoryShow(){
+    $(".bsod img").width($("body").width())
     $(".bsod").show();
     $(".bsod img").click(function(){
         outofMemoryHide();

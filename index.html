@@ -124,7 +124,15 @@
                 <div id="pageFaultStat" class="col-xs-6">0</div>
             </div>
         </div>
-
+        <div>
+            <!-- Process count slider -->
+            <input id="processmin" hidden value="1">
+            <input id="processmax" hidden value="20">
+            <div class="col-xs-3">
+                <span id="ex12bLabel">&nbsp;&nbsp;&nbsp;Process count: </span>
+            </div>
+            <input id="ex12b"  type="text"  class="slider ui-lockable" type="text"  data-slider-step="1" data-slider-min="1" data-slider-max="20"  /><br/>
+        </div>
         <div>
             <!-- RamSize -->
             <input id="ex6" type="text" class="slider ui-lockable"  data-slider-min="9" data-slider-max="26" data-slider-step="1" data-slider-tooltip="hide" data-slider-value="9"/>
@@ -169,16 +177,7 @@
             &nbsp;&nbsp;&nbsp;<span id="ex9SliderVal">512 KB</span>
         </div>
 
-        <div>
-            <!-- Process count slider -->
-            <input id="processmin" hidden value="1">
-            <input id="processmax" hidden value="20">
-            <div class="col-xs-3">
-                <span id="ex12bLabel">&nbsp;&nbsp;&nbsp;Process count: </span>
-            </div>
-            <input id="ex12b"  type="text"  class="slider ui-lockable" type="text"  data-slider-step="1" data-slider-min="1" data-slider-max="20"  /><br/>
-        </div>
-        <!-- Range slider, low track: -->
+
     </div>
     <div class="row">
         <div id="console-out" class="well well-sm">
