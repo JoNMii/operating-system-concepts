@@ -109,6 +109,7 @@ startbtn.click(function () {
     stopbutn.show();
     pausebtn.attr("data-started", 1);
     pausebtn.show();
+    clearStats();
     disableGUI();
 });
 
