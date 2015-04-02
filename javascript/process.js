@@ -32,6 +32,7 @@ function pageToFrame() {
 
 
 function process() {
+    this.pid = -1;
     this.table = 0;
     this.pageList = []; //virtual pages available for process
     this.maxPageCount = 0;
@@ -39,13 +40,14 @@ function process() {
         //TODO: Implement page creation
     };
     
-    this.init = function() {
+    this.init = function(pid) {
         this.maxPageCount = Math.floor(Math.random() * 10 * 2);
         for(var i=0; i<this.maxPageCount; i++) {
             this.createPage();
         };
         this.table = new pageToFrame();
         this.table.init();
+        this.pid = pid;
     };
     this.createAction = function() {
         var action;
@@ -63,20 +65,32 @@ function process() {
 
 
 var processMaster = {
-    processList: {},
+    usedPids: [],
+    processList: {}, //{process: [pid, death]}
     createProcess: function() {
-        var tmp = new process();
+        var pid = 0;
+        var tmp;
+        while (true) {
+            //Find available pid
+            if (this.usedPids.indexOf(pid) == -1) {
+                tmp = new process(pid);
+                this.usedPids += pid;
+                break;
+            };
+            pid += 1;
+        };
         tmp.init();
         //Process alive for 15s
-        this.processList[tmp] = new Date().getTime() + (1000 * 15);
+        this.processList[tmp] = [pid, new Date().getTime() + (1000 * 15)];
     },
     makeTick: function() {
         if (Object.keys(this.processList).length < 3 || Math.floor(Math.random()*10) > 7) {
             this.createProcess();
         };
         for (key in this.processList) {
-            if (this.processList[key] < new Date().getTime()) {
+            if (this.processList[key][1] < new Date().getTime()) {
                 key.endProcess();
+                delete this.usedPids[this.processList[key][0]];
                 delete this.processList[key];
             } else {
                 key.createAction();
@@ -86,6 +100,7 @@ var processMaster = {
     killAll: function() {
         for(var i in this.processList) {
             i.endProcess();
+            delete this.usedPids[this.processList[i][0]];
             delete this.processList[i];
         };
     },
