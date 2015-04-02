@@ -10,48 +10,51 @@ var statsObj = {
     pageHits:0,
     pageFaults:0
 }; //Statistics object;
-function startAlgo(params){
-console.log("Simulation started:",params);
 
-config.ramSize = params.ramSize;
-config.virualMemorySize = params.virtMemSize;
-config.frameSize = params.frameSize;
-config.frameCount = params.frameCount;
-config.swapSize = params.swapSize;
-config.speed = params.speed;
-config.algo = params.algoNumber;
-config.waitUntilTimeStamp = -1;
-config.processMax = params.processMax;
-config.processMin = params.processMin;
+function startAlgo(params) {
+	console.log("Simulation started:", params);
 
-var algo = params.algoNumber;
-if (algo == 0){ //FIFO/FCSF
-	config.algo = FIFO_Algorithm
-} else if (algo == 1){ //Second-chance
-    config.algo = second_chance
-} else if (algo == 2){ //LRU
-	config.algo = LRU_Algorithm
-} else if (algo == 3){ //LFU
+	console.assert(config.speed !== 0, "Error: speed is set to zero, expect division by zero exceptions!");
 
-} else if (algo == 5){ //Random
-	config.algo = randomAlgorithm
-}
-    statsObj.freeRam = config.ramSize;
+	config.ramSize = params.ramSize;
+	config.virualMemorySize = params.virtMemSize;
+	config.frameSize = params.frameSize;
+	config.frameCount = params.frameCount;
+	config.swapSize = params.swapSize;
+	config.speed = params.speed;
+	config.algo = params.algoNumber;
+	config.waitUntilTimeStamp = -1;
+	config.processMax = params.processMax;
+	config.processMin = params.processMin;
 
-// Clear previously created objects
-clearGraphics();
+	var algo = params.algoNumber;
+	if (algo == 0) { //FIFO/FCSF
+		config.algo = FIFO_Algorithm
+	} else if (algo == 1) { //Second-chance
+		config.algo = second_chance
+	} else if (algo == 2) { //LRU
+		config.algo = LRU_Algorithm
+	} else if (algo == 3) { //LFU
 
-// Redraw everything anew
-updateGraphics();
+	} else if (algo == 5) { //Random
+		config.algo = randomAlgorithm
+	}
+	statsObj.freeRam = config.ramSize;
 
-var init = config.algo.init;
-if(init && !config.initialised){
- init();
- config.initialised = true;
-}
+	// Clear previously created objects
+	clearGraphics();
 
-setStep(params.speed);
-unpauseAlgo();
+	// Redraw everything anew
+	updateGraphics();
+
+	var init = config.algo.init;
+	if (init && !config.initialised) {
+		init();
+		config.initialised = true;
+	}
+
+	setStep(params.speed);
+	unpauseAlgo();
 }
 
 function setStep(speed){

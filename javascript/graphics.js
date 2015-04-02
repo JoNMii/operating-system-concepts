@@ -334,8 +334,7 @@ function drawPagefileSlots() {
 }
 
 function getAnimationDuration() {
-    // TODO: calculate from config.speed
-    return 600;
+    return 500 / config.speed;
 }
 
 function getAnimationEasing() {
