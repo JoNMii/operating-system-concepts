@@ -6,9 +6,9 @@ var FIFO_Algorithm = function(){
 	simple.onEvict = function(){ 	//finds the page to swap out
 		var pages = getPagesInRAM();
 		var oldestPage = pages[0];
-		return oldestPage;
+		return pageId(oldestPage);
 	}
-	
+
 	var defaultOnEvent = simple.onEvent;
 
 	simple.onEvent=function(event){
