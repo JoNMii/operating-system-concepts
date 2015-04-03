@@ -467,6 +467,8 @@ function animatePageHit(memorySlot) {
     slot.width = newWidth;
     slot.height = newHeight;
 
+    sleep();
+
     visualObjects.memorySlots[memorySlot].animate({
         left: target.left,
         top: target.top,
