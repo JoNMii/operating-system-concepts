@@ -204,10 +204,9 @@ function enableSliders() {
             setStep(speed);
         } else if (speed == 10){
             $("#ex1SliderVal").text("OVER 9000 (MAX)");
-            $("#speedinput").val(0);
-            $("#speed").val(0);
-            //Since later there is divide by 0, so this makes it an infinity. :)
-            setStep(0);
+            $("#speedinput").val(500);
+            $("#speed").val(500);
+            setStep(500);
         }
     });
 
