@@ -97,7 +97,7 @@ startbtn.click(function () {
         "frameCount": parseInt($("#framecount").val()),
         "virtMemSize": parseInt($("#virtmemsize").val()),
         "swapSize": parseInt($("#swapsize").val()),
-        "speed": parseInt($("#speedinput").val()),
+        "speed": parseInt($("#speedinput").val()*100)/100,
         "processMin": parseInt($("#processmin").val()),
         "processMax": parseInt($("#processmax").val())
     };
@@ -140,19 +140,7 @@ resetbtn.click(function () {
     resetGUI();
 });
 
-// Speed Slider
-$("#ex1").slider();
-$("#ex1").on("slide", function (slideEvt) {
-    speed = slideEvt.value;
-    if (speed < 1) {
-        speed = 1 / Math.pow(2, Math.abs(speed - 1));
-    }
-    $("#ex1SliderVal").text(speed + "X");
-    $("#speedinput").val(speed);
-    $("#speed").val(speed);
 
-    setStep(speed);
-});
 
 function resetGUI() {
     clearStats();
@@ -164,7 +152,8 @@ function resetGUI() {
     $("#ex8SliderVal").text("512 KB");
     $("#ex9SliderVal").text("512 KB");
     $("#framecount-label").text("16");
-
+    $("#ex1SliderVal").text("1" + "X");
+    $("#speedinput").val(1);
 
     $("#ramsize").val("512");
     $("#framesize").val("32");
@@ -180,6 +169,8 @@ function resetGUI() {
     ex8Slider.destroy();
     //ex8Slider = new Slider("#ex8");
     ex9Slider.destroy();
+    ex12bSlider.destroy();
+    ex1Slider.destroy();
     //ex9Slider = new Slider("#ex9");
     enableSliders();
 
@@ -198,6 +189,27 @@ function disableGUI() {
 }
 
 function enableSliders() {
+
+    // Speed Slider
+    ex1Slider = new Slider("#ex1");
+    ex1Slider .on("slide", function (slideEvt) {
+        speed = slideEvt.value;
+        if (speed < 1) {
+            speed = 1 / Math.pow(2, Math.abs(speed - 1));
+        }
+        if (speed < 10){
+            $("#ex1SliderVal").text(speed + "X");
+            $("#speedinput").val(speed);
+            $("#speed").val(speed);
+            setStep(speed);
+        } else if (speed == 10){
+            $("#ex1SliderVal").text("OVER 9000 (MAX)");
+            $("#speedinput").val(0);
+            $("#speed").val(0);
+            //Since later there is divide by 0, so this makes it an infinity. :)
+            setStep(0);
+        }
+    });
 
 //Process count slider
     ex12bSlider = new Slider("#ex12b", { id: "slider12b", min: 1, max: 20, range: true, value: [1, 5] });
