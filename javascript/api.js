@@ -44,6 +44,11 @@ function startAlgo(params) {
 	// Clear previously created objects
 	clearGraphics();
 
+	visualConfig.ramRows = Graphics.GridConfig[pageSlotsInRAM()].rows;
+	visualConfig.ramCols = Graphics.GridConfig[pageSlotsInRAM()].cols;
+	visualConfig.pfRows = Graphics.GridConfig[pageSlotsInSWAP()].rows;
+	visualConfig.pfCols = Graphics.GridConfig[pageSlotsInSWAP()].cols;
+
 	// Redraw everything anew
 	updateGraphics();
 

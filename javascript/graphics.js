@@ -5,15 +5,53 @@ var visualObjects = { // Handlers for main graphical objects (CPU / Memory / Pag
 };
 
 var Graphics = {
+    GridConfig : {
+        4 : {rows : 4, cols : 1},
+        8 : {rows : 8, cols : 1},
+        16 : {rows : 8, cols : 2},
+        32 : {rows : 8, cols : 4},
+        64 : {rows : 8, cols : 8},
+        128 : {rows : 16, cols : 8},
+        256 : {rows : 16, cols : 16},
+        512 : {rows : 32, cols : 16},
+        1024 : {rows : 32, cols : 32},
+        2048 : {rows : 64, cols : 32},
+        4096 : {rows : 64, cols : 64}
+        //8192 : {rows : 4, cols : 1},
+        //16384 : {rows : 4, cols : 1},
+        //32768 : {rows : 4, cols : 1},
+        //65536 : {rows : 4, cols : 1},
+        //131072 : {rows : 4, cols : 1},
+        //262144 : {rows : 4, cols : 1},
+        //524288 : {rows : 4, cols : 1},
+        //1048576 : {rows : 4, cols : 1},
+        //2097152 : {rows : 4, cols : 1},
+        //4194304 : {rows : 4, cols : 1},
+        //8388608 : {rows : 4, cols : 1},
+        //16777216 : {rows : 4, cols : 1},
+    },
+
     MemorySlot : fabric.util.createClass(fabric.Rect, {
         initialize : function (position) {
             var vc = visualConfig;
 
+            var rows = visualConfig.ramRows;
+            var cols = visualConfig.ramCols;
+            console.assert(rows * cols === pageSlotsInRAM());
+
             // Main parameters
             this.left = Graphics.MemorySlot.calculateOffsetX(position);
             this.top = Graphics.MemorySlot.calculateOffsetY(position);
-            this.width = vc.ramWidth - vc.slotBorderWidth - 2 * vc.ramPadding;
-            this.height = Graphics.MemorySlot.calculateOffsetY(position + 1)
+
+            if (position % cols === cols - 1) {
+                this.width = vc.ramOffsetX + vc.ramWidth - this.left - vc.ramPadding - vc.slotBorderWidth;
+            } else {
+                this.width = Graphics.MemorySlot.calculateOffsetX(position + 1)
+                    - Graphics.MemorySlot.calculateOffsetX(position)
+                    - vc.slotBorderWidth
+                    - vc.ramSpacing;
+            }
+            this.height = Graphics.MemorySlot.calculateOffsetY(position + cols)
                 - Graphics.MemorySlot.calculateOffsetY(position)
                 - vc.slotBorderWidth
                 - vc.ramSpacing;
@@ -31,12 +69,21 @@ var Graphics = {
     PagefileSlot : fabric.util.createClass(fabric.Rect, {
         initialize : function (position) {
             var vc = visualConfig;
+            var cols = vc.pfCols;
 
             // Main parameters
             this.left = Graphics.PagefileSlot.calculateOffsetX(position);
             this.top = Graphics.PagefileSlot.calculateOffsetY(position);
-            this.width = vc.pfWidth - vc.slotBorderWidth - 2 * vc.pfPadding;
-            this.height = Graphics.PagefileSlot.calculateOffsetY(position + 1)
+
+            if (position % cols === cols - 1) {
+                this.width = vc.pfOffsetX + vc.pfWidth - this.left - vc.pfPadding - vc.slotBorderWidth;
+            } else {
+                this.width = Graphics.PagefileSlot.calculateOffsetX(position + 1)
+                    - Graphics.PagefileSlot.calculateOffsetX(position)
+                    - vc.slotBorderWidth
+                    - vc.pfSpacing;
+            }
+            this.height = Graphics.PagefileSlot.calculateOffsetY(position + cols)
                 - Graphics.PagefileSlot.calculateOffsetY(position)
                 - vc.slotBorderWidth
                 - vc.pfSpacing;
@@ -89,23 +136,39 @@ var Graphics = {
 };
 
 Graphics.MemorySlot.calculateOffsetX = function (position) {
-    return visualConfig.ramOffsetX + visualConfig.ramPadding;
+    var vc = visualConfig;
+    var cols = vc.ramCols;
+    var mainSpace = vc.ramWidth - 2 * vc.ramPadding - (cols - 1) * vc.ramSpacing;
+    var singleWidth = mainSpace / cols + vc.ramSpacing;
+    return vc.ramOffsetX + vc.ramPadding + (position % cols) * singleWidth;
 };
 
 Graphics.MemorySlot.calculateOffsetY = function (position) {
-    return visualConfig.ramOffsetY + visualConfig.ramPadding
-        + Math.floor(position * (visualConfig.ramHeight - 2 * visualConfig.ramPadding) / pageSlotsInRAM())
-        + visualConfig.ramSpacing / 2;
+    var vc = visualConfig;
+    var rows = vc.ramRows;
+    var cols = vc.ramCols;
+    var row = Math.floor(position / cols);
+    return vc.ramOffsetY + vc.ramPadding
+        + Math.floor(row * (vc.ramHeight - 2 * vc.ramPadding) / rows)
+        + vc.ramSpacing / 2;
 };
 
 Graphics.PagefileSlot.calculateOffsetX = function (position) {
-    return visualConfig.pfOffsetX + visualConfig.pfPadding;
+    var vc = visualConfig;
+    var cols = vc.pfCols;
+    var mainSpace = vc.pfWidth - 2 * vc.pfPadding - (cols - 1) * vc.pfSpacing;
+    var singleWidth = mainSpace / cols + vc.ramSpacing;
+    return vc.pfOffsetX + vc.pfPadding + (position % cols) * singleWidth;
 };
 
 Graphics.PagefileSlot.calculateOffsetY = function (position) {
-    return visualConfig.pfOffsetY + visualConfig.pfPadding
-        + Math.floor(position * (visualConfig.pfHeight - 2 * visualConfig.pfPadding) / pageSlotsInSWAP())
-        + visualConfig.pfSpacing / 2;
+    var vc = visualConfig;
+    var rows = vc.pfRows;
+    var cols = vc.pfCols;
+    var row = Math.floor(position / cols);
+    return vc.pfOffsetY + vc.pfPadding
+        + Math.floor(row * (vc.pfHeight - 2 * vc.pfPadding) / rows)
+        + vc.pfSpacing / 2;
 };
 
 Graphics.enqueueDrawingEvent = function(callback) {
@@ -122,7 +185,7 @@ Graphics.processDrawingEventQueue = function () {
             return;
         } else {
             // Process right now
-            console.log('Processing drawingEvent ' + " -> " + callback);
+            //console.log('Processing drawingEvent ' + " -> " + callback);
             callback();
         }
 
@@ -140,21 +203,21 @@ function initVisualConfig() {
         cpuHeight : 100,
         cpuOffsetX : 50,
         cpuPadding : 5,
-        cpuBorderRadius : 3,
-        
+        cpuBorderRadius : 5,
+
         ramWidth : 200,
         ramHeight : 350,
         ramOffsetX : 350,
         ramPadding : 5,
-        ramSpacing : 6, // Inner spacing between frames
-        ramBorderRadius : 3,
+        ramSpacing : 5, // Inner spacing between frames
+        ramBorderRadius : 5,
 		
 		pfWidth : 200,
 		pfHeight : 380,
 		pfOffsetX : 700,
         pfPadding : 5,
-        pfSpacing : 6,
-        pfBorderRadius : 3,
+        pfSpacing : 5,
+        pfBorderRadius : 5,
 		
         slotBorderWidth : 1,
         slotBorderRadius : 3,
