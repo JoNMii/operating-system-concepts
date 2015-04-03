@@ -347,7 +347,7 @@ function drawProcesses() {
 
         var processes = [];
         for (var i = 0; i < processCount; i++) {
-            var p = new Graphics.Process('P' + (i + 1), {
+            var p = new Graphics.Process('P' + i, {
                 left: visualConfig.procOffsetX + visualConfig.procWidth / 2,
                 top: visualConfig.procOffsetY + i * visualConfig.singleProcHeight,
                 fontSize: visualConfig.singleProcFontSize
@@ -476,8 +476,6 @@ function animatePageHit(memorySlot) {
         duration: getAnimationDuration(),
         onChange : canvas.renderAll.bind(canvas),
         onComplete : function () {
-            //canvas.renderAll();
-
             awaken(); // Resume normal execution
         },
         easing : getAnimationEasing()
@@ -554,4 +552,33 @@ function animateSwapToRam(memorySlot, pagefileSlot) {
             easing : getAnimationEasing()
         }
     );
+}
+
+function animateEvent(event) {
+    var pid = event.pid;
+    var type = event.type;
+    var address = event.address;
+
+    if (visualObjects.eventText !== undefined) {
+        canvas.remove(visualObjects.eventText);
+        canvas.renderAll();
+    }
+
+    visualObjects.eventText = new Graphics.CustomText('P' + pid + ' ' + type + ' ' + address, {
+        left : visualConfig.cpuOffsetX + visualConfig.cpuWidth / 2,
+        top : 100,
+        fontSize : 20
+    });
+
+    canvas.add(visualObjects.eventText);
+    canvas.renderAll();
+
+    visualObjects.eventText.animate({
+        left : visualObjects.eventText.left
+    }, {
+        duration: getAnimationDuration(),
+        onChange : canvas.renderAll.bind(canvas),
+        easing : getAnimationEasing()
+    });
+
 }

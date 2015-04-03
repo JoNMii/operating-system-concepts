@@ -6,6 +6,10 @@ function simpleAlgorithm() {
 		return 0;
 	};
 	this.onEvent = function(event) {
+		Graphics.enqueueDrawingEvent(function () {
+			animateEvent(event);
+		});
+
 		var pid = event.pid;
 		var pageId = addressToPageId(event.address);
 		var pageInRAM = findRAMPageById(pageId);
