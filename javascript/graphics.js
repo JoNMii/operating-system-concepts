@@ -419,8 +419,38 @@ function animateCreatePage(memorySlot) {
 }
 
 function animatePageHit(memorySlot) {
-    // TODO: implement something like a 'bounce'
     console.assert(memorySlot in visualObjects.memorySlots, "Error: page hit in empty slot -> " + memorySlot);
+
+    var target = new Graphics.MemorySlot(memorySlot);
+
+    var slot = visualObjects.memorySlots[memorySlot];
+
+    var expansionQuotient = 1.2;
+
+    var x = slot.width;
+    var y = slot.height;
+    var newWidth = expansionQuotient * x;
+    var newHeight = expansionQuotient * y;
+    slot.left -= (newWidth - x) / 2;
+    slot.top -= (newHeight - y) / 2;
+    slot.width = newWidth;
+    slot.height = newHeight;
+
+    visualObjects.memorySlots[memorySlot].animate({
+        left: target.left,
+        top: target.top,
+        width: target.width,
+        height: target.height
+    }, {
+        duration: getAnimationDuration(),
+        onChange : canvas.renderAll.bind(canvas),
+        onComplete : function () {
+            //canvas.renderAll();
+
+            awaken(); // Resume normal execution
+        },
+        easing : getAnimationEasing()
+    });
 }
 
 function animateRamToSwap(memorySlot, pagefileSlot) {
@@ -434,28 +464,27 @@ function animateRamToSwap(memorySlot, pagefileSlot) {
     sleep(); // Sleep infinitely - rely on onComplete() event to awaken
 
     visualObjects.memorySlots[memorySlot].animate({
-            left : target.left,
-            top : target.top,
-            width : target.width,
-            height : target.height
-        }, {
-            duration: getAnimationDuration(),
-            onChange : canvas.renderAll.bind(canvas),
-            onComplete : function () {
-                canvas.remove(visualObjects.memorySlots[memorySlot]);
-                // Warning: self-destruction
-                delete visualObjects.memorySlots[memorySlot];
+        left: target.left,
+        top: target.top,
+        width: target.width,
+        height: target.height
+    }, {
+        duration: getAnimationDuration(),
+        onChange: canvas.renderAll.bind(canvas),
+        onComplete: function () {
+            canvas.remove(visualObjects.memorySlots[memorySlot]);
+            // Warning: self-destruction
+            delete visualObjects.memorySlots[memorySlot];
 
-                visualObjects.pagefileSlots[pagefileSlot] = target;
-                canvas.add(visualObjects.pagefileSlots[pagefileSlot]);
-                
-                canvas.renderAll();
+            visualObjects.pagefileSlots[pagefileSlot] = target;
+            canvas.add(visualObjects.pagefileSlots[pagefileSlot]);
 
-                awaken(); // Resume normal execution
-            },
-            easing : getAnimationEasing()
-        }
-    );
+            canvas.renderAll();
+
+            awaken(); // Resume normal execution
+        },
+        easing: getAnimationEasing()
+    });
 }
 
 function animateSwapToRam(memorySlot, pagefileSlot) {
