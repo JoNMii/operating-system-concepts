@@ -167,6 +167,8 @@ function generateEvent(){
 
 function resetSimulation(){
 	stopAlgo();
+	clearGraphics();
+	updateGraphics();
 }
 
 function algorythm(){
