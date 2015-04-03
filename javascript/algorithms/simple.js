@@ -6,6 +6,7 @@ function simpleAlgorithm() {
 		return 0;
 	};
 	this.onEvent = function(event) {
+		var pid = event.pid;
 		var pageId = addressToPageId(event.address);
 		var pageInRAM = findRAMPageById(pageId);
 		var pageInSWAP = findSWAPPageById(pageId);
@@ -80,7 +81,7 @@ function simpleAlgorithm() {
 			createPage(target, pageId);
 
 			Graphics.enqueueDrawingEvent(function () {
-				animateCreatePage(target);
+				animateCreatePage(pid, target);
 			});
 		}
 	};

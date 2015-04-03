@@ -62,7 +62,31 @@ var visualConfig = {
     memorySlotColor: 'transparent',
     pagefileSlotColor: 'transparent',
     memorySlotBorderColor: '#ff0000',
-    pagefileSlotBorderColor: '#ffff00'
+    pagefileSlotBorderColor: '#ffff00',
+
+    // TODO: pick colors for all supported processes
+    procColors: {
+         0 : '#FF0000',
+         1 : '#00FF00',
+         2 : '#0000FF',
+         3 : '#FFFF00',
+         4 : '#FF00FF',
+         5 : '#00FFFF',
+         6 : '#000000',
+         7 : '#000000',
+         8 : '#000000',
+         9 : '#000000',
+        10 : '#000000',
+        11 : '#000000',
+        12 : '#000000',
+        13 : '#000000',
+        14 : '#000000',
+        15 : '#000000',
+        16 : '#000000',
+        17 : '#000000',
+        18 : '#000000',
+        19 : '#000000'
+    }
 };
 
 function initVisualConfig() {
@@ -122,7 +146,9 @@ var Graphics = {
     },
 
     MemorySlot : fabric.util.createClass(fabric.Rect, {
-        initialize : function (position) {
+        initialize : function (pid, position) {
+            this.pid = pid;
+
             var vc = visualConfig;
 
             var rows = visualConfig.ramRows;
@@ -151,13 +177,15 @@ var Graphics = {
             this.ry = vc.slotBorderRadius;
             this.fill = vc.memorySlotColor;
             this.strokeWidth = vc.slotBorderWidth;
-            this.stroke = vc.memorySlotBorderColor;
+            this.stroke = vc.procColors[this.pid];
 
             this.selectable = false;
         }
     }),
     PagefileSlot : fabric.util.createClass(fabric.Rect, {
-        initialize : function (position) {
+        initialize : function (pid, position) {
+            this.pid = pid;
+
             var vc = visualConfig;
             var cols = vc.pfCols;
 
@@ -183,7 +211,7 @@ var Graphics = {
             this.ry = vc.slotBorderRadius;
             this.fill = vc.pagefileSlotColor;
             this.strokeWidth = vc.slotBorderWidth;
-            this.stroke = vc.pagefileSlotBorderColor;
+            this.stroke = vc.procColors[this.pid];
 
             this.selectable = false;
         }
@@ -327,7 +355,7 @@ function drawProcesses() {
             processes.push(p);
         }
         visualObjects.processes = processes;
-        for (var i = 0; i < processCount; i++) {
+        for (i = 0; i < processCount; i++) {
             canvas.add(processes[i]);
         }
     }
@@ -408,11 +436,12 @@ function getAnimationEasing() {
     return fabric.util.easeInOutCubic;
 }
 
-function animateCreatePage(memorySlot) {
+function animateCreatePage(pid, memorySlot) {
+    console.assert(pid in visualObjects.processes, "Error: process " + pid + " does not exist!");
     console.assert(!(memorySlot in visualObjects.memorySlots), "Error: overwriting memory slot " + memorySlot);
 
-    var slot = new Graphics.MemorySlot(memorySlot);
-    console.log('New slot created: ', memorySlot, slot);
+    var slot = new Graphics.MemorySlot(pid, memorySlot);
+    console.log('New slot created: ', pid, memorySlot, slot);
     visualObjects.memorySlots[memorySlot] = slot;
     canvas.add(slot);
     canvas.renderAll();
@@ -421,7 +450,9 @@ function animateCreatePage(memorySlot) {
 function animatePageHit(memorySlot) {
     console.assert(memorySlot in visualObjects.memorySlots, "Error: page hit in empty slot -> " + memorySlot);
 
-    var target = new Graphics.MemorySlot(memorySlot);
+    var pid = visualObjects.memorySlots[memorySlot].pid;
+    console.assert(pid in visualObjects.processes, "Error: process " + pid + " does not exist!");
+    var target = new Graphics.MemorySlot(pid, memorySlot);
 
     var slot = visualObjects.memorySlots[memorySlot];
 
@@ -459,7 +490,9 @@ function animateRamToSwap(memorySlot, pagefileSlot) {
     console.assert(!(pagefileSlot in visualObjects.pagefileSlots), "Error: slot " + pagefileSlot + " in pagefile is not empty!");
     console.assert(memorySlot in visualObjects.memorySlots, "Error: slot " + memorySlot + " in memory is empty!");
 
-    var target = new Graphics.PagefileSlot(pagefileSlot);
+    var pid = visualObjects.memorySlots[memorySlot].pid;
+    console.assert(pid in visualObjects.processes, "Error: process " + pid + " does not exist!");
+    var target = new Graphics.PagefileSlot(pid, pagefileSlot);
 
     sleep(); // Sleep infinitely - rely on onComplete() event to awaken
 
@@ -493,7 +526,9 @@ function animateSwapToRam(memorySlot, pagefileSlot) {
     console.assert(!(memorySlot in visualObjects.memorySlots), "Error: slot " + memorySlot + " in memory is not empty!");
     console.assert(pagefileSlot in visualObjects.pagefileSlots, "Error: slot " + pagefileSlot + " in pagefile is empty!");
 
-    var target = new Graphics.MemorySlot(memorySlot);
+    var pid = visualObjects.pagefileSlots[pagefileSlot].pid;
+    console.assert(pid in visualObjects.processes, "Error: process " + pid + " does not exist!");
+    var target = new Graphics.MemorySlot(pid, memorySlot);
 
     sleep(); // Sleep infinitely - rely on onComplete() event to awaken
 

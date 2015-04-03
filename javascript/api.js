@@ -157,9 +157,9 @@ function generateEvent(){
     var address = Math.floor(config.virualMemorySize * Math.random());
     
     var request = {
+		"pid" : 0, // TODO: update with real PID
         "type" : requestType,
         "address" : address
-        /* "data" : TODO: if necessary */
     };
     
 	return request;
