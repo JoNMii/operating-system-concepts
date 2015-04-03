@@ -5,6 +5,9 @@ var visualObjects = { // Handlers for main graphical objects (CPU / Memory / Pag
 
 var visualConfig = {
     // Texts
+    procTextOffsetY: 0,
+    procTextFontSize: 30,
+
     cpuTextOffsetY: 0,
     cpuTextFontSize: 30,
 
@@ -13,6 +16,13 @@ var visualConfig = {
 
     pfTextOffsetY: 0,
     pfTextFontSize: 30,
+
+    // Processes
+    procOffsetX: 0,
+    procOffsetY: 100,
+    procWidth: 150,
+    singleProcHeight: 30,
+    singleProcFontSize: 15,
 
     // CPU
     cpuURL: 'assets/images/cpu3.jpg',
@@ -72,6 +82,7 @@ function clearGraphics() {
 
 // Redraw / revalidate the visuals
 function updateGraphics() {
+    drawProcesses();
     drawCPU();
     drawMemory();
     drawPagefile();
@@ -220,6 +231,13 @@ var Graphics = {
             this.selectable = false;
         }
     }),
+    Process : fabric.util.createClass(fabric.Text, {
+        initialize: function(text, options) {
+            this.callSuper('initialize', text, options);
+            this.left -= this.width / 2;
+            this.selectable = false;
+        }
+    }),
 
     drawingEventQueue : []
 };
@@ -285,6 +303,35 @@ Graphics.processDrawingEventQueue = function () {
 Graphics.clearDrawingEventQueue = function () {
     this.drawingEventQueue = [];
 };
+
+function drawProcesses() {
+    if (visualObjects.processes === undefined) {
+        var procText = new Graphics.CustomText('Processes', {
+            left: visualConfig.procOffsetX + visualConfig.procWidth / 2,
+            top:  visualConfig.procTextOffsetY,
+            fontSize: visualConfig.procTextFontSize
+        });
+        visualObjects.procText = procText;
+        canvas.add(procText);
+
+        // TODO: visualize processes properly
+        var processCount = 20;
+
+        var processes = [];
+        for (var i = 0; i < processCount; i++) {
+            var p = new Graphics.Process('P' + (i + 1), {
+                left: visualConfig.procOffsetX + visualConfig.procWidth / 2,
+                top: visualConfig.procOffsetY + i * visualConfig.singleProcHeight,
+                fontSize: visualConfig.singleProcFontSize
+            });
+            processes.push(p);
+        }
+        visualObjects.processes = processes;
+        for (var i = 0; i < processCount; i++) {
+            canvas.add(processes[i]);
+        }
+    }
+}
 
 function drawCPU() {
     if (visualObjects.CPU === undefined) {
