@@ -1,8 +1,87 @@
-var visualConfig = {};
 var visualObjects = { // Handlers for main graphical objects (CPU / Memory / Pagefile / etc.)
     memorySlots : {},
     pagefileSlots : {}
 };
+
+var visualConfig = {
+    // Texts
+    cpuTextOffsetY: 0,
+    cpuTextFontSize: 30,
+
+    ramTextOffsetY: 0,
+    ramTextFontSize: 30,
+
+    pfTextOffsetY: 0,
+    pfTextFontSize: 30,
+
+    // CPU
+    cpuURL: 'assets/images/cpu3.jpg',
+    cpuWidth: 100,
+    cpuHeight: 100,
+    cpuOffsetX: 160,
+    cpuOffsetY: 125,
+    cpuPadding: 5,
+    cpuBorderRadius: 5,
+
+    // RAM
+    ramWidth: 200,
+    ramHeight: 300,
+    ramOffsetX: 350,
+    ramOffsetY: 40,
+    ramPadding: 5,
+    ramSpacing: 5, // Inner spacing between frames
+    ramBorderRadius: 5,
+
+    // Pagefile
+    pfWidth: 200,
+    pfHeight: 350,
+    pfOffsetX: 700,
+    pfOffsetY: 40,
+    pfPadding: 5,
+    pfSpacing: 5,
+    pfBorderRadius: 5,
+
+    // Slots/frames
+    slotBorderWidth: 1,
+    slotBorderRadius: 3,
+
+    // Colors
+    cpuColor: '#dddddd',
+    memoryColor: '#dddddd',
+    pagefileColor: '#dddddd',
+    memorySlotColor: 'transparent',
+    pagefileSlotColor: 'transparent',
+    memorySlotBorderColor: '#ff0000',
+    pagefileSlotBorderColor: '#ffff00'
+};
+
+function initVisualConfig() {
+    // Align vertically
+    //visualConfig.cpuOffsetY = canvas.getHeight() / 2 - visualConfig.cpuHeight / 2;
+    //visualConfig.ramOffsetY = canvas.getHeight() / 2 - visualConfig.ramHeight / 2;
+    //visualConfig.pfOffsetY = canvas.getHeight() / 2 - visualConfig.pfHeight / 2;
+}
+
+function clearGraphics() {
+    visualObjects = {};
+    visualObjects.memorySlots = {};
+    visualObjects.pagefileSlots = {};
+    Graphics.clearDrawingEventQueue();
+    canvas.clear();
+}
+
+// Redraw / revalidate the visuals
+function updateGraphics() {
+    drawCPU();
+    drawMemory();
+    drawPagefile();
+    //drawMemorySlots();
+    //drawPagefileSlots();
+
+    Graphics.processDrawingEventQueue();
+
+    canvas.renderAll();
+}
 
 var Graphics = {
     GridConfig : {
@@ -59,7 +138,7 @@ var Graphics = {
             // Look and feel
             this.rx = vc.slotBorderRadius;
             this.ry = vc.slotBorderRadius;
-            this.fill = 'transparent';
+            this.fill = vc.memorySlotColor;
             this.strokeWidth = vc.slotBorderWidth;
             this.stroke = vc.memorySlotBorderColor;
 
@@ -91,9 +170,9 @@ var Graphics = {
             // Look and feel
             this.rx = vc.slotBorderRadius;
             this.ry = vc.slotBorderRadius;
-            this.fill = 'transparent';
+            this.fill = vc.pagefileSlotColor;
             this.strokeWidth = vc.slotBorderWidth;
-            this.stroke = vc.memorySlotBorderColor;
+            this.stroke = vc.pagefileSlotBorderColor;
 
             this.selectable = false;
         }
@@ -107,6 +186,7 @@ var Graphics = {
             this.fill = visualConfig.cpuColor;
             this.rx = visualConfig.cpuBorderRadius;
             this.ry = visualConfig.cpuBorderRadius;
+            this.selectable = false;
         }
     }),
     RAM : fabric.util.createClass(fabric.Rect, {
@@ -118,6 +198,7 @@ var Graphics = {
             this.fill = visualConfig.memoryColor;
             this.rx = visualConfig.ramBorderRadius;
             this.ry = visualConfig.ramBorderRadius;
+            this.selectable = false;
         }
     }),
     SWAP : fabric.util.createClass(fabric.Rect, {
@@ -129,6 +210,14 @@ var Graphics = {
             this.fill = visualConfig.pagefileColor;
             this.rx = visualConfig.pfBorderRadius;
             this.ry = visualConfig.pfBorderRadius;
+            this.selectable = false;
+        }
+    }),
+    CustomText : fabric.util.createClass(fabric.Text, {
+        initialize: function(text, options) {
+            this.callSuper('initialize', text, options);
+            this.left -= this.width / 2;
+            this.selectable = false;
         }
     }),
 
@@ -197,88 +286,33 @@ Graphics.clearDrawingEventQueue = function () {
     this.drawingEventQueue = [];
 };
 
-function initVisualConfig() {
-    visualConfig = {
-        cpuWidth : 100,
-        cpuHeight : 100,
-        cpuOffsetX : 50,
-        cpuPadding : 5,
-        cpuBorderRadius : 5,
-
-        ramWidth : 200,
-        ramHeight : 350,
-        ramOffsetX : 350,
-        ramPadding : 5,
-        ramSpacing : 5, // Inner spacing between frames
-        ramBorderRadius : 5,
-		
-		pfWidth : 200,
-		pfHeight : 380,
-		pfOffsetX : 700,
-        pfPadding : 5,
-        pfSpacing : 5,
-        pfBorderRadius : 5,
-		
-        slotBorderWidth : 1,
-        slotBorderRadius : 3,
-		
-		cpuColor : '#dddddd',
-		memoryColor : '#dddddd',
-		pagefileColor : '#dddddd',
-		
-		//freePageColor : '#cccccc',
-		//loadedPageColor : '#777777',
-		
-		memorySlotBorderColor : '#ff0000',
-		pagefileSlotBorderColor : '#ffff00'
-    };
-    
-	// Align vertically
-    visualConfig.cpuOffsetY = canvas.getHeight() / 2 - visualConfig.cpuHeight / 2;
-    visualConfig.ramOffsetY = canvas.getHeight() / 2 - visualConfig.ramHeight / 2;
-	visualConfig.pfOffsetY = canvas.getHeight() / 2 - visualConfig.pfHeight / 2;
-}
-
-function clearGraphics() {
-    visualObjects = {};
-    visualObjects.memorySlots = {};
-    visualObjects.pagefileSlots = {};
-    Graphics.clearDrawingEventQueue();
-    canvas.clear();
-}
-
-// Redraw / revalidate the visuals
-function updateGraphics() {
-    drawCPU();
-    drawMemory();
-    drawPagefile();
-    //drawMemorySlots();
-    //drawPagefileSlots();
-
-    Graphics.processDrawingEventQueue();
-
-    canvas.renderAll();
-}
-
 function drawCPU() {
     if (visualObjects.CPU === undefined) {
-        var CPU = new Graphics.CPU();
-        
-        var cpuText = new fabric.Text('CPU', {
-            left: visualConfig.cpuOffsetX,
-            top:  visualConfig.cpuOffsetY,
-            width: visualConfig.cpuWidth,
-            height: visualConfig.cpuHeight,
-            textAlign: 'center'
+        visualObjects.CPU = "will be defined in a moment";
+
+        if (visualConfig.cpuURL) {
+            fabric.Image.fromURL(visualConfig.cpuURL, function(img) {
+                img.scaleToWidth(visualConfig.cpuWidth);
+                img.set('left', visualConfig.cpuOffsetX);
+                img.set('top', visualConfig.cpuOffsetY);
+                img.setCoords();
+                img.selectable = false;
+                canvas.add(img);
+                visualObjects.CPU = img;
+            });
+        } else {
+            var CPU = new Graphics.CPU();
+            visualObjects.CPU = CPU;
+            canvas.add(CPU);
+        }
+
+        var cpuText = new Graphics.CustomText('CPU', {
+            left: visualConfig.cpuOffsetX + visualConfig.cpuWidth / 2,
+            top:  visualConfig.cpuTextOffsetY,
+            fontSize: visualConfig.cpuTextFontSize
         });
-        
-        visualObjects.CPU = CPU;
+
         visualObjects.cpuText = cpuText;
-        
-        CPU.selectable = false;
-        cpuText.selectable = false;
-        
-        canvas.add(CPU);
         canvas.add(cpuText);
     }
 }
@@ -287,19 +321,14 @@ function drawMemory() {
     if (visualObjects.RAM === undefined) {
         var RAM = new Graphics.RAM();
         
-        var ramText = new fabric.Text('RAM', {
-            left: visualConfig.ramOffsetX,
-            top:  visualConfig.ramOffsetY,
-            width:  visualConfig.ramWidth,
-            height: visualConfig.ramHeight,
-            textAlign: 'center'
+        var ramText = new Graphics.CustomText('RAM', {
+            left: visualConfig.ramOffsetX + visualConfig.ramWidth / 2,
+            top:  visualConfig.ramTextOffsetY,
+            fontSize: visualConfig.ramTextFontSize
         });
         
         visualObjects.RAM = RAM;
         visualObjects.ramText = ramText;
-        
-        RAM.selectable = false;
-        ramText.selectable = false;
         
         canvas.add(RAM);
         canvas.add(ramText);
@@ -310,89 +339,17 @@ function drawPagefile() {
     if (visualObjects.Pagefile === undefined) {
         var Pagefile = new Graphics.SWAP();
         
-        var pfText = new fabric.Text('SWAP', {
-            left: visualConfig.pfOffsetX,
-            top:  visualConfig.pfOffsetY,
-            width:  visualConfig.pfWidth,
-            height: visualConfig.pfHeight,
-            textAlign: 'center'
+        var pfText = new Graphics.CustomText('SWAP', {
+            left: visualConfig.pfOffsetX + visualConfig.pfWidth / 2,
+            top:  visualConfig.pfTextOffsetY,
+            fontSize: visualConfig.pfTextFontSize
         });
         
         visualObjects.Pagefile = Pagefile;
         visualObjects.pfText = pfText;
         
-        Pagefile.selectable = false;
-        pfText.selectable = false;
-        
         canvas.add(Pagefile);
         canvas.add(pfText);
-    }
-}
-
-function drawMemorySlots() {
-    if (visualObjects.memorySlots === undefined) {
-        var frameCount = pageSlotsInRAM();
-        if (frameCount > 0) {
-            visualObjects.memorySlots = [];
-            
-            for (var i = 0; i < frameCount; i++) {
-                var x = visualConfig.ramOffsetX;
-                var y = visualConfig.ramOffsetY + Math.floor(i * visualConfig.ramHeight / frameCount);
-                var w = visualConfig.ramWidth - visualConfig.slotBorderWidth;
-                var h = Math.floor((i + 1) * visualConfig.ramHeight / frameCount) - Math.floor(i * visualConfig.ramHeight / frameCount) - visualConfig.slotBorderWidth;
-                
-                //console.log('Drawing rect ' + x + ' ' + y + ' ' + w  + ' ' + h);
-                
-                var frame = new fabric.Rect({
-                    left: x,
-                    top:  y,
-                    width:  w,
-                    height: h,
-                    fill: 'transparent',
-                    strokeWidth: visualConfig.slotBorderWidth,
-                    stroke: visualConfig.memorySlotBorderColor
-                });
-                
-                frame.selectable = false;
-                
-                canvas.add(frame);
-                
-                visualObjects.memorySlots.push(frame);
-            }
-        }
-    }
-}
-
-function drawPagefileSlots() {
-    if (visualObjects.pagefileSlots === undefined) {
-        var frameCount = pageSlotsInSWAP();
-		// console.log('Pagefile frame count: ' + frameCount);
-        if (frameCount > 0) {
-            visualObjects.pagefileSlots = [];
-
-            for (var i = 0; i < frameCount; i++) {
-                var x = visualConfig.pfOffsetX;
-                var y = visualConfig.pfOffsetY + Math.floor(i * visualConfig.pfHeight / frameCount);
-                var w = visualConfig.pfWidth - visualConfig.slotBorderWidth;
-                var h = Math.floor((i + 1) * visualConfig.pfHeight / frameCount) - Math.floor(i * visualConfig.pfHeight / frameCount) - visualConfig.slotBorderWidth;
-
-                var frame = new fabric.Rect({
-                    left: x,
-                    top:  y,
-                    width:  w,
-                    height: h,
-                    fill: 'transparent',
-                    strokeWidth: visualConfig.slotBorderWidth,
-                    stroke: visualConfig.pagefileSlotBorderColor
-                });
-
-                frame.selectable = false;
-
-                canvas.add(frame);
-
-                visualObjects.pagefileSlots.push(frame);
-            }
-        }
     }
 }
 
