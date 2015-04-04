@@ -10,7 +10,7 @@ var MMU = {
     getId: function() {
         var tmp = 0;
         while(true) {
-            if (this.usedId,indexOf(tmp) == -1) {
+            if (this.usedId.indexOf(tmp) == -1) {
                 this.usedId += tmp;
                 break;
             };
