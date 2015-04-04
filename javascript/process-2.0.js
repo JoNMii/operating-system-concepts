@@ -55,8 +55,7 @@ var processMaster = {
         };
         //50% chance to create new process if min is reached
         if (Object.keys(this.processList).length >= config.processMin) {
-            var tmp = getRandomInt(0, 100);
-            if (tmp > 50) {
+            if (getRandomInt(0,100) % 2 == 0) {
                 return;
             };
         };        
