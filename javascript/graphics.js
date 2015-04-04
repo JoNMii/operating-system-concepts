@@ -7,6 +7,7 @@ var visualConfig = {
     // Texts
     procTextOffsetY: 0,
     procTextFontSize: 30,
+    procSpacing: 60,
 
     cpuTextOffsetY: 0,
     cpuTextFontSize: 30,
@@ -19,7 +20,7 @@ var visualConfig = {
 
     // Processes
     procOffsetX: 0,
-    procOffsetY: 100,
+    procOffsetY: 40,
     procWidth: 150,
     singleProcHeight: 30,
     singleProcFontSize: 15,
@@ -249,7 +250,13 @@ var Graphics = {
             this.callSuper('initialize', text, options);
 
             this.left = visualConfig.procOffsetX + visualConfig.procWidth / 2 - this.width / 2;
-            this.top = visualConfig.procOffsetY + pid * visualConfig.singleProcHeight;
+            if (pid < 10) {
+                this.left -= visualConfig.procSpacing / 2;
+                this.top = visualConfig.procOffsetY + pid * visualConfig.singleProcHeight;
+            } else {
+                this.left += visualConfig.procSpacing / 2;
+                this.top = visualConfig.procOffsetY + (pid - 10) * visualConfig.singleProcHeight;
+            }
             this.fontSize = visualConfig.singleProcFontSize;
             this.fill = visualConfig.procColors[pid];
 
