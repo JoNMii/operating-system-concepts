@@ -65,6 +65,7 @@ var processMaster = {
             if (this.usedPids.indexOf(pid) == -1) {
                 tmp.init(pid);
                 this.usedPids += pid;
+                break;
             };
             pid += 1;
         };
