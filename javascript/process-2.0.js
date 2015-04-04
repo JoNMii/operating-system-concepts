@@ -27,6 +27,12 @@ function process() {
         this.pageTable.init(config.virualMemorySize/config.frameSize);
     };
     this.makeAction = function() {
+        var action;
+        if (getRandomInt(0,100) % 2 == 0) {
+            action = "read";
+        } else {
+            action = "write";
+        };
         //TODO: implement actions
     };
     this.endProcess = function() {
