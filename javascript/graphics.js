@@ -106,8 +106,6 @@ function clearGraphics() {
 
 // Redraw / revalidate the visuals
 function updateGraphics() {
-    //do not get antoher tick while redrawing
-    graphicsStarted();
 
     drawProcesses();
     drawCPU();
@@ -318,7 +316,7 @@ Graphics.processDrawingEventQueue = function () {
     while (eventsToProcess--> 0) {
         var callback = this.drawingEventQueue[0];
 
-        if (Date.now() < config.waitUntilTimeStamp) {
+        if (!config.waitForGraphics) {
             // Stop processing for now
             return;
         } else {

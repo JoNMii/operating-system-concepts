@@ -77,9 +77,9 @@ function graphicsStarted() {
 
 function graphicsDone() {
 	config.waitForGraphics = false;
-	if(config.tickWaiting){
+	//if(config.tickWaiting){
 		//unpauseAlgo();
-	}
+	//}
 }
 
 function pauseAlgo(){
@@ -150,12 +150,11 @@ var exampleAlgorythm = {
 //increases time by one timeunit
 function simulationTick(){
 	if (config.waitForGraphics) {
-		//console.log('Sleeping...');
-		config.tickWaiting = true;
-		pauseAlgo();
+		console.log('Sleeping...');
+		//config.tickWaiting = true;
 		return;
 	}
-	config.tickWaiting = false;
+	//config.tickWaiting = false;
 	var onEvent = algorythm().onEvent;
 	var event = processMaster.makeTick();
 	if(event != null){
