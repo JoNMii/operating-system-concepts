@@ -66,13 +66,13 @@ var visualConfig = {
 
     // TODO: pick colors for all supported processes
     procColors: {
-         0 : '#0FCFA9',
+         0 : '#F03E16',
          1 : '#9000D2',
          2 : '#2FDA1F',
          3 : '#6F020E',
          4 : '#F85D00',
          5 : '#F42399', //last changed
-         6 : '#B811FA',
+         6 : '#AB0939', 
          7 : '#69118C',
          8 : '#2C118C',
          9 : '#4E27D9',
