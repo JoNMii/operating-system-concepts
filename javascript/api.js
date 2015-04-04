@@ -245,6 +245,7 @@ function getFlags(page){
 }
 
 function pageHit(pageId){
+	statsObj.pageHits++;
 	console.log("Page hit!",{"pageId":pageId});
 }
 
@@ -347,5 +348,5 @@ function updateStatistics(){
     setFreeRam(statsObj.freeRam);
     setPagePoolStat(statsObj.pagePool);
     setPageHitStat(statsObj.pageHits);
-    setPagePoolStat(statsObj.pageFaults);
+    setPageFaultStat(statsObj.pageFaults);
 }
