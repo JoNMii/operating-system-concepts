@@ -102,8 +102,7 @@ var processMaster = {
         var timeOfset = getRandomInt(10, 100); //Min 11, max 99 seconds to live
         while (true) {
             if (this.usedPids.indexOf(pid) == -1) {
-                tmp.init(pid, getRandomInt(0, 3), Date.now()+(timeOfset*1000));
-                //TODO: replace values with min/max pages for process
+                tmp.init(pid, getRandomInt(config.pagePerProcessMin, config.pagePerProcessMax), Date.now()+(timeOfset*1000));
                 this.usedPids += pid;
                 break;
             };
