@@ -19,7 +19,7 @@ var MMU = {
         return tmp;
     },
     removeId: function(id) {
-        this.usedId.splice(this.usedId.indexOf(id),1);
+        this.usedId.splice(this.usedId.indexOf(parseInt(id)),1);
     },
 };
 
@@ -130,7 +130,7 @@ var processMaster = {
             if (this.processList[i].ttl == 0) {
                 this.processList[i].endProcess();
                 console.log("Process ID:"+this.processList[i].pid+" terminated");
-                this.usedPids.splice(this.usedPids.indexOf(i),1);
+                this.usedPids.splice(this.usedPids.indexOf(parseInt(i)),1);
                 delete this.processList[i];
             };
         };
