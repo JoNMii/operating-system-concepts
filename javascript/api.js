@@ -303,6 +303,13 @@ function findSWAPSlotByPageId(id){
 
 //delete page from both RAM and SWAP
 function deletePage(page){
+	var id = pageId(page);
+	var ramPageId = findRAMSlotByPageId(id);
+	var pfPageId = findSWAPSlotByPageId(id);
+	Graphics.enqueueDrawingEvent(function () {
+		animateDeletePage(ramPageId, pfPageId);
+	});
+
 	data.deleteRAMPage(page);
 	data.deleteSWAPPage(page);
 }

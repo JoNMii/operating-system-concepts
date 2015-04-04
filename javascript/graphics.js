@@ -582,5 +582,24 @@ function animateEvent(event) {
         onChange : canvas.renderAll.bind(canvas),
         easing : getAnimationEasing()
     });
+}
 
+function animateCreateProcess(pid) {
+    console.assert(!(pid in visualObjects.processes), "Error: process " + pid + " already exists");
+
+    //visualObjects.processes = new Graphics.Process(pid);
+}
+
+function animateDeletePage(memorySlot, pagefileSlot) {
+    if (memorySlot in visualObjects.memorySlots) {
+        canvas.remove(visualObjects.memorySlots[memorySlot]);
+        delete visualObjects.memorySlots[memorySlot];
+    }
+
+    if (pagefileSlot in visualObjects.pagefileSlots) {
+        canvas.remove(visualObjects.pagefileSlots[pagefileSlot]);
+        delete visualObjects.pagefileSlots[pagefileSlot];
+    }
+
+    canvas.renderAll();
 }
