@@ -118,12 +118,14 @@ var processMaster = {
         //Create new process
         this.createProcess();
         
-        //Generate action for each active process
-        for (var i in this.processList) {
-            var event = this.processList[i].makeAction();
+        //Generate action for an active process
+	var event=null;
+	if(this.processList.length > 0){
+	    var i = Math.floor(Math.random*(processList.length-1))
+            event = this.processList[i].makeAction();
             simulationTick(event);
             this.processList[i].ttl -= 1;
-        };        
+       }
         
         //Delete old processes
         for (var i in this.processList) {
@@ -134,6 +136,8 @@ var processMaster = {
                 delete this.processList[i];
             };
         };
+
+	return event;
     },
     killAll: function() {
         console.log("Killing all processes");

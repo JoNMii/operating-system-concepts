@@ -91,8 +91,8 @@ function unpauseAlgo(){
 		pauseAlgo();
 	}
 	var step = 1000/config.speed;
-	//config.timer = setInterval(function(){simulationTick()},step);
-	config.timer = setInterval(function(){processMaster.makeTick()},step);
+	config.timer = setInterval(function(){simulationTick()},step);
+	//config.timer = setInterval(function(){processMaster.makeTick()},step);
 }
 
 function stopAlgo(){
@@ -143,31 +143,18 @@ var exampleAlgorythm = {
 //replace with actual logic
 
 //increases time by one timeunit
-function simulationTick(event){
+function simulationTick(){
 	if (config.waitForGraphics) {
 		//console.log('Sleeping...');
 		return;
 	}
 	var onEvent = algorythm().onEvent;
-	//onEvent(generateEvent());
-	onEvent(event);
+	var event = processMaster.makeTick();
+	if(event != null){
+		onEvent(generateEvent());
+	}
 	updateGraphics();
-    updateStatistics();
-}
-
-function generateEvent(){
-    // Random: 50/50
-    var requestType = Math.floor(2 * Math.random()) ? "read" : "write";
-    // Random address from 0 to RAM_size - 1
-    var address = Math.floor(config.virualMemorySize * Math.random());
-    
-    var request = {
-		"pid" : 0, // TODO: update with real PID
-        "type" : requestType,
-        "address" : address
-    };
-    
-	return request;
+   	updateStatistics();
 }
 
 function resetSimulation(){
