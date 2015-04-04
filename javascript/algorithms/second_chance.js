@@ -36,7 +36,16 @@ var second_chance = function(){
 	        }
 	    }
 	}
-	
+
+    simple.preEvict = function(){
+	printUI("Queue(page IDs): "+eventlist);
+	var secondChanceFor = eventlist.filter(function(id){
+		var flags = getFlags(id);
+		return (flags !== undefined) && (flags.count>0);
+	});
+	printUI("Second is available for chance for : "+secondChanceFor);
+    }
+
     simple.onEvent = function(event) {
         var pageId = addressToPageId(event.address);
         if (eventlist.indexOf(pageId) == -1) {
