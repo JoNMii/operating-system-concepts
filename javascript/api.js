@@ -98,6 +98,7 @@ function unpauseAlgo(){
 function stopAlgo(){
 	pauseAlgo();
 	config.initialised = false;
+	processMaster.killAll();
 	data.clear();
 }
 
