@@ -87,9 +87,7 @@ var processMaster = {
         this.usedPids = [];
     },
     createProcess: function() {
-        //If max reached do nothing
-        console.log(config.processMax);
-        console.log(config.processMin);        
+        //If max reached do nothing      
         if (Object.keys(this.processList).length == config.processMax) {
             return;
         };
@@ -141,9 +139,9 @@ var processMaster = {
         for (var i in this.processList) {
             this.processList[i].endProcess();
             console.log("Process ID:"+this.processList[i].pid+" terminated");
-            this.usedPids.splice(this.usedPids.indexOf(i),1);
             delete this.processList[i];            
-        };   
+        };
+        this.usedPids = [];   
         MMU.init(); 
     },
 };
