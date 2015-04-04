@@ -126,21 +126,7 @@ var Graphics = {
         128 : {rows : 16, cols : 8},
         256 : {rows : 16, cols : 16},
         512 : {rows : 32, cols : 16},
-        1024 : {rows : 32, cols : 32},
-        2048 : {rows : 64, cols : 32},
-        4096 : {rows : 64, cols : 64}
-        //8192 : {rows : 4, cols : 1},
-        //16384 : {rows : 4, cols : 1},
-        //32768 : {rows : 4, cols : 1},
-        //65536 : {rows : 4, cols : 1},
-        //131072 : {rows : 4, cols : 1},
-        //262144 : {rows : 4, cols : 1},
-        //524288 : {rows : 4, cols : 1},
-        //1048576 : {rows : 4, cols : 1},
-        //2097152 : {rows : 4, cols : 1},
-        //4194304 : {rows : 4, cols : 1},
-        //8388608 : {rows : 4, cols : 1},
-        //16777216 : {rows : 4, cols : 1},
+        1024 : {rows : 32, cols : 32}
     },
 
     MemorySlot : fabric.util.createClass(fabric.Rect, {
@@ -265,6 +251,7 @@ var Graphics = {
             this.left = visualConfig.procOffsetX + visualConfig.procWidth / 2 - this.width / 2;
             this.top = visualConfig.procOffsetY + pid * visualConfig.singleProcHeight;
             this.fontSize = visualConfig.singleProcFontSize;
+            this.fill = visualConfig.procColors[pid];
 
             this.selectable = false;
         }
