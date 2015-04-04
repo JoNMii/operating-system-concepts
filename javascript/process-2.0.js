@@ -2,15 +2,6 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-function pickRandomProperty(obj) {
-    var result;
-    var count = 0;
-    for (var prop in obj)
-        if (Math.random() < 1/++count)
-           result = prop;
-    return result;
-};
-
 var MMU = {
     usedId: [],
     init: function() {
@@ -69,7 +60,7 @@ function process() {
         var requestType = Math.floor(2 * Math.random()) ? "read" : "write";
         //TODO: replace address with valid one
         var address = Math.floor(config.virualMemorySize * Math.random());
-        var virtual_id = pickRandomProperty(this.pageTable.table)
+        var virtual_id = Math.floor(Object.keys(this.pageTable.table).length * Math.random());
         var request = {
 		    "pid" : this.pid,
 		    "real_id": this.pageTable.translate(virtual_id),
@@ -82,18 +73,6 @@ function process() {
         this.pageTable.dealloc();
         delete this.pageTable;
     };
-};
-
-
-function simulationTick(event){
-	if (Date.now() < config.waitUntilTimeStamp) {
-		//console.log('Sleeping...');
-		return;
-	}
-	var onEvent = algorythm().onEvent;
-	onEvent(event);
-	updateGraphics();
-    updateStatistics();
 };
 
 
