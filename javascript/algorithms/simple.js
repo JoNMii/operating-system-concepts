@@ -5,24 +5,32 @@ function simpleAlgorithm() {
 		console.log("Implement me!!!");
 		return 0;
 	};
+	
+	this.preEvict = function(){}
+	this.postEvict = function(slot,id){
+		printUI("Page evicted! slot:"+slot+" page id:"+id);
+	}
+	
 	this.onEvent = function(event) {
 		Graphics.enqueueDrawingEvent(function () {
 			animateEvent(event);
 		});
 
 		var pid = event.pid;
-		var pageId = addressToPageId(event.address);
-		var pageInRAM = findRAMPageById(pageId);
-		var pageInSWAP = findSWAPPageById(pageId);
+		var _pageId = addressToPageId(event.address);
+		var pageInRAM = findRAMPageById(_pageId);
+		var pageInSWAP = findSWAPPageById(_pageId);
 
 		var evictPage = function() {
+			self.preEvict();
 			var evicted = self.onEvict(); // RAM slot
 			console.assert(typeof evicted === "number", "onEvict() must return a number! Got " + typeof evicted + " instead...");
 			var evictedPage = getPagesInRAM()[evicted];
+			self.postEvict(evicted,pageId(evictedPage));
 			console.assert(evictedPage !== undefined, "Cannot evict page " + evicted + ": not in RAM! ");
 			console.log("About to evict page slot ",evicted," ",evictedPage);
 			//search for existing pages with the matching id
-			var swapSlot = findSWAPSlotByPageId(evictedPage.page_id);
+			var swapSlot = findSWAPSlotByPageId(pageId(evictedPage));
 
 			if(swapSlot<=-1){
 				swapSlot = getFreeSWAPSlot();
@@ -46,15 +54,15 @@ function simpleAlgorithm() {
 
 		if(pageInRAM) {
 			//nothing to do here
-			pageHit(pageId);
-			var memorySlot = findRAMSlotByPageId(pageId);
+			pageHit(_pageId);
+			var memorySlot = findRAMSlotByPageId(_pageId);
 			Graphics.enqueueDrawingEvent(function() {
 				animatePageHit(memorySlot);
 			});
 
 		} else if (pageInSWAP) {
 			//page is in swap file move it to RAM
-			var swapSlot = findSWAPSlotByPageId(pageInSWAP.page_id);
+			var swapSlot = findSWAPSlotByPageId(pageId(pageInSWAP));
 			var target = getFreeRAMSlot();
 			if (target <= -1) {
 				target = evictPage();
@@ -81,8 +89,8 @@ function simpleAlgorithm() {
 					return -1;
 				}
 			}
-			console.log('Creating page in memory slot ' + target + ' (pageId:' + pageId + ')');
-			createPage(target, pageId);
+			console.log('Creating page in memory slot ' + target + ' (pageId:' + _pageId + ')');
+			createPage(target, _pageId);
 
 			Graphics.enqueueDrawingEvent(function () {
 				animateCreatePage(pid, target);
