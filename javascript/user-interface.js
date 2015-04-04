@@ -42,11 +42,12 @@ function checkValidness(onstart){
 }
 function setFreeRam(num){
     freeMemStat = num;
-    //Calculate GBs
+
     var maxMemSise = $('#ramsize').val();
     var ram = num;
 
-    var label = kbToLabel(ram)+" / "+kbToLabel(maxMemSise);
+    var percent = (ram/maxMemSise)*100;
+    var label = percent + "%";
     $("#freeMemStat").text(label);
 }
 function setPagePoolStat(num){
