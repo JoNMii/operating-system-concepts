@@ -44,6 +44,7 @@ function translateTable() {
     this.dealloc = function() {
         for (var i in this.table) {
             MMU.removeId(this.table[i]);
+            deletePage(this.table[i]);
         };
     };
 };
@@ -101,8 +102,7 @@ var processMaster = {
         var timeOfset = getRandomInt(10, 100); //Min 11, max 99 seconds to live
         while (true) {
             if (this.usedPids.indexOf(pid) == -1) {
-                tmp.init(pid, getRandomInt(0, 20), Date.now()+(timeOfset*1000));
-                //TODO: replace values with min/max pages for process
+                tmp.init(pid, getRandomInt(config.pagePerProcessMin, config.pagePerProcessMax), Date.now()+(timeOfset*1000));
                 this.usedPids += pid;
                 break;
             };
@@ -141,6 +141,7 @@ var processMaster = {
             console.log("Process ID:"+this.processList[i].pid+" terminated");
             delete this.usedPids[this.processList[i].pid];
             delete this.processList[i];            
-        };    
+        };   
+        MMU.init(); 
     },
 };

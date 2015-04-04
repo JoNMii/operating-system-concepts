@@ -26,6 +26,8 @@ function startAlgo(params) {
 	config.waitUntilTimeStamp = -1;
 	config.processMax = params.processMax;
 	config.processMin = params.processMin;
+    config.pagePerProcessMin = params.pagePerProcessMin;
+    config.pagePerProcessMax = params.pagePerProcessMax;
 
 	var algo = params.algoNumber;
 	if (algo == 0) { //FIFO/FCSF
@@ -96,6 +98,7 @@ function unpauseAlgo(){
 function stopAlgo(){
 	pauseAlgo();
 	config.initialised = false;
+	processMaster.killAll();
 	data.clear();
 }
 
@@ -303,6 +306,13 @@ function findSWAPSlotByPageId(id){
 
 //delete page from both RAM and SWAP
 function deletePage(page){
+	var id = pageId(page);
+	var ramPageId = findRAMSlotByPageId(id);
+	var pfPageId = findSWAPSlotByPageId(id);
+	Graphics.enqueueDrawingEvent(function () {
+		animateDeletePage(ramPageId, pfPageId);
+	});
+
 	data.deleteRAMPage(page);
 	data.deleteSWAPPage(page);
 }

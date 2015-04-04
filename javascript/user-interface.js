@@ -99,8 +99,15 @@ startbtn.click(function () {
         "swapSize": parseInt($("#swapsize").val()),
         "speed": parseInt($("#speedinput").val()*100)/100,
         "processMin": parseInt($("#processmin").val()),
-        "processMax": parseInt($("#processmax").val())
+        "processMax": parseInt($("#processmax").val()),
+        "pagePerProcessMin": 10,
+        "pagePerProcessMax":40
     };
+
+    if (params.frameCount > 1024) {
+        alert("Max supported frame count is 1024.!!!@#$%^!");
+        return;
+    }
     //if (params.virtMemSize < params.ramSize) {
     //    alert("Virtual memory must be same or bigger then RAM!!!@#$%^!");
     //    return;
