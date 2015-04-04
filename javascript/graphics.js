@@ -26,7 +26,7 @@ var visualConfig = {
     singleProcFontSize: 15,
 
     // CPU
-    cpuURL: 'assets/images/cpu3.jpg',
+    cpuURL: 'assets/images/cpu-optimized.jpg',
     cpuWidth: 100,
     cpuHeight: 100,
     cpuOffsetX: 160,
