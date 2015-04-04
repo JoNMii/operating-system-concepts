@@ -24,7 +24,6 @@ var FIFO_Algorithm = function(){
 		pages = Object.keys(pages).map(function(k){return pages[k]});
 		var queue = pages.map(function(page){
 			var created = getFlags(page).created;
-		console.log(page);
 			return {"id":pageId(page),
 				"created":created};
 		});
@@ -32,7 +31,6 @@ var FIFO_Algorithm = function(){
 			return o1.created - o2.created;
 		});
 		var pageIds = queue.map(function(item){
-		console.log(item);
 			return item.id;
 		});
 		printUI("Queue(page IDs): "+pageIds);	
