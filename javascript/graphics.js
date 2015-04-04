@@ -107,7 +107,6 @@ function clearGraphics() {
 
 // Redraw / revalidate the visuals
 function updateGraphics() {
-    console.log("update gx");
     drawProcesses();
     drawCPU();
     drawMemory();
@@ -310,7 +309,6 @@ Graphics.enqueueDrawingEvent = function(callback) {
 };
 
 Graphics.processDrawingEventQueue = function () {
-	console.log("process",this.drawingEventQueue);
     var eventsToProcess = this.drawingEventQueue.length;
     if (eventsToProcess > 0) {
         var callback = this.drawingEventQueue[0];
