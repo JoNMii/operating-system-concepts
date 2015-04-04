@@ -139,13 +139,14 @@ var exampleAlgorythm = {
 //replace with actual logic
 
 //increases time by one timeunit
-function simulationTick(){
+function simulationTick(event){
 	if (Date.now() < config.waitUntilTimeStamp) {
 		//console.log('Sleeping...');
 		return;
 	}
 	var onEvent = algorythm().onEvent;
-	onEvent(generateEvent());
+	//onEvent(generateEvent());
+	onEvent(event);
 	updateGraphics();
     updateStatistics();
 }
