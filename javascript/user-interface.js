@@ -101,10 +101,10 @@ startbtn.click(function () {
         "processMin": parseInt($("#processmin").val()),
         "processMax": parseInt($("#processmax").val())
     };
-    if (params.virtMemSize < params.ramSize) {
-        alert("Virtual memory must be same or bigger then RAM!!!@#$%^!");
-        return;
-    }
+    //if (params.virtMemSize < params.ramSize) {
+    //    alert("Virtual memory must be same or bigger then RAM!!!@#$%^!");
+    //    return;
+    //}
     console.log("StartingAlgo:", params);
     startAlgo(params);
     startbtn.hide();
@@ -149,7 +149,7 @@ function resetGUI() {
     startbtn.show();
     $("#ex6SliderVal").text("512 KB");
     $("#ex7SliderVal").text("32 KB");
-    $("#ex8SliderVal").text("512 KB");
+    $("#ex8SliderVal").text("1024 KB");
     $("#ex9SliderVal").text("512 KB");
     $("#framecount-label").text("16");
     $("#ex1SliderVal").text("1" + "X");
