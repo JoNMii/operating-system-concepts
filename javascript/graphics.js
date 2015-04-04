@@ -467,7 +467,7 @@ function animatePageHit(memorySlot) {
     slot.width = newWidth;
     slot.height = newHeight;
 
-    sleep();
+    graphicsStarted();
 
     visualObjects.memorySlots[memorySlot].animate({
         left: target.left,
@@ -478,7 +478,7 @@ function animatePageHit(memorySlot) {
         duration: getAnimationDuration(),
         onChange : canvas.renderAll.bind(canvas),
         onComplete : function () {
-            awaken(); // Resume normal execution
+            graphicsDone(); // Resume normal execution
         },
         easing : getAnimationEasing()
     });
@@ -494,7 +494,7 @@ function animateRamToSwap(memorySlot, pagefileSlot) {
     console.assert(pid in visualObjects.processes, "Error: process " + pid + " does not exist!");
     var target = new Graphics.PagefileSlot(pid, pagefileSlot);
 
-    sleep(); // Sleep infinitely - rely on onComplete() event to awaken
+    graphicsStarted(); // Sleep infinitely - rely on onComplete() event to awaken
 
     visualObjects.memorySlots[memorySlot].animate({
         left: target.left,
@@ -514,7 +514,7 @@ function animateRamToSwap(memorySlot, pagefileSlot) {
 
             canvas.renderAll();
 
-            awaken(); // Resume normal execution
+            graphicsDone(); // Resume normal execution
         },
         easing: getAnimationEasing()
     });
@@ -530,7 +530,7 @@ function animateSwapToRam(memorySlot, pagefileSlot) {
     console.assert(pid in visualObjects.processes, "Error: process " + pid + " does not exist!");
     var target = new Graphics.MemorySlot(pid, memorySlot);
 
-    sleep(); // Sleep infinitely - rely on onComplete() event to awaken
+    graphicsStarted(); // Sleep infinitely - rely on onComplete() event to awaken
 
     visualObjects.pagefileSlots[pagefileSlot].animate({
             left : target.left,
@@ -549,7 +549,7 @@ function animateSwapToRam(memorySlot, pagefileSlot) {
 
                 canvas.renderAll();
 
-                awaken(); // Resume normal execution
+                graphicsDone(); // Resume normal execution
             },
             easing : getAnimationEasing()
         }

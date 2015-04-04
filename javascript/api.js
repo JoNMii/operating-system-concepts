@@ -71,12 +71,12 @@ function setStep(speed){
 	}
 }
 
-function sleep(milliseconds) {
-	config.waitUntilTimeStamp = Date.now() + (milliseconds === undefined ? 2000000000 : milliseconds);
+function graphicsStarted() {
+	config.waitForGraphics = true;
 }
 
-function awaken() {
-	config.waitUntilTimeStamp = -1;
+function graphicsDone() {
+	config.waitForGraphics = false;
 }
 
 function pauseAlgo(){
@@ -144,7 +144,7 @@ var exampleAlgorythm = {
 
 //increases time by one timeunit
 function simulationTick(event){
-	if (Date.now() < config.waitUntilTimeStamp) {
+	if (config.waitForGraphics) {
 		//console.log('Sleeping...');
 		return;
 	}
