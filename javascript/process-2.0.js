@@ -19,7 +19,7 @@ var MMU = {
         return tmp;
     },
     removeId: function(id) {
-        this.usedId.pop(id);
+        this.usedId.splice(this.usedId.indexOf(id),1);
     },
 };
 
@@ -88,6 +88,8 @@ var processMaster = {
     },
     createProcess: function() {
         //If max reached do nothing
+        console.log(config.processMax);
+        console.log(config.processMin);        
         if (Object.keys(this.processList).length == config.processMax) {
             return;
         };
@@ -129,7 +131,7 @@ var processMaster = {
             if (Date.now() > this.processList[i].ttl) {
                 this.processList[i].endProcess();
                 console.log("Process ID:"+this.processList[i].pid+" terminated");
-                this.usedPids.pop(i);
+                this.usedPids.splice(this.usedPids.indexOf(i),1);
                 delete this.processList[i];
             };
         };
@@ -139,7 +141,7 @@ var processMaster = {
         for (var i in this.processList) {
             this.processList[i].endProcess();
             console.log("Process ID:"+this.processList[i].pid+" terminated");
-            this.usedPids.pop(i);
+            this.usedPids.splice(this.usedPids.indexOf(i),1);
             delete this.processList[i];            
         };   
         MMU.init(); 
