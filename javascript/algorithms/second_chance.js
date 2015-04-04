@@ -8,6 +8,7 @@ var second_chance = function(){
 	simple.onEvict = function() {
 	    while(true) {
 	        var flags = getFlags(eventlist[0]);
+		console.log(" flags ", flags," events ", eventlist);
 	        if (flags && flags.count > 0) {
 	            var tmp = eventlist[0];
 	            eventlist.shift();
@@ -17,13 +18,21 @@ var second_chance = function(){
 	        } else {
 	            var tmp = eventlist[0];
 	            eventlist.shift();
-	            var pages = getPagesInRAM();
+
+		    var pages = getPagesInRAM();
 	            var z = findRAMPageById(tmp);
 	            for(i in pages) {
 	                if (pages[i] == z) {
 	                    return parseInt(i);
 	                }
 	            }
+		    
+		    //maybe better
+		    /*var result = findRAMSlotByPageId(tmp);
+		    //page still exists
+		    if(result!=-1){
+	            	return result;
+		    }*/
 	        }
 	    }
 	}
@@ -36,7 +45,7 @@ var second_chance = function(){
         var flags = getFlags(pageId);
         if (!flags) {
             flags = {"count": 0};
-        } else if (!flags.count) {
+        } else if (flags.count === undefined) {
             flags.count = 0;
         } else {
             flags.count += 1;
