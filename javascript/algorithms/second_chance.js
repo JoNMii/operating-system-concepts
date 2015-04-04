@@ -19,20 +19,20 @@ var second_chance = function(){
 	            var tmp = eventlist[0];
 	            eventlist.shift();
 
-		    var pages = getPagesInRAM();
+		    /*var pages = getPagesInRAM();
 	            var z = findRAMPageById(tmp);
 	            for(i in pages) {
 	                if (pages[i] == z) {
 	                    return parseInt(i);
 	                }
-	            }
+	            }*/
 		    
 		    //maybe better
-		    /*var result = findRAMSlotByPageId(tmp);
+		    var result = findRAMSlotByPageId(tmp);
 		    //page still exists
 		    if(result!=-1){
 	            	return result;
-		    }*/
+		    }
 	        }
 	    }
 	}
