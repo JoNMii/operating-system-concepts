@@ -106,7 +106,6 @@ function clearGraphics() {
 
 // Redraw / revalidate the visuals
 function updateGraphics() {
-
     drawProcesses();
     drawCPU();
     drawMemory();
@@ -316,7 +315,7 @@ Graphics.processDrawingEventQueue = function () {
     while (eventsToProcess--> 0) {
         var callback = this.drawingEventQueue[0];
 
-        if (!config.waitForGraphics) {
+        if (config.waitForGraphics) {
             // Stop processing for now
             return;
         } else {
