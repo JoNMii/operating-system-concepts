@@ -591,7 +591,10 @@ function animateEvent(event) {
     }, {
         duration: getAnimationDuration(),
         onChange : canvas.renderAll.bind(canvas),
-        easing : getAnimationEasing()
+        easing : getAnimationEasing(),
+	onComplete : function () {
+		Graphics.processDrawingEventQueue();
+	}
     });
 }
 
