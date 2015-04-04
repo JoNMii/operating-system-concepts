@@ -21,17 +21,18 @@ var FIFO_Algorithm = function(){
 	}
 	simple.preEvict = function(){
 		var pages = getPagesInRAM();
+		pages = Object.keys(pages).map(function(k){return pages[k]});
 		var queue = pages.map(function(page){
-			console.log(getFlags(page));
 			var created = getFlags(page).created;
-			console.log(created);
-			return {"id":page.id,
+		console.log(page);
+			return {"id":pageId(page),
 				"created":created};
 		});
 		queue.sort(function(o1,o2){
-			return o1.id - o2.id;
+			return o1.created - o2.created;
 		});
 		var pageIds = queue.map(function(item){
+		console.log(item);
 			return item.id;
 		});
 		printUI("Queue(page IDs): "+pageIds);	
