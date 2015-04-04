@@ -2,12 +2,42 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+function pickRandomProperty(obj) {
+    var result;
+    var count = 0;
+    for (var prop in obj)
+        if (Math.random() < 1/++count)
+           result = prop;
+    return result;
+};
+
+var MMU = {
+    usedId: [],
+    init: function() {
+        this.usedId = [];
+    },
+    getId: function() {
+        var tmp = 0;
+        while(true) {
+            if (!(tmp in this.usedId)) {
+                this.usedId += tmp;
+                break;
+            };
+            tmp += 1;
+        };
+        return tmp;
+    },
+    removeId: function(id) {
+        delete this.usedId[id];
+    },
+};
+
 function translateTable() {
     this.table = {}; //{pageId: realId}
     this.init = function(pageCount) {
         this.table = {};
         for (var i=0; i< pageCount; i++) {
-            this.table[0] = -1;
+            this.table[i] = this.allocPage(i);
         };
     };
     this.translate = function(pageId) {
@@ -16,28 +46,54 @@ function translateTable() {
     this.setEntry = function(pageId, realId) {
         this.table[pageId] = realId;
     };
+    this.allocPage = function(pageId) {
+        var tmp = MMU.getId();
+        return tmp;
+    };
+    this.dealloc = function() {
+        for (var i in this.table) {
+            MMU.removeId(this.table[i]);
+        };
+    };
 };
 
 function process() {
     this.pid = -1;
     this.pageTable = -1;
-    this.init = function(pid) {
+    this.init = function(pid, pageCount) {
         this.pid = pid;
         this.pageTable = new translateTable();
-        this.pageTable.init(config.virualMemorySize/config.frameSize);
+        this.pageTable.init(pageCount);
     };
     this.makeAction = function() {
-        var action;
-        if (getRandomInt(0,100) % 2 == 0) {
-            action = "read";
-        } else {
-            action = "write";
+        var requestType = Math.floor(2 * Math.random()) ? "read" : "write";
+        //TODO: replace address with valid one
+        var address = Math.floor(config.virualMemorySize * Math.random());
+        var virtual_id = pickRandomProperty(this.pageTable.table)
+        var request = {
+		    "pid" : this.pid,
+		    "real_id": this.pageTable.translate(virtual_id),
+            "type" : requestType,
+            "address" : address
         };
-        //TODO: implement actions
+	    return request;
     };
     this.endProcess = function() {
+        this.pageTable.dealloc();
         delete this.pageTable;
     };
+};
+
+
+function simulationTick(event){
+	if (Date.now() < config.waitUntilTimeStamp) {
+		//console.log('Sleeping...');
+		return;
+	}
+	var onEvent = algorythm().onEvent;
+	onEvent(event);
+	updateGraphics();
+    updateStatistics();
 };
 
 
@@ -63,7 +119,8 @@ var processMaster = {
         var pid = 0;
         while (true) {
             if (this.usedPids.indexOf(pid) == -1) {
-                tmp.init(pid);
+                tmp.init(pid, getRandomInt(0, 20));
+                //TODO: replace values with min/max pages for process
                 this.usedPids += pid;
                 break;
             };
@@ -82,7 +139,8 @@ var processMaster = {
         
         //Generate action for each active process
         for (var i in this.processList) {
-            i.makeAction();
+            var event = i.makeAction();
+            simulationTick(event);
         };        
         
         //Delete old processes
