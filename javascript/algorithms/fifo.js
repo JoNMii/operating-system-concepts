@@ -19,6 +19,23 @@ var FIFO_Algorithm = function(){
 		}
 		return result;
 	}
+	simple.preEvict = function(){
+		var pages = getPagesInRAM();
+		var queue = pages.map(function(page){
+			console.log(getFlags(page));
+			var created = getFlags(page).created;
+			console.log(created);
+			return {"id":page.id,
+				"created":created};
+		});
+		queue.sort(function(o1,o2){
+			return o1.id - o2.id;
+		});
+		var pageIds = queue.map(function(item){
+			return item.id;
+		});
+		printUI("Queue(page IDs): "+pageIds);	
+	}
 	var defaultOnEvent = simple.onEvent;
 	simple.onEvent=function(event){
 		turn++;
