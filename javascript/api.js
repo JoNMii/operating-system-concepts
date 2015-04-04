@@ -345,7 +345,7 @@ function createPage(ramSlot,pageId){
 	return page;
 }
 function updateStatistics(){
-    setFreeRam(statsObj.freeRam);
+    setFreeRam(config.ramSize-(Object.keys(getPagesInRAM()).length)*pageSize());
     setPagePoolStat(statsObj.pagePool);
     setPageHitStat(statsObj.pageHits);
     setPageFaultStat(statsObj.pageFaults);
