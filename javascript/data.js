@@ -50,11 +50,11 @@ function nextPageId(){
 }
 
 function comparePages(page1,page2){
-	return page2.page_id - page1.page_id;
+	return pageId(page_id) - pageId(page_id);
 }
 
 function equalPages(page1,page2){
-	return page2.page_id == page1.page_id;
+	return pageId(page2) == pageId(page1);
 }
 
 function pageId(page){
