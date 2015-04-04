@@ -70,7 +70,7 @@ var processMaster = {
             pid += 1;
         };
         var timeOfset = getRandomInt(10, 100); //Min 11, max 99 seconds to live
-        this.processList[tmp] = [Date.now()+timeOfset];
+        this.processList[tmp] = [Date.now()+(timeOfset*1000)];
         console.log("Process ID:" + pid + " created");
         if (Object.keys(this.processList).length < config.processMin) {
             this.createProcess();
