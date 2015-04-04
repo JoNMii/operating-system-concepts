@@ -30,7 +30,6 @@ function process() {
         //TODO: implement actions
     };
     this.endProcess = function() {
-        //TODO: inform algo of real pages not in use (second-chance needs this)
         delete this.pageTable;
     };
 };
@@ -64,8 +63,9 @@ var processMaster = {
             };
             pid += 1;
         };
-        var timeOfset = getRandomInt(10, 100); //Min 11, max 99 secons to live
+        var timeOfset = getRandomInt(10, 100); //Min 11, max 99 seconds to live
         this.processList[tmp] = [Date.now()+timeOfset];
+        console.log("Process ID:" + pid + " created");
         if (Object.keys(this.processList).length < config.processMin) {
             this.createProcess();
         };
