@@ -11,7 +11,7 @@ var MMU = {
         var tmp = 0;
         while(true) {
             if (this.usedId.indexOf(tmp) == -1) {
-                this.usedId += tmp;
+                this.usedId.push(tmp);
                 break;
             };
             tmp += 1;
@@ -19,7 +19,7 @@ var MMU = {
         return tmp;
     },
     removeId: function(id) {
-        delete this.usedId[id];
+        this.usedId.pop(id);
     },
 };
 
@@ -103,7 +103,7 @@ var processMaster = {
         while (true) {
             if (this.usedPids.indexOf(pid) == -1) {
                 tmp.init(pid, getRandomInt(config.pagePerProcessMin, config.pagePerProcessMax), Date.now()+(timeOfset*1000));
-                this.usedPids += pid;
+                this.usedPids.push(pid);
                 break;
             };
             pid += 1;
@@ -129,7 +129,7 @@ var processMaster = {
             if (Date.now() > this.processList[i].ttl) {
                 this.processList[i].endProcess();
                 console.log("Process ID:"+this.processList[i].pid+" terminated");
-                delete this.usedPids[this.processList[i].pid];
+                this.usedPids.pop(i);
                 delete this.processList[i];
             };
         };
@@ -139,7 +139,7 @@ var processMaster = {
         for (var i in this.processList) {
             this.processList[i].endProcess();
             console.log("Process ID:"+this.processList[i].pid+" terminated");
-            delete this.usedPids[this.processList[i].pid];
+            this.usedPids.pop(i);
             delete this.processList[i];            
         };   
         MMU.init(); 
