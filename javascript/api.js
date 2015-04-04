@@ -151,7 +151,7 @@ function simulationTick(){
 	var onEvent = algorythm().onEvent;
 	var event = processMaster.makeTick();
 	if(event != null){
-		onEvent(generateEvent());
+		onEvent(event);
 	}
 	updateGraphics();
    	updateStatistics();
