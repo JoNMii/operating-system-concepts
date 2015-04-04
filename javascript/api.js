@@ -148,7 +148,7 @@ var exampleAlgorythm = {
 //increases time by one timeunit
 function simulationTick(){
 	if (config.waitForGraphics) {
-		//console.log('Sleeping...');
+		console.log('Sleeping...');
 		return;
 	}
 	var onEvent = algorithm().onEvent;

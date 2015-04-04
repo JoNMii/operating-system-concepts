@@ -107,11 +107,13 @@ function clearGraphics() {
 
 // Redraw / revalidate the visuals
 function updateGraphics() {
+    console.log("update gx");
     drawProcesses();
     drawCPU();
     drawMemory();
     drawPagefile();
 
+    graphicsStarted();
     Graphics.processDrawingEventQueue();
 
     canvas.renderAll();
@@ -308,21 +310,19 @@ Graphics.enqueueDrawingEvent = function(callback) {
 };
 
 Graphics.processDrawingEventQueue = function () {
+	console.log("process",this.drawingEventQueue);
     var eventsToProcess = this.drawingEventQueue.length;
-    while (eventsToProcess--> 0) {
+    if (eventsToProcess > 0) {
         var callback = this.drawingEventQueue[0];
-
-        if (config.waitForGraphics) {
-            // Stop processing for now
-            return;
-        } else {
-            // Process right now
-            //console.log('Processing drawingEvent ' + " -> " + callback);
-            callback();
-        }
-
         this.drawingEventQueue.shift();
-    }
+
+        // Process right now
+        //console.log('Processing drawingEvent ' + " -> " + callback);
+        callback();
+
+    }else{
+	graphicsDone();
+}
 };
 
 Graphics.clearDrawingEventQueue = function () {
@@ -440,6 +440,10 @@ function animateCreatePage(pid, memorySlot) {
     visualObjects.memorySlots[memorySlot] = slot;
     canvas.add(slot);
     canvas.renderAll();
+
+//setTimeout(function(){
+    Graphics.processDrawingEventQueue();
+//},0);
 }
 
 function animateDeletePage(memorySlot, pagefileSlot) {
@@ -454,6 +458,10 @@ function animateDeletePage(memorySlot, pagefileSlot) {
     }
 
     canvas.renderAll();
+
+//setTimeout(function(){
+    Graphics.processDrawingEventQueue();
+//},0);
 }
 
 function animatePageHit(memorySlot) {
@@ -476,8 +484,6 @@ function animatePageHit(memorySlot) {
     slot.width = newWidth;
     slot.height = newHeight;
 
-    graphicsStarted();
-
     visualObjects.memorySlots[memorySlot].animate({
         left: target.left,
         top: target.top,
@@ -487,7 +493,7 @@ function animatePageHit(memorySlot) {
         duration: getAnimationDuration(),
         onChange : canvas.renderAll.bind(canvas),
         onComplete : function () {
-            graphicsDone(); // Resume normal execution
+            Graphics.processDrawingEventQueue(); // Resume normal execution
         },
         easing : getAnimationEasing()
     });
@@ -502,8 +508,6 @@ function animateRamToSwap(memorySlot, pagefileSlot) {
     var pid = visualObjects.memorySlots[memorySlot].pid;
     console.assert(pid in visualObjects.processes, "Error: process " + pid + " does not exist!");
     var target = new Graphics.PagefileSlot(pid, pagefileSlot);
-
-    graphicsStarted(); // Sleep infinitely - rely on onComplete() event to awaken
 
     visualObjects.memorySlots[memorySlot].animate({
         left: target.left,
@@ -523,7 +527,7 @@ function animateRamToSwap(memorySlot, pagefileSlot) {
 
             canvas.renderAll();
 
-            graphicsDone(); // Resume normal execution
+            Graphics.processDrawingEventQueue(); // Resume normal execution
         },
         easing: getAnimationEasing()
     });
@@ -538,8 +542,6 @@ function animateSwapToRam(memorySlot, pagefileSlot) {
     var pid = visualObjects.pagefileSlots[pagefileSlot].pid;
     console.assert(pid in visualObjects.processes, "Error: process " + pid + " does not exist!");
     var target = new Graphics.MemorySlot(pid, memorySlot);
-
-    graphicsStarted(); // Sleep infinitely - rely on onComplete() event to awaken
 
     visualObjects.pagefileSlots[pagefileSlot].animate({
             left : target.left,
@@ -558,7 +560,7 @@ function animateSwapToRam(memorySlot, pagefileSlot) {
 
                 canvas.renderAll();
 
-                graphicsDone(); // Resume normal execution
+                Graphics.processDrawingEventQueue(); // Resume normal execution
             },
             easing : getAnimationEasing()
         }
@@ -600,6 +602,10 @@ function animateCreateProcess(pid) {
     visualObjects.processes[pid] = new Graphics.Process(pid);
     canvas.add(visualObjects.processes[pid]);
     canvas.renderAll();
+
+//setTimeout(function(){
+    Graphics.processDrawingEventQueue();
+//},0);
 }
 
 function animateKillProcess(pid) {
@@ -609,4 +615,8 @@ function animateKillProcess(pid) {
     canvas.remove(visualObjects.processes[pid]);
     delete visualObjects.processes[pid];
     canvas.renderAll();
+
+//setTimeout(function(){
+    Graphics.processDrawingEventQueue();
+//},0);
 }
