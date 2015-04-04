@@ -4,8 +4,7 @@ var FIFO_Algorithm = function(){
 	simple.name="FIFO";
 	simple.onEvict = function(){
 		var pages = getPagesInRAM();
-		var oldestPage = pages[0];
-		var oldest = getFlags(oldestPage).created;
+		var oldest = getFlags(pages[0]).created;
 		var result = 0;
 		for(i in pages){
 			var created = getFlags(pages[i]).created;
@@ -15,7 +14,6 @@ var FIFO_Algorithm = function(){
 			}
 			if(oldest>created){
 				oldest = created;
-				oldestPage = pages[i];
 				result = parseInt(i);
 			}
 		}

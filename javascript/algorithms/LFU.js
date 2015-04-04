@@ -2,8 +2,7 @@ var LFU_Algorithm = function(){
 	var simple = new simpleAlgorithm();
 	simple.onEvict = function(){
 		var pages = getPagesInRAM();
-		var oldestPage = pages[0];
-		var lessUsed = getFlags(oldestPage).used;
+		var lessUsed = getFlags(pages[0]).used;
 		var result = 0;
 		for(i in pages){
 			var used = getFlags(pages[i]).used;
@@ -13,7 +12,6 @@ var LFU_Algorithm = function(){
 			}
 			if(lessUsed>used){
 				lessUsed = used;
-				oldestPage = pages[i];
 				result = parseInt(i);
 			}
 		}

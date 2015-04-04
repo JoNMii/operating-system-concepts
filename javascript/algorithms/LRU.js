@@ -3,8 +3,7 @@ var LRU_Algorithm = function(){
 	var simple = new simpleAlgorithm();
 	simple.onEvict = function(){
 		var pages = getPagesInRAM();
-		var oldestPage = pages[0];
-		var oldestLU = getFlags(oldestPage).last_use;
+		var oldestLU = getFlags(pages[0]).last_use;
 		var result = 0;
 		for(i in pages){
 			var LU = getFlags(pages[i]).last_use;
@@ -14,7 +13,6 @@ var LRU_Algorithm = function(){
 			}
 			if(oldestLU>LU){
 				oldestLU = LU;
-				oldestPage = pages[i];
 				result = parseInt(i);
 			}
 		}
