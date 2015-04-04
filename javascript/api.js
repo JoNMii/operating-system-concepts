@@ -26,6 +26,8 @@ function startAlgo(params) {
 	config.waitUntilTimeStamp = -1;
 	config.processMax = params.processMax;
 	config.processMin = params.processMin;
+    config.pagePerProcessMin = params.pagePerProcessMin;
+    config.pagePerProcessMax = params.pagePerProcessMax;
 
 	var algo = params.algoNumber;
 	if (algo == 0) { //FIFO/FCSF
