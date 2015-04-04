@@ -89,7 +89,8 @@ function unpauseAlgo(){
 		pauseAlgo();
 	}
 	var step = 1000/config.speed;
-	config.timer = setInterval(function(){simulationTick()},step);
+	//config.timer = setInterval(function(){simulationTick()},step);
+	config.timer = setInterval(function(){processMaster.makeTick()},step);
 }
 
 function stopAlgo(){
