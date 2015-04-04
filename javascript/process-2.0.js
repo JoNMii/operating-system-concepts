@@ -128,7 +128,7 @@ var processMaster = {
         for (var i in this.processList) {
             if (Date.now() > this.processList[i].ttl) {
                 this.processList[i].endProcess();
-                console.log("Process ID:"+i.pid+" terminated");
+                console.log("Process ID:"+this.processList[i].pid+" terminated");
                 delete this.usedPids[this.processList[i].pid];
                 delete this.processList[i];
             };
@@ -138,7 +138,7 @@ var processMaster = {
         console.log("Killing all processes");
         for (var i in this.processList) {
             this.processList[i].endProcess();
-            console.log("Process ID:"+i.pid+" terminated");
+            console.log("Process ID:"+this.processList[i].pid+" terminated");
             delete this.usedPids[this.processList[i].pid];
             delete this.processList[i];            
         };    
