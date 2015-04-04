@@ -100,8 +100,8 @@ startbtn.click(function () {
         "speed": parseInt($("#speedinput").val()*100)/100,
         "processMin": parseInt($("#processmin").val()),
         "processMax": parseInt($("#processmax").val()),
-        "pagePerProcessMin": 10,
-        "pagePerProcessMax":40
+        "pagePerProcessMin": 1,
+        "pagePerProcessMax": 5
     };
 
     if (params.frameCount > 1024) {
