@@ -77,11 +77,14 @@ function graphicsStarted() {
 
 function graphicsDone() {
 	config.waitForGraphics = false;
+	if(config.tickWaiting){
+		//unpauseAlgo();
+	}
 }
 
 function pauseAlgo(){
 	var timer = config.timer;
-	clearInterval(timer);
+	clearTimeout(timer);
 	delete config.timer;
 }
 
@@ -90,9 +93,11 @@ function unpauseAlgo(){
 	if(config.timer){
 		pauseAlgo();
 	}
+	//do the first tick
+	//simulationTick();
+	//enqueue the next ticks
 	var step = 1000/config.speed;
 	config.timer = setInterval(function(){simulationTick()},step);
-	//config.timer = setInterval(function(){processMaster.makeTick()},step);
 }
 
 function stopAlgo(){
@@ -146,8 +151,11 @@ var exampleAlgorythm = {
 function simulationTick(){
 	if (config.waitForGraphics) {
 		//console.log('Sleeping...');
+		config.tickWaiting = true;
+		pauseAlgo();
 		return;
 	}
+	config.tickWaiting = false;
 	var onEvent = algorythm().onEvent;
 	var event = processMaster.makeTick();
 	if(event != null){

@@ -106,6 +106,9 @@ function clearGraphics() {
 
 // Redraw / revalidate the visuals
 function updateGraphics() {
+    //do not get antoher tick while redrawing
+    graphicsStarted();
+
     drawProcesses();
     drawCPU();
     drawMemory();
