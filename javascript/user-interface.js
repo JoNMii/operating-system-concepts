@@ -3,7 +3,7 @@ pausebtn = $("#pause");
 stopbutn = $("#stop");
 resetbtn = $("#reset");
 fuckoffbtn = undefined;
-
+var params;
 $(function () {
     //ONLOAD SET PARAMS TO DEFAULT;
     stopbutn.hide();
@@ -21,7 +21,24 @@ function printUI(text) {
     }
 }
 
+function checkValidness(onstart){
+    if (onstart === true){
+        console.log("showing");
 
+        if (params.frameCount > 1024){
+            console.log("showing");
+            $("#modal-text").text("Max supported frame count is 1024.!!!@#$%^!<br/>Please increase page size or decrease RAM ammount!");
+            $('#myModal').modal("show");
+            console.log("showed");
+            return false;
+        }
+    } else {
+        //Not implemented yet;
+    }
+    return true;
+
+
+}
 function setFreeRam(num){
     freeMemStat = num;
     //Calculate GBs
@@ -90,7 +107,7 @@ $(".reset-all").click(function () {
 
 startbtn.click(function () {
 
-    var params = {
+    params = {
         "algoNumber": parseInt($("#algoinput").val()),
         "ramSize": parseInt($("#ramsize").val()),
         "frameSize": parseInt($("#framesize").val()),
@@ -100,14 +117,19 @@ startbtn.click(function () {
         "speed": parseInt($("#speedinput").val()*100)/100,
         "processMin": parseInt($("#processmin").val()),
         "processMax": parseInt($("#processmax").val()),
-        "pagePerProcessMin": 1,
-        "pagePerProcessMax": 5
+        "pagePerProcessMin": parseInt($("#processPageCountMin").val()),
+        "pagePerProcessMax":parseInt($("#processPageCountMax").val())
     };
 
-    if (params.frameCount > 1024) {
-        alert("Max supported frame count is 1024.!!!@#$%^!");
+    if (checkValidness(true) != true){
+        printUI("Param validation failed. Start canceled!");
         return;
     }
+    //if (params.frameCount > 1024) {
+    //    $("#myModal").modal("show");
+    //    alert("Max supported frame count is 1024.!!!@#$%^!");
+    //    return;
+    //}
     //if (params.virtMemSize < params.ramSize) {
     //    alert("Virtual memory must be same or bigger then RAM!!!@#$%^!");
     //    return;
@@ -168,6 +190,11 @@ function resetGUI() {
     $("#swapsize").val("512");
     $("#framecount").val("16");
 
+    $("#processmin").val("1");
+    $("#processmax").val("5");
+    $("#processPageCountMin").val("1");
+    $("#processPageCountMax").val("5");
+
 
     ex6Slider.destroy();
     //ex6Slider = new Slider("#ex6");// $("#ex6").slider();
@@ -178,6 +205,7 @@ function resetGUI() {
     ex9Slider.destroy();
     ex12bSlider.destroy();
     ex1Slider.destroy();
+    ex13bSlider.destroy();
     //ex9Slider = new Slider("#ex9");
     enableSliders();
 
@@ -215,6 +243,7 @@ function enableSliders() {
             $("#speed").val(500);
             setStep(500);
         }
+        checkValidness();
     });
 
 //Process count slider
@@ -222,10 +251,17 @@ function enableSliders() {
     ex12bSlider.on("slide", function(slideEvt) {
         var range = slideEvt.value;
         $('#processmin').val(range[0]);
-        $('#processmax').val(range[0]);
-
+        $('#processmax').val(range[1]);
+        checkValidness();
     });
-
+//Page count per process slider
+    ex13bSlider = new Slider("#ex13b", { id: "slider13b", min: 1, max: 64, range: true, value: [1, 5] });
+    ex13bSlider.on("slide", function(slideEvt) {
+        var range = slideEvt.value;
+        $('#processPageCountMin').val(range[0]);
+        $('#processPageCountMax').val(range[1]);
+        checkValidness();
+    });
 // Ram size Slider
     ex6Slider = new Slider("#ex6");// $("#ex6").slider();
     ex6Slider.on("slide", function (slideEvt) {
@@ -253,6 +289,7 @@ function enableSliders() {
         $(".framecount-label").text(framecount);
 
         console.log($("#framecount").val());
+        checkValidness();
     });
 
 //Frame size slider
@@ -271,6 +308,7 @@ function enableSliders() {
         $(".framecount-label").text(framecount);
 
         console.log($("#framecount").val());
+        checkValidness();
     });
 
 
@@ -283,6 +321,7 @@ function enableSliders() {
         $("#ex8SliderVal").text(label);
 
         $(".virtmemsize-label").text(label);
+        checkValidness();
     });
 
 //Swap size slider
@@ -295,6 +334,7 @@ function enableSliders() {
         $("#ex9SliderVal").text(label);
 
         $(".swapsize-label").text(label);
+        checkValidness();
     });
 }
 
