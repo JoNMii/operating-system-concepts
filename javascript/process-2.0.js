@@ -141,6 +141,7 @@ var processMaster = {
             console.log("Process ID:"+this.processList[i].pid+" terminated");
             delete this.usedPids[this.processList[i].pid];
             delete this.processList[i];            
-        };    
+        };   
+        MMU.init(); 
     },
 };
