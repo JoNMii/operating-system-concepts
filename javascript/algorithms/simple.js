@@ -20,7 +20,7 @@ function simpleAlgorithm() {
 			console.assert(typeof evicted === "number", "onEvict() must return a number! Got " + typeof evicted + " instead...");
 			var evictedPage = getPagesInRAM()[evicted];
 			console.assert(evictedPage !== undefined, "Cannot evict page " + evicted + ": not in RAM! ");
-			console.log("About to evict page",evicted);
+			console.log("About to evict page slot ",evicted," ",evictedPage);
 			//search for existing pages with the matching id
 			var swapSlot = findSWAPSlotByPageId(evictedPage.page_id);
 
