@@ -120,11 +120,13 @@ var processMaster = {
         
         //Generate action for an active process
 	var event = null;
-	var len = Object.keys(this.processList).length;
+	var keys = Object.keys(this.processList);
+	var len = keys.length;
 	if(len > 0){
 	    var i = Math.floor(Math.random()*(len-1));
 		console.log(i,len);
-            event = this.processList[i].makeAction();
+	    var key = keys[i];
+            event = this.processList[key].makeAction();
             this.processList[i].ttl -= 1;
        }
         
