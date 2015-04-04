@@ -17,7 +17,7 @@ function simpleAlgorithm() {
 		});
 
 		var pid = event.pid;
-		var _pageId = addressToPageId(event.address);
+		var _pageId = event.real_id;
 		var pageInRAM = findRAMPageById(_pageId);
 		var pageInSWAP = findSWAPPageById(_pageId);
 

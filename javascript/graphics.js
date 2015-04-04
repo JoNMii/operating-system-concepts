@@ -110,8 +110,6 @@ function updateGraphics() {
     drawCPU();
     drawMemory();
     drawPagefile();
-    //drawMemorySlots();
-    //drawPagefileSlots();
 
     Graphics.processDrawingEventQueue();
 
@@ -260,9 +258,14 @@ var Graphics = {
         }
     }),
     Process : fabric.util.createClass(fabric.Text, {
-        initialize: function(text, options) {
+        initialize: function(pid, options) {
+            var text = 'P' + pid;
             this.callSuper('initialize', text, options);
-            this.left -= this.width / 2;
+
+            this.left = visualConfig.procOffsetX + visualConfig.procWidth / 2 - this.width / 2;
+            this.top = visualConfig.procOffsetY + pid * visualConfig.singleProcHeight;
+            this.fontSize = visualConfig.singleProcFontSize;
+
             this.selectable = false;
         }
     }),
@@ -342,23 +345,21 @@ function drawProcesses() {
         visualObjects.procText = procText;
         canvas.add(procText);
 
-        // TODO: visualize processes properly
-        var processCount = 20;
-
-        var processes = [];
-        for (var i = 0; i < processCount; i++) {
-            var p = new Graphics.Process('P' + i, {
-                left: visualConfig.procOffsetX + visualConfig.procWidth / 2,
-                top: visualConfig.procOffsetY + i * visualConfig.singleProcHeight,
-                fontSize: visualConfig.singleProcFontSize
-            });
-            processes.push(p);
-        }
-        visualObjects.processes = processes;
-        for (i = 0; i < processCount; i++) {
-            canvas.add(processes[i]);
-        }
+        visualObjects.processes = {};
     }
+
+    //for (var i = 0; i < config.processMax; i++) {
+    //    if (i in visualObjects.processes) {
+    //        if (canvas.getObjects().indexOf(visualObjects.processes[i]) === -1) {
+    //            var p = new Graphics.Process('P' + i, {
+    //                left: visualConfig.procOffsetX + visualConfig.procWidth / 2,
+    //                top: visualConfig.procOffsetY + i * visualConfig.singleProcHeight,
+    //                fontSize: visualConfig.singleProcFontSize
+    //            });
+    //            canvas.add(p);
+    //        }
+    //    }
+    //}
 }
 
 function drawCPU() {
@@ -444,6 +445,20 @@ function animateCreatePage(pid, memorySlot) {
     console.log('New slot created: ', pid, memorySlot, slot);
     visualObjects.memorySlots[memorySlot] = slot;
     canvas.add(slot);
+    canvas.renderAll();
+}
+
+function animateDeletePage(memorySlot, pagefileSlot) {
+    if (memorySlot in visualObjects.memorySlots) {
+        canvas.remove(visualObjects.memorySlots[memorySlot]);
+        delete visualObjects.memorySlots[memorySlot];
+    }
+
+    if (pagefileSlot in visualObjects.pagefileSlots) {
+        canvas.remove(visualObjects.pagefileSlots[pagefileSlot]);
+        delete visualObjects.pagefileSlots[pagefileSlot];
+    }
+
     canvas.renderAll();
 }
 
@@ -585,21 +600,19 @@ function animateEvent(event) {
 }
 
 function animateCreateProcess(pid) {
+    console.log('CREATING PROCESS ' + pid);
     console.assert(!(pid in visualObjects.processes), "Error: process " + pid + " already exists");
 
-    //visualObjects.processes = new Graphics.Process(pid);
+    visualObjects.processes[pid] = new Graphics.Process(pid);
+    canvas.add(visualObjects.processes[pid]);
+    canvas.renderAll();
 }
 
-function animateDeletePage(memorySlot, pagefileSlot) {
-    if (memorySlot in visualObjects.memorySlots) {
-        canvas.remove(visualObjects.memorySlots[memorySlot]);
-        delete visualObjects.memorySlots[memorySlot];
-    }
+function animateKillProcess(pid) {
+    console.log('KILLING PROCESS ' + pid);
+    console.assert(pid in visualObjects.processes, "Error: tried killing non-existing process " + pid);
 
-    if (pagefileSlot in visualObjects.pagefileSlots) {
-        canvas.remove(visualObjects.pagefileSlots[pagefileSlot]);
-        delete visualObjects.pagefileSlots[pagefileSlot];
-    }
-
+    canvas.remove(visualObjects.processes[pid]);
+    delete visualObjects.processes[pid];
     canvas.renderAll();
 }
