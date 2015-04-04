@@ -58,6 +58,10 @@ function process() {
         this.pid = pid;
         this.pageTable = new translateTable();
         this.pageTable.init(pageCount);
+
+        Graphics.enqueueDrawingEvent(function () {
+            animateCreateProcess(pid);
+        });
     };
     this.makeAction = function() {
         var requestType = Math.floor(2 * Math.random()) ? "read" : "write";
@@ -75,6 +79,11 @@ function process() {
     this.endProcess = function() {
         this.pageTable.dealloc();
         delete this.pageTable;
+
+        var pid = this.pid;
+        Graphics.enqueueDrawingEvent(function () {
+            animateKillProcess(pid);
+        });
     };
 };
 

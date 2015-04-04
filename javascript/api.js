@@ -105,6 +105,7 @@ function stopAlgo(){
 	config.initialised = false;
 	processMaster.killAll();
 	data.clear();
+	updateGraphics();
 }
 
 //example requests
