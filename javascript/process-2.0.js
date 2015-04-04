@@ -49,9 +49,11 @@ function translateTable() {
 };
 
 function process() {
+    this.ttl = -1;
     this.pid = -1;
     this.pageTable = -1;
-    this.init = function(pid, pageCount) {
+    this.init = function(pid, pageCount, ttl) {
+        this.ttl = ttl;
         this.pid = pid;
         this.pageTable = new translateTable();
         this.pageTable.init(pageCount);
@@ -96,17 +98,17 @@ var processMaster = {
         };        
         var tmp = new process();
         var pid = 0;
+        var timeOfset = getRandomInt(10, 100); //Min 11, max 99 seconds to live
         while (true) {
             if (this.usedPids.indexOf(pid) == -1) {
-                tmp.init(pid, getRandomInt(0, 20));
+                tmp.init(pid, getRandomInt(0, 20), Date.now()+(timeOfset*1000));
                 //TODO: replace values with min/max pages for process
                 this.usedPids += pid;
                 break;
             };
             pid += 1;
         };
-        var timeOfset = getRandomInt(10, 100); //Min 11, max 99 seconds to live
-        this.processList[tmp] = [Date.now()+(timeOfset*1000)];
+        this.processList[pid] = tmp;
         console.log("Process ID:" + pid + " created");
         if (Object.keys(this.processList).length < config.processMin) {
             this.createProcess();
@@ -118,16 +120,16 @@ var processMaster = {
         
         //Generate action for each active process
         for (var i in this.processList) {
-            var event = i.makeAction();
+            var event = this.processList[i].makeAction();
             simulationTick(event);
         };        
         
         //Delete old processes
         for (var i in this.processList) {
-            if (Date.now() > this.processList[i][0]) {
-                i.endProcess();
+            if (Date.now() > this.processList[i].ttl) {
+                this.processList[i].endProcess();
                 console.log("Process ID:"+i.pid+" terminated");
-                delete this.usedPids[i.pid];
+                delete this.usedPids[this.processList[i].pid];
                 delete this.processList[i];
             };
         };
@@ -135,9 +137,9 @@ var processMaster = {
     killAll: function() {
         console.log("Killing all processes");
         for (var i in this.processList) {
-            i.endProcess();
+            this.processList[i].endProcess();
             console.log("Process ID:"+i.pid+" terminated");
-            delete this.usedPids[i.pid];
+            delete this.usedPids[this.processList[i].pid];
             delete this.processList[i];            
         };    
     },
