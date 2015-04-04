@@ -27,7 +27,8 @@ function checkValidness(onstart){
 
         if (params.frameCount > 1024){
             console.log("showing");
-            $("#modal-text").text("Max supported frame count is 1024.!!!@#$%^!<br/>Please increase page size or decrease RAM ammount!");
+            $("#modal-text").text("Max supported frame count is 1024. " +
+            "Please increase page size or decrease RAM ammount!");
             $('#myModal').modal("show");
             console.log("showed");
             return false;
@@ -173,6 +174,7 @@ resetbtn.click(function () {
 
 function resetGUI() {
     clearStats();
+    enableGUI();
     pausebtn.hide();
     stopbutn.hide();
     startbtn.show();
@@ -238,7 +240,7 @@ function enableSliders() {
             $("#speed").val(speed);
             setStep(speed);
         } else if (speed == 10){
-            $("#ex1SliderVal").text("OVER 9000 (MAX)");
+            $("#ex1SliderVal").text("MAX");
             $("#speedinput").val(500);
             $("#speed").val(500);
             setStep(500);

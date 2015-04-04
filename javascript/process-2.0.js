@@ -19,7 +19,7 @@ var MMU = {
         return tmp;
     },
     removeId: function(id) {
-        this.usedId.pop(id);
+        this.usedId.splice(this.usedId.indexOf(parseInt(id)),1);
     },
 };
 
@@ -87,7 +87,7 @@ var processMaster = {
         this.usedPids = [];
     },
     createProcess: function() {
-        //If max reached do nothing
+        //If max reached do nothing      
         if (Object.keys(this.processList).length == config.processMax) {
             return;
         };
@@ -102,7 +102,7 @@ var processMaster = {
         var timeOfset = getRandomInt(10, 100); //Min 11, max 99 seconds to live
         while (true) {
             if (this.usedPids.indexOf(pid) == -1) {
-                tmp.init(pid, getRandomInt(config.pagePerProcessMin, config.pagePerProcessMax), Date.now()+(timeOfset*1000));
+                tmp.init(pid, getRandomInt(config.pagePerProcessMin, config.pagePerProcessMax), timeOfset);
                 this.usedPids.push(pid);
                 break;
             };
@@ -122,14 +122,15 @@ var processMaster = {
         for (var i in this.processList) {
             var event = this.processList[i].makeAction();
             simulationTick(event);
+            this.processList[i].ttl -= 1;
         };        
         
         //Delete old processes
         for (var i in this.processList) {
-            if (Date.now() > this.processList[i].ttl) {
+            if (this.processList[i].ttl == 0) {
                 this.processList[i].endProcess();
                 console.log("Process ID:"+this.processList[i].pid+" terminated");
-                this.usedPids.pop(i);
+                this.usedPids.splice(this.usedPids.indexOf(parseInt(i)),1);
                 delete this.processList[i];
             };
         };
@@ -139,9 +140,9 @@ var processMaster = {
         for (var i in this.processList) {
             this.processList[i].endProcess();
             console.log("Process ID:"+this.processList[i].pid+" terminated");
-            this.usedPids.pop(i);
             delete this.processList[i];            
-        };   
+        };
+        this.usedPids = [];   
         MMU.init(); 
     },
 };
