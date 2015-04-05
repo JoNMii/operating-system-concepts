@@ -42,9 +42,9 @@ function startAlgo(params) {
         config.algo = MFU_Algorithm
     } else if (algo == 4) { //MRU
         config.algo = MRU_Algorithm
-    } else if (algo == 5) { //MFU
+    } else if (algo == 6) { //MFU
         config.algo = MFU_Algorithm
-	} else if (algo == 6) { //Random
+	} else if (algo == 5) { //Random
 		config.algo = randomAlgorithm
 	}
 	statsObj.freeRam = config.ramSize;
