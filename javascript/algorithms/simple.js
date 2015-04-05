@@ -103,7 +103,6 @@ function simpleAlgorithm() {
 	};
 	this.init=function(){
 		console.log("init called");
-		console.log(self.tableColumns);
 		setTableHeader(self.tableColumns);
 	};
 }

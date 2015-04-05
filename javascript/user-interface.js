@@ -392,7 +392,6 @@ function setTableHeader(header){
 	tableHeaderNames = header;
 	table.tHead.innerHTML="";
 	var row = table.tHead.insertRow(0);
-	console.log(header);
 	for(i = 0;i<header.length;i++){
 		var name = header[i];
 		var cell = row.insertCell(i);
@@ -401,6 +400,8 @@ function setTableHeader(header){
 }
 
 function setTableRows(rows){
+	clearTable();
+	console.log("new table rows",rows);
 	for(i = 0; i<rows.length;i++){
 		var items = rows[i];
 		var row = table.tBodies[0].insertRow(i);

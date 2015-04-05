@@ -17,6 +17,11 @@ var FIFO_Algorithm = function(){
 		return result;
 	}
 	simple.dumpStatus = function(){
+	
+		printUI("Queue(page IDs): "+simple.queue());	
+	}
+
+	simple.queue = function(){
 		var pages = getPagesInRAM();
 		var queue = Object.keys(pages).map(
 			function(k){
@@ -32,8 +37,16 @@ var FIFO_Algorithm = function(){
 		var pageIds = queue.map(function(item){
 			return item.id;
 		});
-		printUI("Queue(page IDs): "+pageIds);	
+		return pageIds;
 	}
+
+	simple.tableColumns = ["Queue"];
+	simple.getStateForTable = function(){
+		return simple.queue().map(function(a){
+			return {"Queue":a};		
+		});
+	}
+
 	var defaultOnEvent = simple.onEvent;
 	simple.onEvent=function(event){
 		turn++;
