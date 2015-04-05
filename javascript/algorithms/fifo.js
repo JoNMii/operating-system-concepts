@@ -21,12 +21,14 @@ var FIFO_Algorithm = function(){
 	}
 	simple.dumpStatus = function(){
 		var pages = getPagesInRAM();
-		pages = Object.keys(pages).map(function(k){return pages[k]});
-		var queue = pages.map(function(page){
-			var created = getFlags(page).created;
-			return {"id":pageId(page),
-				"created":created};
-		});
+		var queue = Object.keys(pages).map(
+			function(k){
+				var page = pages[k];
+				var created = getFlags(page).created;
+				return {"id":pageId(page),
+					"created":created};
+			});
+
 		queue.sort(function(o1,o2){
 			return o1.created - o2.created;
 		});

@@ -22,7 +22,7 @@ function simpleAlgorithm() {
 		var pageInSWAP = findSWAPPageById(_pageId);
 
 		var evictPage = function() {
-			self.preEvict();
+			self.dumpStatus();
 			var evicted = self.onEvict(); // RAM slot
 			console.assert(typeof evicted === "number", "onEvict() must return a number! Got " + typeof evicted + " instead...");
 			var evictedPage = getPagesInRAM()[evicted];
