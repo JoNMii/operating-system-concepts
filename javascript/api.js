@@ -280,6 +280,22 @@ function writePageToRAM(page,ramSlot){
 	}
 }
 
+function movePageFromRamToSwap(page, swapSlot) {
+	var flags = data.flags[pageId(page)];
+	writePageToSwap(page, swapSlot);
+	deletePageFromRAM(page);
+	// Hack:restore flags after deletion
+	setFlags(page, flags);
+}
+
+function movePageFromSwapToRam(page, ramSlot) {
+	var flags = data.flags[pageId(page)];
+	writePageToRAM(page, ramSlot);
+	deletePageFromSWAP(page);
+	// Hack:restore flags after deletion
+	setFlags(page, flags);
+}
+
 function findRAMPageById(id){
 	var pages = getPagesInRAM();
 	for(i in pages){
