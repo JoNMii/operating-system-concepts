@@ -44,13 +44,14 @@ var second_chance = function(){
 	});
 	printUI("Second is available for chance for : "+secondChanceFor);
     }
-	simple.tableColumns = ["Queue"," "];
+	simple.tableColumns = ["Queue","Second chance"];
    	simple.getStateForTable = function(){
-		return eventlist.map(function(id){
-			var second = (getFlag(id,"count",0)>0)? "Second chance" : "";
+		var mapped = eventlist.map(function(id){
+			var second = (getFlag(id,"count",0)>0)? "X" : "";
 			return {"Queue": id,
-				" ":second};		
+				"Second chance":second};		
 		});
+		return mapped;
 	}
 
     simple.onEvent = function(event) {
@@ -63,8 +64,10 @@ var second_chance = function(){
 	setFlag(pageId,"count", count+1);
     }
 	
+    var defaultInit = simple.init;
+
     simple.init = function() {
-        console.log("init called");
+	defaultInit();
         eventlist = [];
     }
     
