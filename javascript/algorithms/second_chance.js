@@ -44,6 +44,14 @@ var second_chance = function(){
 	});
 	printUI("Second is available for chance for : "+secondChanceFor);
     }
+	simple.tableColumns = ["Queue"," "];
+   	simple.getStateForTable = function(){
+		return eventlist.map(function(id){
+			var second = (getFlag(id,"count",0)>0)? "Second chance" : "";
+			return {"Queue": id,
+				" ":second};		
+		});
+	}
 
     simple.onEvent = function(event) {
         var pageId = addressToPageId(event.address);
