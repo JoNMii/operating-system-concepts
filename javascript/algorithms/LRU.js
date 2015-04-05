@@ -3,10 +3,10 @@ var LRU_Algorithm = function(){
 	var simple = new simpleAlgorithm();
 	simple.onEvict = function(){
 		var pages = getPagesInRAM();
-		var oldestLU = getFlags(pages[0]).last_use;
+		var oldestLU = getFlag(pages[0],"last_use",0);
 		var result = 0;
 		for(i in pages){
-			var LU = getFlags(pages[i]).last_use;
+			var LU = getFlag(pages[i],"last_use",0);;
 			console.log("Last usage",LU,pages[i]);
 			if(LU === undefined){
 				return parseInt(i);
@@ -23,14 +23,14 @@ var LRU_Algorithm = function(){
 		turn++;
 		var pageId = addressToPageId(event.address);
 		defaultOnEvent(event);
-		setFlags(pageId,{"last_use":turn});
+		setFlag(pageId,"last_use",turn);
 	}
    	simple.dumpStatus = function(){
 		var pages = getPagesInRAM();
 		var queue = Object.keys(pages).map(
 			function(k){
 				var page = pages[k];
-				var last_use = getFlags(page).last_use;
+				var last_use = getFlag(page,"last_use",0);
 				return {"id":pageId(page),
 					"last_use":last_use};
 			});

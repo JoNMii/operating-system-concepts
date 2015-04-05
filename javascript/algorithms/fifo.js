@@ -4,14 +4,11 @@ var FIFO_Algorithm = function(){
 	simple.name="FIFO";
 	simple.onEvict = function(){
 		var pages = getPagesInRAM();
-		var oldest = getFlags(pages[0]).created;
+		var oldest = getFlag(pages[0],"created",0);
 		var result = 0;
 		for(i in pages){
-			var created = getFlags(pages[i]).created;
+			var created = getFlag(pages[i],"created",0);
 			console.log("Created on",created, pages[i]);
-			if(created === undefined){
-				return parseInt(i);
-			}
 			if(oldest>created){
 				oldest = created;
 				result = parseInt(i);
@@ -24,7 +21,7 @@ var FIFO_Algorithm = function(){
 		var queue = Object.keys(pages).map(
 			function(k){
 				var page = pages[k];
-				var created = getFlags(page).created;
+				var created = getFlag(page,"created",0);
 				return {"id":pageId(page),
 					"created":created};
 			});
@@ -46,7 +43,7 @@ var FIFO_Algorithm = function(){
 		// if it did not exists, then it is created
 		if(!existed){
 			console.log("Create detected",pageId,"->",turn);
-			setFlags(pageId,{"created":turn});
+			setFlag(pageId,"created",turn);
 		}
 	}
 

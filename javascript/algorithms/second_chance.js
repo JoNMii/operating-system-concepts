@@ -7,14 +7,13 @@ var second_chance = function(){
 	
 	simple.onEvict = function() {
 	    while(true) {
-	        var flags = getFlags(eventlist[0]);
+	        var count = getFlag(eventlist[0],"count",0);
 		console.log(" flags ", flags," events ", eventlist);
-	        if (flags && flags.count > 0) {
+	        if (count > 0) {
 	            var tmp = eventlist[0];
 	            eventlist.shift();
 	            eventlist.push(tmp);
-	            flags.count = 0;
-	            setFlags(tmp, flags);
+	            setFlag(tmp, "count",0);
 	        } else {
 	            var tmp = eventlist[0];
 	            eventlist.shift();
@@ -40,8 +39,8 @@ var second_chance = function(){
     simple.dumpStatus = function(){
 	printUI("Queue(page IDs): "+eventlist);
 	var secondChanceFor = eventlist.filter(function(id){
-		var flags = getFlags(id);
-		return (flags !== undefined) && (flags.count>0);
+		var count = getFlag(id,"count",0);
+		return count > 0;
 	});
 	printUI("Second is available for chance for : "+secondChanceFor);
     }
@@ -51,19 +50,12 @@ var second_chance = function(){
         if (eventlist.indexOf(pageId) == -1) {
             eventlist.push(pageId);
         }
-        var flags = getFlags(pageId);
-        if (!flags) {
-            flags = {"count": 0};
-        } else if (flags.count === undefined) {
-            flags.count = 0;
-        } else {
-            flags.count += 1;
-        }
+        var count = getFlag(pageId,"count",0);
         if (event.type == "write") {
             flags.dirty = true;
 	    }
 	    defaultOnEvent(event);
-	    setFlags(pageId, flags);
+	    setFlag(pageId,"count", count+1);
 	}
 	
     simple.init = function() {

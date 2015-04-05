@@ -241,7 +241,7 @@ function getFlags(page){
 function setFlag(page,flagName,value){
 	var flags = data.flags[pageId(page)];
 	if(flags===undefined){
-		oldFlags = {};	
+		flags = {};	
 	}
 	flags[flagName]=value;
 	data.flags[pageId(page)]=flags;

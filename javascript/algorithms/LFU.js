@@ -2,14 +2,11 @@ var LFU_Algorithm = function(){
 	var simple = new simpleAlgorithm();
 	simple.onEvict = function(){
 		var pages = getPagesInRAM();
-		var lessUsed = getFlags(pages[0]).used;
+		var lessUsed = getFlag(pages[0],"used",0);;
 		var result = 0;
 		for(i in pages){
-			var used = getFlags(pages[i]).used;
+			var used = getFlag(pages[i],"used",0);
 			console.log("Used ",used," times",pages[i]);
-			if(used === undefined){
-				return parseInt(i);
-			}
 			if(lessUsed>used){
 				lessUsed = used;
 				result = parseInt(i);
@@ -21,19 +18,15 @@ var LFU_Algorithm = function(){
 	simple.onEvent=function(event){
 		var pageId = addressToPageId(event.address);
 		defaultOnEvent(event);
-		var flags = getFlags(pageId);
-		var used = 0; 
-		if(flags !== undefined){
-			used = flags.used;
-		}
-		setFlags(pageId,{"used":used+1});
+		var used = getFlag(page,"used",0); 
+		setFlag(pageId,"used",used+1);
 	}
    	simple.dumpStatus = function(){
 		var pages = getPagesInRAM();
 		var queue = Object.keys(pages).map(
 			function(k){
 				var page = pages[k];
-				var used = getFlags(page).used;
+				var used = getFlag(page,"used",0);
 				return {"id":pageId(page),
 					"used":used};
 			});
