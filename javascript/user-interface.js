@@ -409,8 +409,8 @@ function setTableRows(rows){
 			var columnIndex = tableHeaderNames.indexOf(j);
 			if(columnIndex>=0){
 				var cell = row.insertCell(columnIndex);
+				cell.innerHTML = items[j];
 			}
-			cell.innerHTML = items[j];
 		}
 	}
 }
