@@ -142,6 +142,7 @@ startbtn.click(function () {
     startbtn.hide();
     stopbutn.show();
     pausebtn.attr("data-started", 1);
+    $(this).children().first().first().text("Pause");
     pausebtn.show();
     clearStats();
     disableGUI();
@@ -353,6 +354,7 @@ function outofMemoryHide(){
     startbtn.show();
     pausebtn.hide();
     pausebtn.attr("data-started", 0);
+    $(this).children().first().first().text("Unpause");
     enableGUI();
     $(".bsod").hide();
 }
