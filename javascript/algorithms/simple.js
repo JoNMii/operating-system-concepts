@@ -1,12 +1,16 @@
 function simpleAlgorithm() {
 	var self = this;
 	this.name="Name me";
+	this.tableColumns = [];
 	this.onEvict = function(){
 		console.log("Implement me!!!");
 		return 0;
 	};
 	
 	this.dumpStatus = function(){}
+	this.getStateForTable = function(){
+		return [];
+	}
 	this.postEvict = function(slot,id){
 		printUI("Page evicted! slot:"+slot+" page id:"+id);
 	}
@@ -95,6 +99,11 @@ function simpleAlgorithm() {
 				animateCreatePage(pid, target);
 			});
 		}
+		setTableRows(self.getStateForTable());
 	};
-	this.init=function(){console.log("init called");};
+	this.init=function(){
+		console.log("init called");
+		console.log(self.tableColumns);
+		setTableHeader(self.tableColumns);
+	};
 }

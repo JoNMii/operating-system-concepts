@@ -385,14 +385,15 @@ function kbToLabel(kbCount){
 var table = document.getElementById("state_table");
 var tableHeaderNames=[];
 function clearTable(){
-	table.tbody.innerHTML="";
+	table.tBodies[0].innerHTML="";
 }
 function setTableHeader(header){
 	clearTable();
 	tableHeaderNames = header;
 	table.tHead.innerHTML="";
 	var row = table.tHead.insertRow(0);
-	for(i in header){
+	console.log(header);
+	for(i = 0;i<header.length;i++){
 		var name = header[i];
 		var cell = row.insertCell(i);
    		cell.innerHTML = name;
@@ -400,12 +401,14 @@ function setTableHeader(header){
 }
 
 function setTableRows(rows){
-	for(i in rows){
+	for(i = 0; i<rows.length;i++){
 		var items = rows[i];
-		var row = header.insertRow(i);
+		var row = table.tBodies[0].insertRow(i);
 		for(j in items){
 			var columnIndex = tableHeaderNames.indexOf(j);
-			var cell = row.insertCell(columnIndex);
+			if(columnIndex>=0){
+				var cell = row.insertCell(columnIndex);
+			}
 			cell.innerHTML = items[j];
 		}
 	}
