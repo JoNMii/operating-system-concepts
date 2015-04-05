@@ -47,6 +47,8 @@ function setFreeRam(num){
     var ram = num;
 
     var percent = (ram/maxMemSise)*100;
+    // Round to 2 digits after comma
+    percent = Math.floor(percent * 100) / 100;
     var label = percent + "%";
     //var label = percent + "% ("+kbToLabel(ram)+"/"+kbToLabel(maxMemSise)+")" ;
     $("#freeMemStat").text(label);
@@ -59,6 +61,8 @@ function setPagePoolStat(num){
     var swapPageCount = swapSize/frameSize;
 
     var percent = (pagedPoolStat/swapPageCount)*100;
+    // Round to 2 digits after comma
+    percent = Math.floor(percent * 100) / 100;
     var label = percent+"%";
     $("#pagePoolStat").text(label);
 }
