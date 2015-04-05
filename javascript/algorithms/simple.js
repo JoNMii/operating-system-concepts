@@ -42,8 +42,7 @@ function simpleAlgorithm() {
 				return -1;
 			}
 
-			writePageToSwap(evictedPage, swapSlot);
-			deletePageFromRAM(evictedPage);
+			movePageFromRamToSwap(evictedPage, swapSlot);
 
 			statsObj.pageFaults++;
 			Graphics.enqueueDrawingEvent(function() {
@@ -73,8 +72,7 @@ function simpleAlgorithm() {
 				}
 			}
 
-			writePageToRAM(pageInSWAP, target);
-			deletePageFromSWAP(pageInSWAP);
+			movePageFromSwapToRam(pageInSWAP, target);
 
 			Graphics.enqueueDrawingEvent(function () {
 				animateSwapToRam(target, swapSlot);
