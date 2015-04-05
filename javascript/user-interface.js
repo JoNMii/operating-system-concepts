@@ -143,6 +143,7 @@ startbtn.click(function () {
     stopbutn.show();
     pausebtn.attr("data-started", 1);
     pausebtn.children().first().first().text("Pause");
+    pausebtn.children().first().removeClass("glyphicon-play").addClass("glyphicon-pause");
     pausebtn.show();
     clearStats();
     disableGUI();
@@ -160,11 +161,13 @@ pausebtn.click(function () {
         pauseAlgo();
         $(this).attr("data-started", 0);
         $(this).children().first().first().text("Unpause");
+        pausebtn.children().first().removeClass("glyphicon-pause").addClass("glyphicon-play");
         console.log("PAUSED");
     } else {
         unpauseAlgo();
         $(this).attr("data-started", 1);
         $(this).children().first().first().text("Pause");
+        pausebtn.children().first().removeClass("glyphicon-play").addClass("glyphicon-pause");
         console.log("UNPAUSED");
     }
 });
@@ -355,6 +358,7 @@ function outofMemoryHide(){
     pausebtn.hide();
     pausebtn.attr("data-started", 0);
     pausebtn.children().first().first().text("Unpause");
+    pausebtn.children().first().removeClass("glyphicon-pause").addClass("glyphicon-play");
     enableGUI();
     $(".bsod").hide();
 }
