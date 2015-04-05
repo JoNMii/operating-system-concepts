@@ -11,12 +11,15 @@ var visualConfig = {
 
     cpuTextOffsetY: 0,
     cpuTextFontSize: 30,
+    cpuBorderWidth: 0,
 
     ramTextOffsetY: 0,
     ramTextFontSize: 30,
+    ramBorderWidth: 0,
 
     pfTextOffsetY: 0,
     pfTextFontSize: 30,
+    pfBorderWidth: 0,
 
     // Processes
     procOffsetX: 0,
@@ -58,12 +61,14 @@ var visualConfig = {
 
     // Colors
     cpuColor: '#dddddd',
+    cpuBorderColor: '#000000',
     memoryColor: '#dddddd',
+    memoryBorderColor: '#000000',
     pagefileColor: '#dddddd',
+    pagefileBorderColor: '#000000',
+
     memorySlotColor: 'transparent',
     pagefileSlotColor: 'transparent',
-    memorySlotBorderColor: '#ff0000',
-    pagefileSlotBorderColor: '#ffff00',
 
     // TODO: pick colors for all supported processes
     procColors: {
@@ -208,6 +213,8 @@ var Graphics = {
             this.width = visualConfig.cpuWidth;
             this.height = visualConfig.cpuHeight;
             this.fill = visualConfig.cpuColor;
+            this.stroke = visualConfig.cpuBorderColor;
+            this.strokeWidth = visualConfig.cpuBorderWidth;
             this.rx = visualConfig.cpuBorderRadius;
             this.ry = visualConfig.cpuBorderRadius;
             this.selectable = false;
@@ -220,6 +227,8 @@ var Graphics = {
             this.width =  visualConfig.ramWidth;
             this.height = visualConfig.ramHeight;
             this.fill = visualConfig.memoryColor;
+            this.stroke = visualConfig.memoryBorderColor;
+            this.strokeWidth = visualConfig.ramBorderWidth;
             this.rx = visualConfig.ramBorderRadius;
             this.ry = visualConfig.ramBorderRadius;
             this.selectable = false;
@@ -232,6 +241,8 @@ var Graphics = {
             this.width = visualConfig.pfWidth;
             this.height = visualConfig.pfHeight;
             this.fill = visualConfig.pagefileColor;
+            this.stroke = visualConfig.pagefileBorderColor;
+            this.strokeWidth = visualConfig.pfBorderWidth;
             this.rx = visualConfig.pfBorderRadius;
             this.ry = visualConfig.pfBorderRadius;
             this.selectable = false;
