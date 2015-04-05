@@ -8,6 +8,7 @@ function simpleAlgorithm() {
 	};
 
 	this.onCreate = function(_pageId){}
+	this.onSwapin = function(_pageId){}
 	
 	this.dumpStatus = function(){}
 	this.getStateForTable = function(){
@@ -79,6 +80,7 @@ function simpleAlgorithm() {
 			}
 
 			movePageFromSwapToRam(pageInSWAP, target);
+			self.onSwapin(_pageId);
 
 			Graphics.enqueueDrawingEvent(function () {
 				animateSwapToRam(target, swapSlot);

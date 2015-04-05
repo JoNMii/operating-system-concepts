@@ -23,6 +23,10 @@ var FIFO_Algorithm = function(){
 	simple.onCreate=function(_pageId){
 		setFlag(_pageId,"created",turn);
 	}
+	//if page is swapped in treat it as newly created
+	simple.onSwapin = function(_pageId){
+		setFlag(_pageId,"created",turn);
+	}
 
 	simple.queue = function(){
 		var pages = getPagesInRAM();
