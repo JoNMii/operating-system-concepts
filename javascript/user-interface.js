@@ -390,25 +390,25 @@ function clearTable(){
 function setTableHeader(header){
 	clearTable();
 	tableHeaderNames = header;
-	table.tHead.innerHTML="";
-	var row = table.tHead.insertRow(0);
-	for(i = 0;i<header.length;i++){
-		var name = header[i];
-		var cell = row.insertCell(i);
-   		cell.innerHTML = name;
-	}
 }
 
 function setTableRows(rows){
 	clearTable();
+	//insert "headers"
+	for(i = 0;i<tableHeaderNames.length;i++){
+		var name = tableHeaderNames[i];
+		var row = table.tBodies[0].insertRow(i);
+		var cell = row.insertCell(0);
+   		cell.innerHTML = name;
+	}
 	console.log("new table rows",rows);
 	for(i = 0; i<rows.length;i++){
 		var items = rows[i];
-		var row = table.tBodies[0].insertRow(i);
 		for(j in items){
 			var columnIndex = tableHeaderNames.indexOf(j);
+			var row = table.tBodies[0].rows[columnIndex];
 			if(columnIndex>=0){
-				var cell = row.insertCell(columnIndex);
+				var cell = row.insertCell(i+1);
 				cell.innerHTML = items[j];
 			}
 		}
