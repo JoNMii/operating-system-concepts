@@ -48,6 +48,7 @@ function setFreeRam(num){
 
     var percent = (ram/maxMemSise)*100;
     var label = percent + "%";
+    //var label = percent + "% ("+kbToLabel(ram)+"/"+kbToLabel(maxMemSise)+")" ;
     $("#freeMemStat").text(label);
 }
 function setPagePoolStat(num){
@@ -349,6 +350,10 @@ function outOfMemoryShow(){
     });
 }
 function outofMemoryHide(){
+    startbtn.show();
+    pausebtn.hide();
+    pausebtn.attr("data-started", 0);
+    enableGUI();
     $(".bsod").hide();
 }
 function kbToLabel(kbCount){
