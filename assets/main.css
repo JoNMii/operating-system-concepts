@@ -42,3 +42,8 @@ min-width:600px;
     top:0;
     left:0;
 }
+
+.cell-elem{
+    float:left;
+    padding-right: 2px;
+}

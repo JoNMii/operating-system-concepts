@@ -388,33 +388,42 @@ function kbToLabel(kbCount){
 //for state table
 var table = document.getElementById("state_table");
 var tableHeaderNames=[];
+
+var tabblje = $("#table-content");
 function clearTable(){
-	table.tBodies[0].innerHTML="";
+	//table.tBodies[0].innerHTML="";
+    tabblje.empty();
 }
+
 function setTableHeader(header){
 	clearTable();
 	tableHeaderNames = header;
 }
+function addCell(row, data){
+    row.append("<div class='cell-elem'>"+data+"</div>");
+}
+var hrows;
+function setTableRows(rows) {
+    clearTable();
 
-function setTableRows(rows){
-	clearTable();
-	//insert "headers"
-	for(i = 0;i<tableHeaderNames.length;i++){
-		var name = tableHeaderNames[i];
-		var row = table.tBodies[0].insertRow(i);
-		var cell = row.insertCell(0);
-   		cell.innerHTML = name;
-	}
-	console.log("new table rows",rows);
-	for(i = 0; i<rows.length;i++){
-		var items = rows[i];
-		for(j in items){
-			var columnIndex = tableHeaderNames.indexOf(j);
-			var row = table.tBodies[0].rows[columnIndex];
-			if(columnIndex>=0){
-				var cell = row.insertCell(i+1);
-				cell.innerHTML = items[j];
-			}
-		}
-	}
+    hrows = Array();
+    //insert "headers"
+    for (i = 0; i < tableHeaderNames.length; i++) {
+        tabblje.append("<div class='row data-row' data-rownum='"+tableHeaderNames[i]+"'></div>");
+        hrows[tableHeaderNames[i]] = $(".data-row[data-rownum='"+tableHeaderNames[i]+"'");// tabblje.append("<div class='row data-row' data-rownum='"+i+"'></div>");
+        hrows[tableHeaderNames[i]].append("<div class='row'>"+tableHeaderNames[i]+"</div>");
+    }
+    console.log("new table rows", hrows);
+
+    console.log(rows);
+    for (i = 0; i < rows.length; i++) {
+        var items = rows[i];
+        for (j in items) {
+            var columnIndex = tableHeaderNames.indexOf(j);
+            if (columnIndex >= 0) {
+                console.log("addinCellTo"+j,hrows[j]);
+                addCell(hrows[j], items[j]);
+            }
+        }
+    }
 }
