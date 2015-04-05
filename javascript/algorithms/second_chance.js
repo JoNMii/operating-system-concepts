@@ -8,7 +8,7 @@ var second_chance = function(){
 	simple.onEvict = function() {
 	    while(true) {
 	        var count = getFlag(eventlist[0],"count",0);
-		console.log(" flags ", flags," events ", eventlist);
+		console.log(" count ", count," events ", eventlist);
 	        if (count > 0) {
 	            var tmp = eventlist[0];
 	            eventlist.shift();
@@ -59,12 +59,9 @@ var second_chance = function(){
             eventlist.push(pageId);
         }
         var count = getFlag(pageId,"count",0);
-        if (event.type == "write") {
-            flags.dirty = true;
-	    }
-	    defaultOnEvent(event);
-	    setFlag(pageId,"count", count+1);
-	}
+	defaultOnEvent(event);
+	setFlag(pageId,"count", count+1);
+    }
 	
     simple.init = function() {
         console.log("init called");
