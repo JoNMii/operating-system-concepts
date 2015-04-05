@@ -18,7 +18,7 @@ var FIFO_Algorithm = function(){
 	}
 	simple.dumpStatus = function(){
 	
-		printUI("Queue(page IDs): "+simple.queue());	
+		printUI("Queue(page IDs): "+simple.queue().join(", "));	
 	}
 	simple.onCreate=function(_pageId){
 		setFlag(_pageId,"created",turn);

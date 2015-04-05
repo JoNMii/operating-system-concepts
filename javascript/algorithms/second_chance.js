@@ -42,14 +42,14 @@ var second_chance = function(){
 		var count = getFlag(id,"count",0);
 		return count > 0;
 	});
-	printUI("Second is available for chance for : "+secondChanceFor);
+	printUI("Second is available for chance for : "+secondChanceFor.join(", "));
     }
 	simple.tableColumns = ["Queue","Second chance"];
    	simple.getStateForTable = function(){
 		var mapped = eventlist.map(function(id){
 			var second = (getFlag(id,"count",0)>0)? "X" : "";
 			return {"Queue": id,
-				"Second chance":second};		
+				"Second chance":second.join(" , ")};		
 		});
 		return mapped;
 	}
