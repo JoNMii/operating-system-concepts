@@ -18,7 +18,7 @@ var LFU_Algorithm = function(){
 	simple.onEvent=function(event){
 		var pageId = addressToPageId(event.address);
 		defaultOnEvent(event);
-		var used = getFlag(page,"used",0); 
+		var used = getFlag(pageId,"used",0); 
 		setFlag(pageId,"used",used+1);
 	}
 	simple.tableColumns = ["Page id","Used"];
