@@ -41,11 +41,11 @@ var FIFO_Algorithm = function(){
 	simple.onEvent=function(event){
 		turn++;
 		var pageId = addressToPageId(event.address);
-		var existed = (findRAMPageById()!=null) || (findSWAPPageById()!=null);
+		var existed = (findRAMPageById(pageId)!=null) || (findSWAPPageById(pageId)!=null);
 		defaultOnEvent(event);
 		// if it did not exists, then it is created
 		if(!existed){
-			console.log("Create detected"+pageId);
+			console.log("Create detected",pageId,"->",turn);
 			setFlags(pageId,{"created":turn});
 		}
 	}
