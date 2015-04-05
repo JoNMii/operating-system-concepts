@@ -276,16 +276,12 @@ function movePageFromRamToSwap(page, swapSlot) {
 	var flags = data.flags[pageId(page)];
 	writePageToSwap(page, swapSlot);
 	deletePageFromRAM(page);
-	// Hack:restore flags after deletion
-	setFlags(page, flags);
 }
 
 function movePageFromSwapToRam(page, ramSlot) {
 	var flags = data.flags[pageId(page)];
 	writePageToRAM(page, ramSlot);
 	deletePageFromSWAP(page);
-	// Hack:restore flags after deletion
-	setFlags(page, flags);
 }
 
 function findRAMPageById(id){
@@ -328,7 +324,7 @@ function findSWAPSlotByPageId(id){
 	return -1;
 }
 
-//delete page from both RAM and SWAP
+//delete page from both RAM and SWAP, also remove flags
 function deletePage(page){
 	var id = pageId(page);
 	var ramPageId = findRAMSlotByPageId(id);
@@ -339,6 +335,7 @@ function deletePage(page){
 
 	data.deleteRAMPage(page);
 	data.deleteSWAPPage(page);
+	delete data.flags[id];
 }
 
 function deletePageFromRAM(page){

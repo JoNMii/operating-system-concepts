@@ -13,7 +13,6 @@ var data={
 	var keyInRAM = findKeyFor(data.in_ram, thisPage);
 	if(keyInRAM != null){
 		delete data.in_ram[keyInRAM];
-		delete data.flags[pageId(page)];
 		data.backless=data.backless.filter(function(item){
 			return item.page_id != page.page_id;
 		});
@@ -27,7 +26,6 @@ var data={
 	var keyInSwap = findKeyFor(data.in_swap, thisPage);
 	if(keyInSwap != null){
 		delete data.in_swap[keyInSwap];
-		delete data.flags[pageId(page)];
 		data.backless=data.backless.filter(function(item){
 			return item.page_id != page.page_id;
 		});
