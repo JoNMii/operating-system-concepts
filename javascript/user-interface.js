@@ -405,8 +405,8 @@ function setTableRows(rows){
 	for(i = 0; i<rows.length;i++){
 		var items = rows[i];
 		for(j in items){
-			var row = table.tBodies[0].rows[columnIndex];
 			var columnIndex = tableHeaderNames.indexOf(j);
+			var row = table.tBodies[0].rows[columnIndex];
 			if(columnIndex>=0){
 				var cell = row.insertCell(i+1);
 				cell.innerHTML = items[j];
