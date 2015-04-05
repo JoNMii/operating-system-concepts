@@ -25,23 +25,28 @@ var LRU_Algorithm = function(){
 		defaultOnEvent(event);
 		setFlag(pageId,"last_use",turn);
 	}
-   	simple.dumpStatus = function(){
+	simple.tableColumns = ["Page id","Last used"];
+   	simple.getStateForTable = function(){
 		var pages = getPagesInRAM();
 		var queue = Object.keys(pages).map(
 			function(k){
 				var page = pages[k];
 				var last_use = getFlag(page,"last_use",0);
-				return {"id":pageId(page),
-					"last_use":last_use};
+				return {"Page id":pageId(page),
+					"Last used":last_use};
 			});
 
 		queue.sort(function(o1,o2){
-			return o1.last_use - o2.last_use;
+			return o1["Last used"] - o2["Last used"];
 		});
+		return queue;
+	}
+   	simple.dumpStatus = function(){
+		var queue = simple.getStateForTable();
 		var displayable = queue.map(function(item){
-			return item.id+"->"+item.last_use;
+			return item["Page id"]+"->"+item["Last used"];
 		})
-		printUI("Map of pageId -> last usage "+(displayable.join(" ; ")));	
+		printUI("Map of pageId -> times used "+(displayable.join(" ; ")));	
 	}
 	simple.name="LRU";
 	return simple;

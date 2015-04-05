@@ -33,7 +33,7 @@ var LFU_Algorithm = function(){
 			});
 
 		queue.sort(function(o1,o2){
-			return o1.used - o2.used;
+			return o1.Used - o2.Used;
 		});
 		return queue;
 	}
