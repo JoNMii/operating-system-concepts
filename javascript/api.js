@@ -238,6 +238,27 @@ function getFlags(page){
 	return data.flags[pageId(page)];
 }
 
+function setFlag(page,flagName,value){
+	var flags = data.flags[pageId(page)];
+	if(flags===undefined){
+		oldFlags = {};	
+	}
+	flags[flagName]=value;
+	data.flags[pageId(page)]=flags;
+}
+
+function getFlag(page,flagName,defaultValue){
+	var flags = data.flags[pageId(page)];
+	if(flags===undefined){
+		return defaultValue;
+	}
+	var value = flags[flagName];
+	if(value===undefined){
+		return defaultValue;
+	}
+	return value;
+}
+
 function pageHit(pageId){
 	statsObj.pageHits++;
 	console.log("Page hit!",{"pageId":pageId});
