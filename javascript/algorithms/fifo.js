@@ -19,7 +19,7 @@ var FIFO_Algorithm = function(){
 		}
 		return result;
 	}
-	simple.preEvict = function(){
+	simple.dumpStatus = function(){
 		var pages = getPagesInRAM();
 		pages = Object.keys(pages).map(function(k){return pages[k]});
 		var queue = pages.map(function(page){

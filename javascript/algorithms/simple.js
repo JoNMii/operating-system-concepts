@@ -6,7 +6,7 @@ function simpleAlgorithm() {
 		return 0;
 	};
 	
-	this.preEvict = function(){}
+	this.dumpStatus = function(){}
 	this.postEvict = function(slot,id){
 		printUI("Page evicted! slot:"+slot+" page id:"+id);
 	}

@@ -37,7 +37,7 @@ var second_chance = function(){
 	    }
 	}
 
-    simple.preEvict = function(){
+    simple.dumpStatus = function(){
 	printUI("Queue(page IDs): "+eventlist);
 	var secondChanceFor = eventlist.filter(function(id){
 		var flags = getFlags(id);
