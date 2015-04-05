@@ -26,21 +26,26 @@ var MFU_Algorithm = function(){
 		var used = getFlag(pageId,"used",0);
 		setFlag(pageId,"used",used+1);
 	}
-   	simple.dumpStatus = function(){
+	simple.tableColumns = ["Page id","Used"];
+	simple.getStateForTable = function(){
 		var pages = getPagesInRAM();
 		var queue = Object.keys(pages).map(
 			function(k){
 				var page = pages[k];
 				var used = getFlag(page,"used",0);
-				return {"id":pageId(page),
-					"used":used};
+				return {"Page id":pageId(page),
+					"Used":used};
 			});
 
 		queue.sort(function(o1,o2){
 			return o1.used - o2.used;
 		});
+		return queue;
+	}
+   	simple.dumpStatus = function(){
+		var queue = simple.getStateForTable();
 		var displayable = queue.map(function(item){
-			return item.id+"->"+item.used;
+			return item["Page id"]+"->"+item.Used;
 		})
 		printUI("Map of pageId -> times used "+(displayable.join(" ; ")));	
 	}
