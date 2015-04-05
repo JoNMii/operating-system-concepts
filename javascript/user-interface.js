@@ -23,14 +23,18 @@ function printUI(text) {
 
 function checkValidness(onstart){
     if (onstart === true){
-        console.log("showing");
-
-        if (params.frameCount > 1024){
-            console.log("showing");
-            $("#modal-text").text("Max supported frame count is 1024. " +
-            "Please increase page size or decrease RAM ammount!");
+        var framesInRam = params.frameCount;
+        if (framesInRam > 1024){
+            $("#modal-text").text("Max supported page count is 1024. " +
+            "Please increase page size or decrease RAM amount!");
             $('#myModal').modal("show");
-            console.log("showed");
+            return false;
+        }
+        var framesInSwap = Math.floor(params.swapSize / params.frameSize);
+        if (framesInSwap > 1024){
+            $("#modal-text").text("Max supported SWAP size is 1024 pages. " +
+            "Please increase page size or decrease SWAP size!");
+            $('#myModal').modal("show");
             return false;
         }
     } else {
@@ -50,7 +54,6 @@ function setFreeRam(num){
     // Round to 2 digits after comma
     percent = Math.floor(percent * 100) / 100;
     var label = percent + "%";
-    //var label = percent + "% ("+kbToLabel(ram)+"/"+kbToLabel(maxMemSise)+")" ;
     $("#freeMemStat").text(label);
 }
 function setPagePoolStat(num){
