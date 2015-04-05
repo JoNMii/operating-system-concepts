@@ -390,7 +390,8 @@ function clearTable(){
 function setTableHeader(header){
 	clearTable();
 	tableHeaderNames = header;
-	var row = header.insertRow(0);
+	table.tHead.innerHTML="";
+	var row = table.tHead.insertRow(0);
 	for(i in header){
 		var name = header[i];
 		var cell = row.insertCell(i);
