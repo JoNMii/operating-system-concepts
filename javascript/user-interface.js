@@ -411,22 +411,31 @@ function setTableRows(rows) {
 
     hrows = Array();
     //insert "headers"
-    for (i = 0; i < tableHeaderNames.length; i++) {
-        tabblje.append("<div class='row data-row well well-sm' data-rownum='"+tableHeaderNames[i]+"'></div>");
-        hrows[tableHeaderNames[i]] = $(".data-row[data-rownum='"+tableHeaderNames[i]+"'");// tabblje.append("<div class='row data-row' data-rownum='"+i+"'></div>");
-        hrows[tableHeaderNames[i]].append("<div class='row'><span class='col-xs-2 table-row-header'>"+tableHeaderNames[i]+"</span></div>");
-    }
-    console.log("new table rows", hrows);
 
-    console.log(rows);
+    tabblje.append("<div class='row data-row well well-sm' data-rownum='all-data'></div>");
+    hrows =  $(".data-row[data-rownum='all-data']");
+    header = $("<div></div>");
+    for (i = 0; i < tableHeaderNames.length; i++) {
+        //tabblje.append("<div class='row data-row well well-sm' data-rownum='"+tableHeaderNames[i]+"'></div>");
+        //hrows[tableHeaderNames[i]] = $(".data-row[data-rownum='"+tableHeaderNames[i]+"'");// tabblje.append("<div class='row data-row' data-rownum='"+i+"'></div>");
+        //hrows[tableHeaderNames[i]].append("<div class='row'><span class='col-xs-2 table-row-header'>"+tableHeaderNames[i]+"</span></div>");
+        header.append(tableHeaderNames[i]+"<br/>");
+    }
+    hrows.append("<span class='col-xs-2 table-row-header cell-elem'>"+header.html()+"</span>");
+    hrows.append("<div class='row'></div>");
+    //console.log("new table rows", hrows);
+
+    //console.log(rows);
     for (i = 0; i < rows.length; i++) {
         var items = rows[i];
+        var cell = "";
         for (j in items) {
             var columnIndex = tableHeaderNames.indexOf(j);
             if (columnIndex >= 0) {
-                console.log("addinCellTo"+j,hrows[j]);
-                addCell(hrows[j], items[j]);
+                //console.log("addinCellTo"+j,hrows[j]);
+                cell += items[j]+" <br/>";
             }
         }
+        addCell(hrows, cell);
     }
 }
