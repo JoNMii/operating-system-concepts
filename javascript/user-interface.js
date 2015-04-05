@@ -380,3 +380,32 @@ function kbToLabel(kbCount){
     label = kb + label;
     return label;
 }
+
+//for state table
+var table = document.getElementById("state_table");
+var tableHeaderNames=[];
+function clearTable(){
+	table.tbody.innerHTML="";
+}
+function setTableHeader(header){
+	clearTable();
+	tableHeaderNames = header;
+	var row = header.insertRow(0);
+	for(i in header){
+		var name = header[i];
+		var cell = row.insertCell(i);
+   		cell.innerHTML = name;
+	}
+}
+
+function setTableRows(rows){
+	for(i in rows){
+		var items = rows[i];
+		var row = header.insertRow(i);
+		for(j in items){
+			var columnIndex = tableHeaderNames.indexOf(j);
+			var cell = row.insertCell(columnIndex);
+			cell.innerHTML = items[j];
+		}
+	}
+}
