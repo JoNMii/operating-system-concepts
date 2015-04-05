@@ -6,6 +6,8 @@ function simpleAlgorithm() {
 		console.log("Implement me!!!");
 		return 0;
 	};
+
+	this.onCreate = function(_pageId){}
 	
 	this.dumpStatus = function(){}
 	this.getStateForTable = function(){
@@ -94,6 +96,7 @@ function simpleAlgorithm() {
 			}
 			console.log('Creating page in memory slot ' + target + ' (pageId:' + _pageId + ')');
 			createPage(target, _pageId);
+			self.onCreate(_pageId);
 
 			Graphics.enqueueDrawingEvent(function () {
 				animateCreatePage(pid, target);

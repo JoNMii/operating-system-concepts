@@ -20,6 +20,9 @@ var FIFO_Algorithm = function(){
 	
 		printUI("Queue(page IDs): "+simple.queue());	
 	}
+	simple.onCreate=function(_pageId){
+		setFlag(_pageId,"created",turn);
+	}
 
 	simple.queue = function(){
 		var pages = getPagesInRAM();
@@ -50,14 +53,14 @@ var FIFO_Algorithm = function(){
 	var defaultOnEvent = simple.onEvent;
 	simple.onEvent=function(event){
 		turn++;
-		var pageId = addressToPageId(event.address);
-		var existed = (findRAMPageById(pageId)!=null) || (findSWAPPageById(pageId)!=null);
 		defaultOnEvent(event);
-		// if it did not exists, then it is created
-		if(!existed){
-			console.log("Create detected",pageId,"->",turn);
-			setFlag(pageId,"created",turn);
-		}
+	}
+
+	var defaultInit = simple.init;
+	
+	simple.init=function(){
+		defaultInit();
+		turn = 0;
 	}
 
 	return simple;
