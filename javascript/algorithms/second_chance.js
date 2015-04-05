@@ -37,7 +37,7 @@ var second_chance = function(){
 	}
 
     simple.dumpStatus = function(){
-	printUI("Queue(page IDs): "+eventlist);
+	printUI("Queue(page IDs): "+eventlist.join(", "));
 	var secondChanceFor = eventlist.filter(function(id){
 		var count = getFlag(id,"count",0);
 		return count > 0;
@@ -49,7 +49,7 @@ var second_chance = function(){
 		var mapped = eventlist.map(function(id){
 			var second = (getFlag(id,"count",0)>0)? "X" : "";
 			return {"Queue": id,
-				"Second chance":second.join(" , ")};		
+				"Second chance":second};		
 		});
 		return mapped;
 	}
