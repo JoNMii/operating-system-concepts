@@ -230,14 +230,6 @@ function getAllPages(){
 // dirty, valid
 // these flags should be included in page table if used
 
-function setFlags(page,flags){
-	data.flags[pageId(page)]=flags;
-}
-
-function getFlags(page){
-	return data.flags[pageId(page)];
-}
-
 function setFlag(page,flagName,value){
 	var flags = data.flags[pageId(page)];
 	if(flags===undefined){
