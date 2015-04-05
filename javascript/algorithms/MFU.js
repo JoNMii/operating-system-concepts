@@ -34,6 +34,24 @@ var MFU_Algorithm = function(){
 		}
 		setFlags(pageId,{"used":used+1});
 	}
+   	simple.dumpStatus = function(){
+		var pages = getPagesInRAM();
+		var queue = Object.keys(pages).map(
+			function(k){
+				var page = pages[k];
+				var used = getFlags(page).used;
+				return {"id":pageId(page),
+					"used":used};
+			});
+
+		queue.sort(function(o1,o2){
+			return o1.used - o2.used;
+		});
+		var displayable = queue.map(function(item){
+			return item.id+"->"+item.used;
+		})
+		printUI("Map of pageId -> times used "+(displayable.join(" ; ")));	
+	}
 
 	simple.name="MFU";
 	return simple;
