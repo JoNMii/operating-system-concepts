@@ -38,6 +38,8 @@ function startAlgo(params) {
 		config.algo = LRU_Algorithm
 	} else if (algo == 3) { //LFU
 		config.algo = LFU_Algorithm
+    } else if (algo == 6) { //MFU
+        config.algo = MFU_Algorithm
     } else if (algo == 4) { //MRU
         config.algo = MRU_Algorithm
 	} else if (algo == 5) { //Random
