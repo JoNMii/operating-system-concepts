@@ -148,7 +148,7 @@ startbtn.click(function () {
     clearStats();
     disableGUI();
 });
-    
+     
 stopbutn.click(function () {
     stopAlgo();
     startbtn.show();
