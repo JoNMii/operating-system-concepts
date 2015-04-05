@@ -111,6 +111,7 @@ function stopAlgo(){
 
 //increases time by one timeunit
 function simulationTick(){
+	updateGraphics();
 	if (config.waitForGraphics) {
 		//console.log('Sleeping...');
 		return;
@@ -120,7 +121,6 @@ function simulationTick(){
 	if(event != null){
 		onEvent(event);
 	}
-	updateGraphics();
    	updateStatistics();
 }
 
