@@ -44,6 +44,16 @@ min-width:600px;
 }
 
 .cell-elem{
-    float:left;
+    float: left;
     padding-right: 2px;
+    padding-left: 2px;
+    border: green solid 1px;
+    margin: 1px;
+    margin-right: 2px;
+    text-align: center;
+}
+
+.table-row-header{
+    /*background: lightgrey;*/
+    /*margin-left: 15px;*/
 }

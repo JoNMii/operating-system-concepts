@@ -409,9 +409,9 @@ function setTableRows(rows) {
     hrows = Array();
     //insert "headers"
     for (i = 0; i < tableHeaderNames.length; i++) {
-        tabblje.append("<div class='row data-row' data-rownum='"+tableHeaderNames[i]+"'></div>");
+        tabblje.append("<div class='row data-row well well-sm' data-rownum='"+tableHeaderNames[i]+"'></div>");
         hrows[tableHeaderNames[i]] = $(".data-row[data-rownum='"+tableHeaderNames[i]+"'");// tabblje.append("<div class='row data-row' data-rownum='"+i+"'></div>");
-        hrows[tableHeaderNames[i]].append("<div class='row'>"+tableHeaderNames[i]+"</div>");
+        hrows[tableHeaderNames[i]].append("<div class='row'><span class='col-xs-2 table-row-header'>"+tableHeaderNames[i]+"</span></div>");
     }
     console.log("new table rows", hrows);
 
