@@ -196,8 +196,8 @@ function resetGUI() {
     $("#ex8SliderVal").text("1024 KB");
     $("#ex9SliderVal").text("512 KB");
     $("#framecount-label").text("16");
-    $("#ex1SliderVal").text("1" + "X");
-    $("#speedinput").val(1);
+    $("#ex1SliderVal").text("3" + "X");
+    $("#speedinput").val(3);
 
     $("#ramsize").val("512");
     $("#framesize").val("32");
@@ -206,7 +206,7 @@ function resetGUI() {
     $("#framecount").val("16");
 
     $("#processmin").val("1");
-    $("#processmax").val("5");
+    $("#processmax").val("8");
     $("#processPageCountMin").val("1");
     $("#processPageCountMax").val("5");
 
@@ -262,7 +262,7 @@ function enableSliders() {
     });
 
 //Process count slider
-    ex12bSlider = new Slider("#ex12b", { id: "slider12b", min: 1, max: 20, range: true, value: [1, 5] });
+    ex12bSlider = new Slider("#ex12b", { id: "slider12b", min: 1, max: 20, range: true, value: [1, 8] });
     ex12bSlider.on("slide", function(slideEvt) {
         var range = slideEvt.value;
         $('#processmin').val(range[0]);
