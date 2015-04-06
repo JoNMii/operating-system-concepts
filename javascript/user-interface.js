@@ -194,7 +194,7 @@ function resetGUI() {
     $("#ex6SliderVal").text("512 KB");
     $("#ex7SliderVal").text("32 KB");
     $("#ex8SliderVal").text("1024 KB");
-    $("#ex9SliderVal").text("512 KB");
+    $("#ex9SliderVal").text("2048 KB");
     $("#framecount-label").text("16");
     $("#ex1SliderVal").text("3" + "X");
     $("#speedinput").val(3);
@@ -202,7 +202,7 @@ function resetGUI() {
     $("#ramsize").val("512");
     $("#framesize").val("32");
     $("#virtmemsize").val("512");
-    $("#swapsize").val("512");
+    $("#swapsize").val("2048");
     $("#framecount").val("16");
 
     $("#processmin").val("1");
