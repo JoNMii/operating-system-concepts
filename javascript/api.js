@@ -46,6 +46,8 @@ function startAlgo(params) {
 		config.algo = randomAlgorithm
 	}
 	statsObj.freeRam = config.ramSize;
+	statsObj.pageHits=0;
+    	statsObj.pageFaults=0;
 
 	// Clear previously created objects
 	clearGraphics();
@@ -111,6 +113,7 @@ function stopAlgo(){
 
 //increases time by one timeunit
 function simulationTick(){
+	updateGraphics();
 	if (config.waitForGraphics) {
 		//console.log('Sleeping...');
 		return;
@@ -120,7 +123,6 @@ function simulationTick(){
 	if(event != null){
 		onEvent(event);
 	}
-	updateGraphics();
    	updateStatistics();
 }
 
