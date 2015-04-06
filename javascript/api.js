@@ -46,6 +46,8 @@ function startAlgo(params) {
 		config.algo = randomAlgorithm
 	}
 	statsObj.freeRam = config.ramSize;
+	statsObj.pageHits=0;
+    	statsObj.pageFaults=0;
 
 	// Clear previously created objects
 	clearGraphics();
