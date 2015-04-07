@@ -56,7 +56,7 @@ var visualConfig = {
     pfBorderRadius: 5,
 
     // Slots/frames
-    slotBorderWidth: 1,
+    slotBorderWidth: 3,
     slotBorderRadius: 3,
 
     // Colors
