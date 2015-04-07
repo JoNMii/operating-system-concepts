@@ -14,10 +14,8 @@ var LFU_Algorithm = function(){
 		}
 		return result;
 	}
-	//if page is swapped in treat it as newly created
-	simple.onSwapin = function(_pageId){
-		setFlag(pageId,"used",0);
-	}
+
+	
 	var defaultOnEvent = simple.onEvent;
 	simple.onEvent=function(event){
 		var pageId = addressToPageId(event.address);
