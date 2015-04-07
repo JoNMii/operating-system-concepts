@@ -43,7 +43,7 @@ var visualConfig = {
     ramOffsetX: 350,
     ramOffsetY: 40,
     ramPadding: 5,
-    ramSpacing: 5, // Inner spacing between frames
+    ramSpacing: 7, // Inner spacing between frames
     ramBorderRadius: 5,
 
     // Pagefile
@@ -52,7 +52,7 @@ var visualConfig = {
     pfOffsetX: 700,
     pfOffsetY: 40,
     pfPadding: 5,
-    pfSpacing: 5,
+    pfSpacing: 7,
     pfBorderRadius: 5,
 
     // Slots/frames
