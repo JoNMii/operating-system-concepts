@@ -19,7 +19,11 @@ var MFU_Algorithm = function(){
 	}
 
 	var defaultOnEvent = simple.onEvent;
-
+	
+	//if page is swapped in treat it as newly created
+	simple.onSwapin = function(_pageId){
+		setFlag(pageId,"used",0);
+	}
 	simple.onEvent=function(event){
 		var pageId = addressToPageId(event.address);
 		defaultOnEvent(event);
